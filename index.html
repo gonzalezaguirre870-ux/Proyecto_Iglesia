@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de la Iglesia - Línea de Tiempo Interactiva de 190
+        Eventos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        garamond: ['"EB Garamond"', 'serif'],
+                        playfair: ["Playfair Display", 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos de transición tipo diapositiva (Prezi/Canva style) */
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: scale(0.98);
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Fondos Dinámicos que Evolucionan / Se Modernizan */
+        .bg-era-1 {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e4d0a0 100%);
+            color: #3b2a1a;
+        }
+
+        .bg-era-2 {
+            background: linear-gradient(135deg, #2d1a1a 0%, #1a0f0f 100%);
+            color: #f7fafc;
+        }
+
+        .bg-era-3 {
+            background: linear-gradient(135deg, #fdfbf7 0%, #ebdcb9 100%);
+            color: #2c2512;
+        }
+
+        .bg-era-4 {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            color: #f1f5f9;
+        }
+
+        .bg-era-5 {
+            background: linear-gradient(135deg, #fafafa 0%, #e2e8f0 100%);
+            color: #1e293b;
+        }
+
+        .bg-era-6 {
+            background: linear-gradient(135deg, #f0fdf4 0%, #cfe2fe 100%);
+            color: #0f172a;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        /* =======================================================
+           4. SISTEMA DE AJUSTE UNIVERSAL 100% AUTOMÁTICO (ANY SCREEN)
+           ======================================================= */
+        
+        /* El contenedor izquierdo se vuelve un radar que mide su propio espacio beige */
+        .texto-evento, 
+        .slide > div:first-of-type {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important; /* ¡CLAVE! Empuja el título al techo y el texto al fondo sin dejar vacíos */
+            height: 100% !important;
+            min-height: 0 !important;
+            flex: 1 !important;
+            padding-right: 5% !important;           /* Separación fija y elegante con la imagen */
+            container-type: size !important;         /* Activa la medición de ancho y alto de la caja */
+        }
+
+        /* El título cambia de tamaño basándose estrictamente en el alto de la zona beige */
+        .slide h2, .slide h1 {
+            /* clamp(MÍNIMO CELULAR, ELÁSTICO AUTOMÁTICO, MÁXIMO MONITOR) */
+            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important; 
+            font-weight: 800 !important;            /* Título imponente en negrita */
+            margin-top: 0 !important;
+            margin-bottom: 0.5rem !important;
+            position: relative !important;
+            top: 0 !important;
+        }
+
+        /* El párrafo absorbe todo el espacio restante adaptando su letra al milímetro */
+        .slide p {
+            /* Se calcula según la altura (cqh) y el ancho (cqw) para un llenado perfecto */
+            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important; 
+            line-height: 1.5 !important;            /* Interlineado compacto y limpio */
+            text-align: justify !important;         /* Bordes rectos como un libro */
+            text-justify: inter-word !important;     
+            text-align-last: left !important;       /* Última línea natural a la izquierda */
+            margin-bottom: 0 !important;
+            flex-grow: 1 !important;                /* Se estira como liga para rellenar todo el alto */
+            display: flex !important;
+            align-items: flex-start !important;     /* Inicia el texto inmediatamente después del título */
+        }
+
+    </style>
+</head>
+
+<body
+    class="bg-slate-950 min-h-screen flex flex-col justify-center items-center p-0 md:p-4 overflow-x-hidden md:overflow-hidden font-sans">
+
+    <div id="contenedor-presentacion"
+        class="relative w-full max-w-[1280px] h-screen md:h-[720px] bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-none md:border border-slate-800 transition-all duration-300">
+
+        <button onclick="toggleFullscreen()"
+            class="absolute top-4 right-4 z-[60] bg-slate-900/80 hover:bg-slate-800 text-white px-3 py-2 rounded-lg text-xs font-bold border border-slate-700/50 flex items-center gap-2 backdrop-blur transition shadow-lg">
+            <i class="fa-solid fa-expand text-amber-400" id="fs-icon"></i>
+            <span id="fs-text">PANTALLA COMPLETA</span>
+        </button>
+
+        <div id="slide-inicio"
+            class="slide active w-full h-full bg-gradient-to-br from-amber-950 via-slate-900 to-amber-900 text-white flex-col justify-between p-6 md:p-12 overflow-y-auto md:overflow-hidden">
+            <div class="text-center mt-6 md:mt-12">
+                <span class="text-amber-400 font-cinzel tracking-widest text-sm md:text-lg block mb-2">CRONOLOGÍA
+                    HISTÓRICA COMPLETA</span>
+                <h1
+                    class="text-3xl md:text-7xl font-cinzel font-black tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">
+                    HISTORIA
+                    DE LA IGLESIA</h1>
+                <div class="w-16 md:w-24 h-1 bg-amber-400 mx-auto my-4 md:my-6"></div>
+                <p class="text-base md:text-2xl font-garamond italic text-amber-100 max-w-3xl mx-auto leading-relaxed">
+                    Un
+                    viaje interactivo y cronológico a través de los eventos
+                    fundamentales que moldearon el pensamiento y la
+                    estructura de la fe en el mundo.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 max-w-5xl mx-auto w-full mb-6 md:mb-8">
+                <button onclick="goToSlide('slide-era1-portada')"
+                    class="p-3 md:p-4 bg-amber-900/40 hover:bg-amber-800/60 rounded-xl border border-amber-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-scroll text-amber-400 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">I.
+                        APOSTÓLICA</span>
+                </button>
+                <button onclick="goToSlide('slide-era2-portada')"
+                    class="p-3 md:p-4 bg-red-950/40 hover:bg-red-900/60 rounded-xl border border-red-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-cross text-red-400 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">II.
+                        PERSEGUIDA</span>
+                </button>
+                <button onclick="goToSlide('slide-era3-portada')"
+                    class="p-3 md:p-4 bg-yellow-950/40 hover:bg-yellow-900/60 rounded-xl border border-yellow-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-crown text-yellow-400 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">III.
+                        IMPERIAL</span>
+                </button>
+                <button onclick="goToSlide('slide-era4-portada')"
+                    class="p-3 md:p-4 bg-blue-950/40 hover:bg-blue-900/60 rounded-xl border border-blue-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-chess-rook text-blue-400 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">IV.
+                        MEDIEVAL</span>
+                </button>
+                <button onclick="goToSlide('slide-era5-portada')"
+                    class="p-3 md:p-4 bg-slate-800/40 hover:bg-slate-700/60 rounded-xl border border-slate-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-feather text-slate-300 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">V.
+                        REFORMADA</span>
+                </button>
+                <button onclick="goToSlide('slide-era6-portada')"
+                    class="p-3 md:p-4 bg-emerald-950/40 hover:bg-emerald-900/60 rounded-xl border border-emerald-600/30 text-center group transition">
+                    <i
+                        class="fa-solid fa-globe text-emerald-400 group-hover:scale-110 transition block mb-1 md:mb-2 text-lg md:text-xl"></i>
+                    <span class="text-[10px] md:text-xs font-bold block">VI.
+                        MODERNA</span>
+                </button>
+            </div>
+        </div>
+
+        <nav id="nav-superior"
+            class="hidden absolute top-0 left-0 w-full h-[60px] md:h-[70px] bg-slate-950/95 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 z-50">
+            <button onclick="goToSlide('slide-inicio')"
+                class="text-amber-400 hover:text-amber-300 flex items-center gap-1 md:gap-2 font-cinzel font-bold text-[10px] md:text-sm tracking-wider md:tracking-widest">
+                <i class="fa-solid fa-house"></i> <span class="hidden sm:inline">PORTADA</span>
+            </button>
+            <div
+                class="flex items-center gap-1 md:gap-3 font-sans text-[9px] md:text-xs font-bold tracking-tight md:tracking-wider text-slate-400 overflow-x-auto max-w-[50%] md:max-w-none py-1 custom-scroll">
+                <button onclick="goToSlide('slide-era1-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era1">I. APOSTÓLICA</button>
+                <button onclick="goToSlide('slide-era2-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era2">II. PERSEGUIDA</button>
+                <button onclick="goToSlide('slide-era3-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era3">III. IMPERIAL</button>
+                <button onclick="goToSlide('slide-era4-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era4">IV. MEDIEVAL</button>
+                <button onclick="goToSlide('slide-era5-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era5">V. REFORMADA</button>
+                <button onclick="goToSlide('slide-era6-portada')"
+                    class="nav-era-btn hover:text-white px-2 py-1 rounded transition whitespace-nowrap"
+                    id="nav-btn-era6">VI. MODERNA</button>
+            </div>
+            <div class="flex items-center gap-1 md:gap-2 mr-16 md:mr-0">
+                <button onclick="prevSlide()"
+                    class="w-6 h-6 md:w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-left text-[10px] md:text-xs"></i>
+                </button>
+                <span id="slide-indicator" class="text-[10px] md:text-xs text-slate-500 font-mono">01
+                    / 13</span>
+                <button onclick="nextSlide()"
+                    class="w-6 h-6 md:w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-right text-[10px] md:text-xs"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div id="slide-era1-portada"
+            class="slide w-full h-full bg-era-1 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-amber-900 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                I: 30 d.C. - 100 d.C.</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-amber-950 mb-3 md:mb-4">IGLESIA
+                    APOSTÓLICA</h2>
+                <p class="text-base md:text-xl font-garamond italic text-amber-900/90 leading-relaxed">El
+                    origen de todo. El nacimiento bajo el poder del Espíritu
+                    Santo, la expansión transformadora liderada por los
+                    viajes de Pablo, y el establecimiento doctrinal
+                    definitivo de la Iglesia Primitiva.</p>
+                <button onclick="goToSlide('slide-e1')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-amber-950 hover:bg-amber-900 text-amber-100 rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA APOSTÓLICA <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-amber-900/60 font-mono">16
+                Eventos Fundacionales de la Fe</div>
+        </div>
+
+        <div id="slide-e1"
+            class="slide w-full h-full bg-era-1 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-amber-800 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        APOSTÓLICA (30-100 d.C.)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-amber-950 mt-1 mb-2 md:mb-4"
+                        id="e1-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-amber-900/90 leading-relaxed mb-4 md:mb-6"
+                        id="e1-desc">Selecciona un evento.</p>
+                </div>
+                <div class="bg-amber-950/5 p-3 md:p-4 rounded-xl border border-amber-950/10">
+                    <div class="text-[10px] font-bold text-amber-950/60 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era1"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-amber-950/10 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-amber-950/20"
+                    id="e1-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-fire text-amber-800 text-5xl md:text-7xl mb-2 md:mb-4" id="e1-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e1-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-amber-950 text-amber-100 p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era1-progress-num">1</span> de 16
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-era2-portada"
+            class="slide w-full h-full bg-era-2 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-red-500 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                II: 100 d.C. - 313 d.C.</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-red-100 mb-3 md:mb-4">IGLESIA
+                    PERSEGUIDA</h2>
+                <p class="text-base md:text-xl font-garamond italic text-red-200/90 leading-relaxed">"La sangre de los
+                    mártires es la semilla de la iglesia."
+                    Una época de fe inquebrantable bajo las catacumbas,
+                    enfrentando los edictos de emperadores y el sacrificio
+                    en el circo romano.</p>
+                <button onclick="goToSlide('slide-e2')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-red-700 hover:bg-red-600 text-white rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA PERSEGUIDA <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-red-400/60 font-mono">24
+                Eventos bajo la Espada Imperial</div>
+        </div>
+
+        <div id="slide-e2"
+            class="slide w-full h-full bg-era-2 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-red-500 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        PERSEGUIDA (100-313 d.C.)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-red-100 mt-1 mb-2 md:mb-4"
+                        id="e2-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-red-200/90 leading-relaxed mb-4 md:mb-6"
+                        id="e2-desc">Cargando...</p>
+                </div>
+                <div class="bg-red-950/40 p-3 md:p-4 rounded-xl border border-red-500/20">
+                    <div class="text-[10px] font-bold text-red-400/60 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era2"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-red-950/20 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-red-500/10"
+                    id="e2-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-cross text-red-500 text-5xl md:text-7xl mb-2 md:mb-4" id="e2-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e2-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-red-800 text-white p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era2-progress-num">1</span> de 24
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-era3-portada"
+            class="slide w-full h-full bg-era-3 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-yellow-800 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                III: 313 d.C. - 476 d.C.</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-yellow-950 mb-3 md:mb-4">IGLESIA
+                    IMPERIAL</h2>
+                <p class="text-base md:text-xl font-garamond italic text-yellow-900/90 leading-relaxed">De
+                    la persecución al trono. El Edicto de Milán legaliza la
+                    fe, Constantino unifica el Imperio y los grandes
+                    Concilios Ecuménicos estructuran los dogmas universales
+                    contra las herejías.</p>
+                <button onclick="goToSlide('slide-e3')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-yellow-800 hover:bg-yellow-700 text-yellow-100 rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA IMPERIAL <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-yellow-800/60 font-mono">27
+                Eventos del Trono y el Dogma</div>
+        </div>
+
+        <div id="slide-e3"
+            class="slide w-full h-full bg-era-3 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-yellow-800 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        IMPERIAL (313-476 d.C.)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-yellow-950 mt-1 mb-2 md:mb-4"
+                        id="e3-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-yellow-900/90 leading-relaxed mb-4 md:mb-6"
+                        id="e3-desc">Cargando...</p>
+                </div>
+                <div class="bg-yellow-950/5 p-3 md:p-4 rounded-xl border border-yellow-950/10">
+                    <div class="text-[10px] font-bold text-yellow-950/60 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era3"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-yellow-950/10 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-yellow-950/20"
+                    id="e3-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-crown text-yellow-800 text-5xl md:text-7xl mb-2 md:mb-4" id="e3-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e3-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-yellow-900 text-yellow-100 p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era3-progress-num">1</span> de 27
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-era4-portada"
+            class="slide w-full h-full bg-era-4 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-blue-400 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                IV: 476 d.C. - 1453 d.C.</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-blue-100 mb-3 md:mb-4">IGLESIA
+                    MEDIEVAL</h2>
+                <p class="text-base md:text-xl font-garamond italic text-blue-200/90 leading-relaxed">Mil
+                    años de historia. El surgimiento del papado, la
+                    conversión de las tribus bárbaras, el cisma de Oriente y
+                    Occidente, el impacto de las Cruzadas y el monasticismo
+                    protector de la cultura.</p>
+                <button onclick="goToSlide('slide-e4')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-blue-700 hover:bg-blue-600 text-white rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA MEDIEVAL <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-blue-400/60 font-mono">51
+                Eventos del Medievo y Cismas</div>
+        </div>
+
+        <div id="slide-e4"
+            class="slide w-full h-full bg-era-4 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-blue-400 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        MEDIEVAL (476-1453 d.C.)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-blue-100 mt-1 mb-2 md:mb-4"
+                        id="e4-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-blue-200/90 leading-relaxed mb-4 md:mb-6"
+                        id="e4-desc">Cargando...</p>
+                </div>
+                <div class="bg-blue-950/40 p-3 md:p-4 rounded-xl border border-blue-500/20">
+                    <div class="text-[10px] font-bold text-blue-400/60 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era4"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-slate-800/40 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-slate-700"
+                    id="e4-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-chess-rook text-blue-400 text-5xl md:text-7xl mb-2 md:mb-4"
+                            id="e4-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e4-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-blue-800 text-white p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era4-progress-num">1</span> de 51
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-era5-portada"
+            class="slide w-full h-full bg-era-5 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-slate-700 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                V: 1453 d.C. - 1648 d.C.</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-slate-900 mb-3 md:mb-4">IGLESIA
+                    REFORMADA</h2>
+                <p class="text-base md:text-xl font-garamond italic text-slate-800/90 leading-relaxed">El
+                    gran despertar teológico. Las 95 tesis de Lutero, el
+                    estallido de la Reforma Protestante en Europa, Calvino,
+                    la traducción de las Escrituras a lenguas vernáculas y
+                    la Contrarreforma Católica.</p>
+                <button onclick="goToSlide('slide-e5')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA REFORMADA <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-slate-500 font-mono">31
+                Eventos de la Reforma y Doctrina</div>
+        </div>
+
+        <div id="slide-e5"
+            class="slide w-full h-full bg-era-5 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-slate-700 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        REFORMADA (1453-1648 d.C.)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-slate-900 mt-1 mb-2 md:mb-4"
+                        id="e5-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-slate-800/90 leading-relaxed mb-4 md:mb-6"
+                        id="e5-desc">Cargando...</p>
+                </div>
+                <div class="bg-slate-950/5 p-3 md:p-4 rounded-xl border border-slate-950/10">
+                    <div class="text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era5"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-slate-950/10 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-slate-950/20"
+                    id="e5-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-feather text-slate-700 text-5xl md:text-7xl mb-2 md:mb-4"
+                            id="e5-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e5-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-slate-800 text-white p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era5-progress-num">1</span> de 31
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-era6-portada"
+            class="slide w-full h-full bg-era-6 flex-col justify-between p-6 md:p-16 relative overflow-y-auto md:overflow-hidden">
+            <div class="text-blue-800 font-cinzel font-bold text-xs md:text-sm tracking-widest">ETAPA
+                VI: 1648 d.C. - ACTUALIDAD</div>
+            <div class="max-w-2xl my-auto py-4">
+                <h2 class="text-3xl md:text-6xl font-cinzel font-black text-blue-950 mb-3 md:mb-4">IGLESIA
+                    MODERNA</h2>
+                <p class="text-base md:text-xl font-garamond italic text-blue-900/90 leading-relaxed">La
+                    globalización de la fe. Los grandes avivamientos
+                    mundiales, los movimientos misioneros modernos, el auge
+                    del pentecostalismo y el desarrollo de la iglesia
+                    evangélica contemporánea en El Salvador.</p>
+                <button onclick="goToSlide('slide-e6')"
+                    class="mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-3 bg-blue-800 hover:bg-blue-700 text-blue-100 rounded-full font-bold shadow-lg flex items-center gap-2 group transition text-xs md:text-sm">
+                    INICIAR ERA MODERNA <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+            <div class="text-[10px] md:text-xs text-blue-800/60 font-mono">39
+                Eventos hasta la Actualidad Salvadoreña</div>
+        </div>
+
+        <div id="slide-e6"
+            class="slide w-full h-full bg-era-6 flex-col md:flex-row pt-20 md:pt-24 p-4 md:p-12 gap-4 md:gap-8 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-2/3 flex flex-col justify-between gap-4 md:gap-0">
+                <div>
+                    <span class="text-blue-800 font-cinzel font-bold tracking-widest text-xs md:text-sm">IGLESIA
+                        MODERNA (1648 d.C. - ACTUALIDAD)</span>
+                    <h2 class="text-2xl md:text-4xl font-cinzel font-black text-blue-950 mt-1 mb-2 md:mb-4"
+                        id="e6-title">Cargando...</h2>
+                    <p class="text-sm md:text-lg font-garamond text-blue-900/90 leading-relaxed mb-4 md:mb-6"
+                        id="e6-desc">Cargando...</p>
+                </div>
+                <div class="bg-blue-950/5 p-3 md:p-4 rounded-xl border border-blue-950/10">
+                    <div class="text-[10px] font-bold text-blue-800 uppercase tracking-widest mb-2">Cronología
+                        de esta Era</div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 custom-scroll" id="timeline-scroll-era6"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div class="w-full h-48 md:h-full flex-grow bg-blue-950/10 rounded-xl overflow-hidden relative flex items-center justify-center p-6 border border-blue-950/20"
+                    id="e6-media-container">
+                    <div class="text-center">
+                        <i class="fa-solid fa-globe text-blue-800 text-5xl md:text-7xl mb-2 md:mb-4" id="e6-icon"></i>
+                        <div class="font-cinzel text-base md:text-xl font-bold" id="e6-year-badge">--</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-blue-950 text-blue-100 p-3 md:p-4 rounded-xl text-center text-xs md:text-sm font-semibold shadow-inner">
+                    Diapositiva <span id="era6-progress-num">1</span> de 39
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const eventsData = {
+            era1: [
+                { year: "30 d.C.", title: "Pentecostés", desc: "En el año 30 d.C., el descenso del Espíritu Santo sobre los discípulos reunidos en Jerusalén durante la fiesta de Pentecostés marca el nacimiento formal de la Iglesia cristiana. Este acontecimiento sobrenatural otorgó valentía al apóstol Pedro para predicar un discurso masivo que sumó a tres mil nuevos creyentes, consolidando de inmediato los pilares de la primera comunidad: la oración unánime, las enseñanzas apostólicas y la comunión fraternal.", "image": "imgapostolica/pentecostes.jpeg"},
+                { year: "34 d.C.", title: "Martirio de Esteban", desc: "En el año 34 d.C., el diácono Esteban es ejecutado por lapidación tras pronunciar una valiente defensa ante el Sanedrín, convirtiéndose en el primer mártir de la fe cristiana. Su death desató la primera gran persecución local en Jerusalén, un conflicto que obligó a los fieles a huir de la ciudad e involuntariamente transformó la crisis en un motor que expandió el evangelio hacia Samaria y regiones vecinas.", "image": "imgapostolica/esteban.jpeg"},
+                { year: "35 d.C.", title: "Conversión de Saulo (Pablo)", desc: "Hacia el año 35 d.C., en el camino hacia Damasco, el implacable perseguidor de cristianos Saulo de Tarso experimenta un encuentro místico y radical con Jesús resucitado que lo deja temporalmente ciego. Este evento transformó por completo su vida, convirtiendo al temido fariseo en el apóstol Pablo, quien asumió la misión de estructurar la teología primitiva y ser el principal estratega misionero para el mundo no judío.", "image": "imgapostolica/saulo.jpeg"},
+                { year: "44 d.C.", title: "Martirio de Jacobo (Santiago)", desc: "En el año 44 d.C., el rey Herodes Agripa I ordena la ejecución por espada del apóstol Jacobo (Santiago), hermano de Juan, convirtiéndose en el primer miembro del círculo íntimo de los doce apóstoles en ser martirizado. Este asalto político buscaba complacer a los líderes religiosos tradicionales y marcó el inicio de una persecución gubernamental directa contra el liderazgo central de la iglesia en Jerusalén.", image: "imgapostolica/mjacobo.jpeg"},
+                { year: "47 – 49 d.C.", title: "Primer viaje de Pablo", desc: "Entre los años 47 y 49 d.C., los misioneros Pablo y Bernabé son enviados por la iglesia de Antioquía en el primer viaje misionero formal, recorriendo la isla de Chipre y la región de Asia Menor. A pesar de enfrentar una dura oposición y peligros físicos, esta expedición logró establecer iglesias pioneras en ciudades como Iconio, Listra y Derbe, demostrando la alta receptividad del evangelio entre la población gentil.", "image": "imgapostolica/pvpablo.jpeg" },
+                { year: "49 d.C.", title: "Concilio de Jerusalén", desc: "En el año 49 d.C. se convoca el Concilio de Jerusalén, considerado la primera gran asamblea teológica de la cristiandad para resolver si los nuevos creyentes no judíos debían circuncidarse y seguir las leyes de Moisés. Liderado por los apóstoles Pablo, Pedro y Santiago, el concilio decretó formalmente la exención de los ritos judíos para los gentiles, rompiendo el vínculo legalista y universalizando el acceso a la fe cristiana.", "image": "imgapostolica/cjerusalen.jpeg" },
+                { year: "50 – 53 d.C.", title: "Segundo viaje de Pablo", desc: "Durante los años 50 a 53 d.C., el apóstol Pablo emprende su segundo viaje misionero, cruzando por primera vez a suelo europeo tras recibir una visión de un varón macedonio que pedía ayuda. Esta travesía histórica sembró el cristianismo en centros culturales y políticos clave como Filipos, Tesalónica y Atenas, donde Pablo pronunció su famoso discurso en el Areópago adaptando el mensaje al pensamiento griego.", image: "https://conocelahistoria.com/wp-content/uploads/2018/09/historia-de-la-iglesia-apostolica-10.jpg" }, // EJEMPLO DE CÓMO SE PONE UNA IMAGEN EN EL CÓDIGO
+                { year: "53 – 58 d.C.", title: "Tercer viaje de Pablo", desc: "Entre los años 53 y 58 d.C., el apóstol Pablo realiza su tercer viaje misionero, centrando sus esfuerzos durante casi tres años en la metrópolis de Éfeso, que se convirtió en el epicentro espiritual de Asia Menor. Este periodo de madurez eclesiástica fue fundamental, ya que el apóstol no solo fortaleció la organización de las iglesias locales, sino que también redactó varias de sus cartas epistolares y pastorales más doctrinales.", icon: "fa-book-open" },
+                { year: "60 – 62 d.C.", title: "Arresto de Pablo en Roma", desc: "Hacia el año 60 d.C., tras ser arrestado falsamente en Jerusalén y apelar a su derecho como ciudadano romano ante el César, el apóstol Pablo es trasladado a Roma para ser juzgado. Durante dos años permaneció bajo arresto domiciliario custodiado por soldados, un confinamiento que aprovechó estratégicamente para recibir visitas, pastorear a la iglesia local y redactar las llamadas 'epístolas de la prisión' como Efesios y Filipenses.", icon: "fa-link" },
+                { year: "62 d.C.", title: "Martirio de Jacobo 'el Justo'", desc: "En el año 62 d.C., aprovechando un vacío de poder político tras la muerte del procurador romano Porcio Festo, el sumo sacerdote Ananías ordena apedrear a Jacobo 'el Justo', hermano de Jesús y líder principal de la iglesia en Jerusalén. Respetado incluso por los judíos debido a su piedad, su ejecución radicalizó la brecha entre el judaísmo tradicional y el cristianismo, debilitando el liderazgo de la iglesia madre.", icon: "fa-gavel" },
+                { year: "64 d.C.", title: "Incendio de Roma", desc: "En julio del año 64 d.C., un devastador incendio destruye gran parte de la ciudad de Roma y el emperador Nerón, buscando desviar los rumores que lo acusaban a él del desastre, utiliza a los cristianos como chivos expiatorios. Este hecho desató la primera persecución sistemática del Imperio Romano, caracterizada por torturas crueles en los jardines imperiales y el uso de los creyentes como antorchas humanas.", icon: "fa-fire-flame-curved" },
+                { year: "67 d.C.", title: "Martirio de Pedro y Pablo", desc: "En el año 67 d.C., en el clímax de la sangrienta persecución desatada por el emperador Nerón, los dos pilares de la iglesia primitiva sufren el martirio en Roma. El apóstol Pablo es ejecutado por decapitación debido a su estatus de ciudadano romano, mientras que el apóstol Pedro es crucificado boca abajo en el monte Vaticano, cumpliendo su petición de no morir igual que su Maestro.", icon: "fa-monument" },
+                { year: "70 d.C.", title: "Destrucción de Jerusalén", desc: "En el año 70 d.C., las legiones romanas comandadas por el futuro emperador Tito sitian y destruyen por completo la ciudad de Jerusalén, arrasando el majestuoso Templo judío tal como Jesús lo había profetizado. Este catastrófico evento militar puso fin al estado judío y obligó a una dispersión permanente conocida como la Diáspora, provocando que el centro de gravedad del cristianismo se trasladara definitivamente hacia centros gentiles como Antioquía, Éfeso y Roma.", icon: "fa-building-columns" },
+                { year: "90 – 96 d.C.", title: "Persecución de Domiciano", desc: "Durante los años 90 a 96 d.C., el emperador Domiciano desata la segunda gran persecución imperial al exigir que se le adorara rigurosamente bajo el título divino de 'Señor y Dios'. Los cristianos se convirtieron en el blanco de ejecuciones y confiscaciones de bienes al negarse a participar en el culto imperial, lo que obligó a la iglesia a fortalecer su estructura interna frente al acoso estatal generalizado.", icon: "fa-shield-halved" },
+                { year: "95 d.C.", title: "Exilio de Juan en Patmos", desc: "En el año 95 d.C., en el marco de las represiones de Domiciano, el apóstol Juan, ya anciano y siendo el último sobreviviente de los doce originales, es desterrado a los trabajos forzados en la inhóspita isla de Patmos. En este aislamiento geográfico, Juan recibe una serie de visiones proféticas y triunfales sobre el destino final de la humanidad y el triunfo de Cristo, dando origen a la redacción del libro del Apocalipsis.", icon: "fa-scroll" },
+                { year: "100 d.C.", title: "Muerte del Apóstol Juan", desc: "Alrededor del año 100 d.C., tras ser liberado de su exilio, el apóstol Juan fallece por causas naturales en la ciudad de Éfeso, donde pastoreaba activamente. Su muerte marca el cierre definitivo de la Era Apostólica, concluyendo el periodo de revelación directa de los testigos oculares de Jesús y abriendo paso a una nueva generación de líderes conocidos como los Padres de la Iglesia.", icon: "fa-feather" }
+            ],
+            era2: [
+                { year: "107 d.C.", title: "Martirio de Ignacio de Antioquía", desc: "Arrestado y enviado a Roma, Ignacio fue devorado por las fieras en el Anfiteatro Flavio. Camino al martirio escribió siete cartas fundamentales que delinean la eclesiología primitiva, la firme resistencia al error doctrinal y acuñó por primera vez de forma registrada el término 'Iglesia Católica' para referirse a la universalidad de los fieles.", icon: "fa-shield-dog" },
+                { year: "112 d.C.", title: "Carta de Plinio el Joven y Edicto de Trajano", desc: "El gobernador de Bitinia, Plinio, escribe al emperador Trajano solicitando instrucciones sobre cómo juzgar a los cristianos. La respuesta de Trajano estableció una política imperial moderada pero firme: no debían ser buscados activamente por el estado, pero si eran denunciados legalmente y se negaban a adorar a los dioses del imperio, debían ser ejecutados.", icon: "fa-envelope" },
+                { year: "155 d.C.", title: "Martirio de Policarpo de Esmirna", desc: "Policarpo, obispo de Esmirna y último discípulo directo del apóstol Juan, es arrestado a los 86 años de edad. Al ser instado por el proconsul romano a maldecir a Cristo para salvar su vida, pronunció su famosa declaración de fidelidad absoluta: 'Ochenta y seis años le he servido, y ningún mal me ha hecho'. Fue quemado vivo en la hoguera del estadio público.", icon: "fa-fire" },
+                { year: "165 d.C.", title: "Martirio de Justino Mártir", desc: "El primer gran filósofo y apologista cristiano, Justino, es decapitado en Roma bajo el mandato del emperador Marco Aurelio. Justino dedicó su vida a defender intelectualmente la racionalidad del cristianismo ante los emperadores romanos y el Sanedrín, utilizando el concepto del 'Logos' filosófico para tender puentes conceptuales con el paganismo.", icon: "fa-brain" },
+                { year: "177 d.C.", title: "Mártires de Lyon y Vienne", desc: "Una sangrienta persecución local en la Galia cobra la vida de decenas de cristianos, entre ellos el anciano obispo Potino y la joven esclava Blandina. Sometidos a torturas extremas en el anfiteatro público, los creyentes resistieron unánimes demostrando el arraigo profundo y la valentía del cristianismo en las provincias occidentales del imperio.", icon: "fa-skull" },
+                { year: "180 d.C.", title: "Actas de los Mártires de Escilio", desc: "Doce cristianos de la ciudad africana de Escilio son ejecutados en Cartago por negarse a jurar por el genio del emperador. Este documento constituye la primera muestra escrita del cristianismo en el norte de África, reflejando el carácter inquebrantable de las comunidades africanas ante las demandas de culto imperial.", icon: "fa-file-lines" },
+                { year: "185 d.C.", title: "Ireneo de Lyon redacta 'Contra las Herejías'", desc: "El obispo Ireneo publica su magna obra teológica destinada a refutar y desmantelar los complejos sistemas filosóficos del gnosticismo que amenazaban la pureza doctrinal. En este texto, Ireneo defendió la unidad del Antiguo y Nuevo Testamento, definió los evangelios canónicos y consolidó el principio de la sucesión apostólica.", icon: "fa-pen-fancy" },
+                { year: "197 d.C.", title: "Tertuliano publica el 'Apologético'", desc: "En Cartago, el brillante abogado Tertuliano escribe su tratado más famoso defendiendo civilmente a los cristianos de las falsas acusaciones populares. En sus escritos acuñó célebres frases latinas y estructuró conceptos trinitarios fundamentales, sentando las bases definitivas para el desarrollo de la teología y la literatura eclesiástica en el idioma latín.", icon: "fa-scale-balanced" },
+                { year: "202 d.C.", title: "Edicto de Septimio Severo", desc: "El emperador emite un decreto severo prohibiendo estrictamente la conversión bajo pena de muerte tanto al judaísmo como al cristianismo. Este edicto buscaba detener la rápida propagación de la fe y desencadenó oleadas de martirios violentos en centros urbanos clave del norte de África y Alejandría.", icon: "fa-gavel" },
+                { year: "203 d.C.", title: "Martirio de Perpetua y Felicitas", desc: "La joven noble Perpetua y su esclava Felicitas son arrestadas y ejecutadas juntas en el anfiteatro de Cartago bajo el edicto de Septimio Severo. A pesar de las intensas súplicas familiares y de dar a luz en prisión, mantuvieron su fe intacta, convirtiéndose en un símbolo imperecedero de valentía e igualdad espiritual femenina.", icon: "fa-heart" },
+                { year: "206 d.C.", title: "Clemente de Alejandría lidera la Escuela Catequística", desc: "El teólogo Clemente asume la dirección de la célebre escuela de Alejandría, combinando el estudio profundo de las Escrituras con la filosofía griega pagana. Su enfoque intelectual buscaba presentar el cristianismo como la verdadera y máxima filosofía del universo ante las clases académicas y educadas de la época.", icon: "fa-graduation-cap" },
+                { year: "215 d.C.", title: "Hipólito de Roma escribe la 'Tradición Apostólica'", desc: "El líder y teólogo romano Hipólito redacta una compilación detallada de las liturgias, ordenaciones, oraciones y prácticas eclesiásticas vigentes en la comunidad de Roma. Este valioso documento histórico permite comprender cómo era la adoración, la administración de sacramentos y la vida comunitaria cristiana del siglo III.", icon: "fa-book" },
+                { year: "230 d.C.", title: "Orígenes completa sus magnos estudios en Cesarea", desc: "Obligado a abandonar Alejandría, el prolífico erudito Orígenes establece un gran centro de estudios teológicos en Cesarea. Autor de la monumental Hexapla y de los primeros comentarios exegéticos sistemáticos, su método alegórico de interpretación de las Escrituras influenció profundamente el pensamiento doctrinal de los siglos venideros.", icon: "fa-feather-pointed" },
+                { year: "235 d.C.", title: "Persecución de Maximino el Tracio", desc: "Tras un periodo de relativa calma, el emperador Maximino desata un ataque dirigido específicamente contra los líderes y pastores de las iglesias cristianas. Durante este violento conflicto político, el obispo romano Ponciano y el teólogo Hipólito son desterrados a trabajos forzados en las minas de Cerdeña, donde fallecen.", icon: "fa-person-falling-burst" },
+                { year: "248 d.C.", title: "Cipriano es elegido Obispo de Cartago", desc: "Cipriano asume el liderazgo de la influyente iglesia del norte de África en un momento de crisis inminente. Sus numerosos tratados sobre la unidad eclesiástica, la autoridad de los obispos y el bautismo definieron la estructura de la iglesia y la administración práctica de la fe frente a las divisiones internas.", icon: "fa-user-tie" },
+                { year: "250 d.C.", title: "Persecución Generalizada de Decio", desc: "El emperador Decio emite el primer edicto de persecución sistemática y obligatoria en todo el territorio del Imperio Romano. Exigía que todos los ciudadanos realizaran sacrificios paganos ante los magistrados para obtener un certificado oficial ('libellus'). El decreto causó miles de mártires, pero también la apostasía masiva de creyentes debilitados.", icon: "fa-users-rays" },
+                { year: "251 d.C.", title: "El Cisma de Novaciano y la Crisis de los Lapsi", desc: "La iglesia enfrenta una profunda división doctrinal tras la persecución de Decio sobre cómo tratar a los creyentes caídos ('lapsi') que compraron certificados falsos. El presbítero Novaciano lidera una postura rigorista extrema prohibiendo su readmisión, provocando un cisma que obligó a los concilios a definir los límites de la gracia.", icon: "fa-scissors" },
+                { year: "257 d.C.", title: "Persecución Sangrienta de Valeriano", desc: "El emperador Valeriano promulga edictos severos que prohibían las asambleas cristianas bajo pena de muerte y ordenaban la confiscación inmediata de todos los bienes de la iglesia. El decreto apuntó con violencia al clero superior, resultando en ejecuciones masivas de líderes en Roma y el norte de África.", icon: "fa-burst" },
+                { year: "258 d.C.", title: "Martirio de Cipriano y del Papa Sixto II", desc: "En pleno apogeo de las leyes opresivas de Valeriano, el obispo Cipriano de Cartago es decapitado públicamente tras mantener una postura firme ante el tribunal. Pocas semanas antes, en Roma, el Papa Sixto II y su diácono Lorenzo son arrestados en las catacumbas y ejecutados, debilitando el liderazgo central de la cristiandad.", icon: "fa-monument" },
+                { year: "260 d.C.", title: "Edicto de Tolerancia de Galieno", desc: "El nuevo emperador Galieno revoca los edictos de su padre Valeriano, deteniendo las ejecuciones y devolviendo formalmente las propiedades, cementerios e iglesias confiscadas a las comunidades cristianas. Este decreto inauguró un periodo histórico de casi cuarenta años de paz conocido como la 'Pequeña Paz de la Iglesia'.", icon: "fa-handshake" },
+                { year: "270 d.C.", title: "Antonio de Egipto inicia el Monasticismo", desc: "El joven Antonio vende todas sus posesiones materiales y se retira en absoluta soledad al desierto profundo de Egipto para dedicarse por completo a la oración y el ascetismo. Su estilo de vida radical atrajo a miles de seguidores, fundando el movimiento eremítico que daría origen al monasticismo cristiano.", icon: "fa-tree" },
+                { year: "303 d.C.", title: "La Gran Persecución de Diocleciano", desc: "Diocleciano y Galerio promulgan la persecución más destructiva, cruel y prolongada contra el cristianismo. Se ordenó la demolición total de templos, la quema pública de todas las Escrituras canónicas y la pérdida de derechos civiles para los creyentes, buscando erradicar la fe del imperio de forma definitiva.", icon: "fa-fire-extinguisher" },
+                { year: "304 d.C.", title: "Edicto del Sacrificio Universal", desc: "En el clímax de la Gran Persecución, se emite un cuarto edicto que imponía la pena de muerte a cualquier habitante del Imperio Romano que se negara a realizar sacrificios públicos a los dioses paganos. Las prisiones colapsaron y miles de cristianos sufrieron martirios atroces en todas las provincias imperiales.", icon: "fa-skull-crossbones" },
+                { year: "311 d.C.", title: "Edicto de Tolerancia de Galerio", desc: "Gravemente enfermo, el emperador Galerio reconoce el rotundo fracaso de la violencia para exterminar el cristianismo y promulga en Nicomedia un edicto histórico que otorgaba tolerancia legal a la fe, permitiendo a los cristianos reconstruir sus templos a cambio de que oraran a su Dios por la salud del soberano.", icon: "fa-file-signature" }
+            ],
+            era3: [
+                { year: "313 d.C.", title: "Edicto de Milán", desc: "Los emperadores Constantino y Licinio proclaman la libertad absoluta de culto en todo el Imperio Romano. Este decreto puso fin definitivo a casi tres siglos de persecuciones imperiales, ordenó la restitución inmediata de los bienes confiscados a la iglesia y marcó el inicio de una nueva era de estrecha alianza entre el Estado y el cristianismo.", icon: "fa-certificate" },
+                { year: "318 d.C.", title: "Estallido de la Controversia Arriana", desc: "El presbítero Arrio de Alejandría comienza a difundir la doctrina de que Jesucristo no es coeterno con Dios Padre, sino un ser creado. Esta enseñanza desató una profunda división teológica y política que amenazaba la unidad del clero y del propio imperio, obligando a una intervención directa de la corona.", icon: "fa-triangle-exclamation" },
+                { year: "324 d.C.", title: "Constantino se convierte en Emperador Único", desc: "Tras derrotar definitivamente a Licinio en la batalla de Crisópolis, Constantino asume el control absoluto de Oriente y Occidente. Con el fin de consolidar el orden del imperio, el monarca promovió activamente el cristianismo, otorgando grandes privilegios fiscales al clero y financiando la edificación de majestuosas basílicas.", icon: "fa-crown" },
+                { year: "325 d.C.", title: "Primer Concilio Ecuménico de Nicea", desc: "Convocado por Constantino, se reúne el primer concilio global de la iglesia para resolver la crisis arriana. Liderado por Atanasio y el obispo Osio, el concilio condenó las enseñanzas de Arrio y redactó el Credo de Nicea, el cual definió dogmáticamente que el Hijo es de la misma sustancia ('homoousios') que el Padre.", icon: "fa-users" },
+                { year: "326 d.C.", title: "Helena de Constantinopla localiza los Lugares Santos", desc: "La madre del emperador Constantino realiza un viaje a Jerusalén con el fin de rescatar los sitios sagrados de la fe. Sus excavaciones promovieron la identificación del Santo Sepulcro y la edificación de las primeras basílicas de la Natividad y del Monte de los Olivos, impulsando el fenómeno de las peregrinaciones.", icon: "fa-map-location-dot" },
+                { year: "328 d.C.", title: "Atanasio es elegido Obispo de Alejandría", desc: "Atanasio asume la sede episcopal de Alejandría, convirtiéndose en el principal defensor de la ortodoxia nicena frente al resurgimiento del arrianismo. A lo largo de su ministerio sufrió cinco destierros imperiales debido a sus posturas teológicas inflexibles, ganándose el histórico título de 'Atanasio contra el mundo'.", icon: "fa-user-check" },
+                { year: "330 d.C.", title: "Fundación de Constantinopla", desc: "Constantino inaugura oficialmente la nueva capital del imperio en la antigua Bizancio, diseñándola como una metrópolis cristiana libre de templos paganos. Constantinopla se transformó rápidamente en el nuevo centro político, cultural y eclesiástico de Oriente, rivalizando directamente con la autoridad histórica de la sede de Roma.", icon: "fa-city" },
+                { year: "337 d.C.", title: "Muerte y Bautismo de Constantino", desc: "En su lecho de muerte, el emperador Constantino recibe el bautismo de manos del obispo arriano Eusebio de Nicomedia. Su fallecimiento dividió el imperio entre sus tres hijos, desencadenando nuevos conflictos dinásticos que desestabilizaron la frágil paz religiosa alcanzada tras el Concilio de Nicea.", icon: "fa-tombstone" },
+                { year: "339 d.C.", title: "Comienza la Persecución en el Imperio Sasánida", desc: "El rey persa Sapor II desata una persecución contra los cristianos dentro del Imperio Sasánida, al sospechar que actuaban como espías aliados del Imperio Romano. Este conflicto duró cuatro décadas y causó miles de mártires, demostrando que la fe cristiana enfrentaba graves peligros fuera de las fronteras romanas.", icon: "fa-shield-halved" },
+                { year: "341 d.C.", title: "Ulfilas es consagrado Misionero para los Godos", desc: "El erudito Ulfilas es enviado a evangelizar a las tribus godas más allá de las fronteras danubianas. Para lograrlo, creó un alfabeto propio y tradujo gran parte de la Biblia al idioma gótico, difundiendo un cristianismo de corte arriano que moldearía el pensamiento religioso de las futuras invasiones bárbaras.", icon: "fa-language" },
+                { year: "356 d.C.", title: "Muerte de Antonio de Egipto y Crecimiento Monástico", desc: "El fallecimiento del célebre eremita Antonio impulsa la consolidación del monacato en todo el mundo cristiano. Teólogos como Pacomio estructuran las primeras comunidades cenobíticas con reglas escritas de convivencia y trabajo, transformando el desierto en un modelo alternativo de santidad y entrega radical.", icon: "fa-tree" },
+                { year: "361 d.C.", title: "Reinado de Juliano el Apóstata", desc: "El nuevo emperador Juliano reniega de su crianza cristiana e intenta restaurar el paganismo tradicional como religión oficial del Estado. Aunque evitó desatar persecuciones sangrientas, marginó al clero de los cargos públicos y prohibió a los cristianos enseñar literatura clásica con el fin de debilitar el impacto de la iglesia.", icon: "fa-gavel" },
+                { year: "373 d.C.", title: "Muerte de Efrén de Siria", desc: "Fallece el gran teólogo, poeta e himnólogo de la iglesia siríaca, cuyas composiciones poéticas sirvieron de herramienta pedagógica para combatir las herejías de su tiempo. Sus escritos enriquecieron la liturgia oriental, demostrando el poder de la música y la poesía como vehículos de preservación doctrinal.", icon: "fa-music" },
+                { year: "379 d.C.", title: "Basilio el Grande y los Padres Capadocios", desc: "Bajo el liderazgo de Basilio de Cesarea, Gregorio de Nisa y Gregorio Nacianceno, los llamados Padres Capadocios logran definir con precisión filosófica la doctrina de la Trinidad: una sola sustancia divina en tres personas distintas ('hipóstasis'), preparando el terreno para el triunfo doctrinal de la fe nicena.", icon: "fa-brain" },
+                { year: "381 d.C.", title: "Segundo Concilio Ecuménico de Constantinopla", desc: "Convocado por el emperador Teodosio I, este concilio ratificó la condena al arrianismo y expandió el Credo de Nicea al proclamar de forma explícita la divinidad del Espíritu Santo, definiendo que debe ser adorado y glorificado junto al Padre y al Hijo, consolidando la doctrina trinitaria ortodoxa.", icon: "fa-users" },
+                { year: "382 d.C.", title: "Jerónimo inicia la Traducción de la Vulgata", desc: "El Papa Dámaso I comisiona a su secretario Jerónimo la traducción completa de las Escrituras al idioma latín popular. Retirado en una celda en Belén, Jerónimo tradujo directamente del hebreo y del griego, dando origen a la Vulgata, texto que se convirtió en la Biblia oficial de la cristiandad occidental durante más de un milenio.", icon: "fa-book-open" },
+                { year: "386 d.C.", title: "Conversión de Agustín de Hipona", desc: "Tras una profunda crisis existencial en un jardín de Milán y bajo la guía pastoral del obispo Ambrosio, el brillante retórico Agustín se convierte al cristianismo. Su pensamiento teológico y filosófico revolucionó la doctrina occidental, abordando con profundidad el pecado original, la gracia, la predestinación y la eclesiología.", icon: "fa-heart" },
+                { year: "387 d.C.", title: "Juan Crisóstomo es ordenado Presbítero en Antioquía", desc: "Juan comienza su ministerio de predicación pública en Antioquía, ganándose el sobrenombre de 'Crisóstomo' (Boca de Oro) debido a su elocuencia. Sus sermones exponían con rigor exegético las Escrituras y denunciaban con severidad la opulencia y la corrupción moral de las clases políticas del Imperio de Oriente.", icon: "fa-bullhorn" },
+                { year: "390 d.C.", title: "Ambrosio de Milán humilla al Emperador Teodosio", desc: "El obispo Ambrosio prohíbe la entrada a la basílica al emperador Teodosio I tras ordenar una masacre civil en Tesalónica, exigiéndole penitencia pública antes de recibir la comunión. Este histórico enfrentamiento demostró la autonomía e independencia espiritual de la iglesia frente a la corona imperial.", icon: "fa-handshake-slash" },
+                { year: "391 d.C.", title: "Decretos Teodosianos: El Cristianismo como Religión Única", desc: "Teodosio I promulga una serie de leyes que prohibían los sacrificios paganos, clausuraban los templos tradicionales y cancelaban los antiguos Juegos Olímpicos. Con estos edictos, el cristianismo niceno se convirtió en la única religión oficial permitida del Imperio Romano, persiguiendo al paganismo residual.", icon: "fa-file-contract" },
+                { year: "397 d.C.", title: "El Concilio de Cartago ratifica el Canon del Nuevo Testamento", desc: "Un sínodo de obispos occidentales ratifica la lista definitiva de los 27 libros inspirados del Nuevo Testamento que ya Atanasio había propuesto. Esta declaración consolidó el cierre formal del canon bíblico y unificó los textos autorizados para la lectura litúrgica y la defensa doctrinal en toda la cristiandad.", icon: "fa-list-check" },
+                { year: "410 d.C.", title: "Saqueo de Roma por los Visigodos", desc: "Las tropas visigodas comandadas por Alarico asaltan y saquean la ciudad de Roma, provocando un profundo impacto psicológico en el mundo antiguo. El colapso de la urbe eterna inspiró a Agustín de Hipona a escribir su obra cumbre 'La Ciudad de Dios' para defender al cristianismo de las acusaciones paganas.", icon: "fa-burst" },
+                { year: "415 d.C.", title: "Estallido de la Controversia Pelagiana", desc: "El monje británico Pelagio difunde la doctrina de que el ser humano no hereda el pecado original de Adán y puede alcanzar la salvación por su propio esfuerzo y libre albedrío sin necesidad de la gracia divina. Agustín de Hipona combatió con vehemencia esta postura, definiendo la teología de la gracia soberana.", icon: "fa-scissors" },
+                { year: "430 d.C.", title: "Muerte de Agustín durante el Sitio de Hipona", desc: "Fallece Agustín mientras la ciudad de Hipona permanecía sitiada por las fuerzas de los vándalos. Su enorme legado literario y doctrinal sobrevivió a la inminente caída del norte de África, sirviendo como el principal faro teológico para la Europa bárbara que emergió tras el fin del Imperio Occidental.", icon: "fa-tombstone" },
+                { year: "431 d.C.", title: "Tercer Concilio Ecuménico de Éfeso", desc: "Este concilio condenó las enseñanzas de Nestorio y afirmó que Jesucristo es una sola persona con dos naturalezas inseparables. Como consecuencia, ratificó el título de 'Theotokos' (Madre de Dios) para la virgen María, con el fin de proteger la deidad completa del Hijo desde su concepción humana.", icon: "fa-users" },
+                { year: "432 d.C.", title: "Patricio inicia la Evangelización de Irlanda", desc: "Patricio regresa a Irlanda como obispo misionero tras haber sido esclavo en dicha isla en su juventud. Su estrategia de adaptación cultural y establecimiento de monasterios autónomos logró convertir a los clanes celtas paganos, transformando a Irlanda en un vibrante foco de preservación literaria y fervor misionero.", icon: "fa-compass" },
+                { year: "451 d.C.", title: "Cuarto Concilio Ecuménico de Calcedonia", desc: "Convocado para resolver la crisis del monofisicismo, el concilio redactó la Definición de Calcedonia, declarando que Jesucristo es perfecto Dios y perfecto hombre, poseyendo dos naturalezas distintas sin confusión, sin cambio, sin división y sin separación, fijando la cristología ortodoxa universal.", icon: "fa-gavel" }
+            ],
+            era4: [
+                { year: "496 d.C.", title: "Bautismo de Clodoveo I y Conversión de los Francos", desc: "El rey franco Clodoveo I recibe el bautismo niceno tras su victoria en la batalla de Tolbiac, abandonando el paganismo. Su conversión alineó políticamente al reino franco con la sede de Roma, asegurando que Francia y los territorios europeos occidentales se desarrollaran bajo la fe católica ortodoxa y no bajo el arrianismo germánico.", icon: "fa-droplet" },
+                { year: "529 d.C.", title: "Benito de Nursia funda Montecasino y su Regla", desc: "Benito establece el monasterio de Montecasino en Italia y redacta su famosa 'Regla Benedictina', estructurada bajo el lema de 'Ora et labora' (Ora y trabaja). Este documento organizó la vida comunitaria monástica, promoviendo el equilibrio entre la oración litúrgica, el estudio intelectual y el trabajo manual en el Occidente medieval.", icon: "fa-book" },
+                { year: "553 d.C.", title: "Quinto Concilio Ecuménico de Constantinopla II", desc: "Convocado por el emperador Justiniano I, el concilio buscó reconciliar a los cristianos monofisitas de Oriente condenando los llamados 'Tres Capítulos' (escritos de teólogos sirios sospechosos de nestorianismo). La asamblea ratificó la cristología de Calcedonia, pero agudizó las tensiones políticas entre el papado romano y la corona imperial.", icon: "fa-users" },
+                { year: "590 d.C.", title: "Consagración del Papa Gregorio el Grande", desc: "Gregorio I asume el papado en un momento de crisis social provocada por las invasiones lombardas y las pestes en Italia. Considerado el organizador del papado medieval, reformó la liturgia (canto gregoriano), fortaleció la administración de las propiedades de la iglesia y promovió activamente las misiones de evangelización en el norte de Europa.", icon: "fa-user-tie" },
+                { year: "597 d.C.", title: "Agustín de Canterbury llega a Inglaterra", desc: "Enviado por el Papa Gregorio el Grande al mando de cuarenta monjes, Agustín desembarca en Kent con la misión de evangelizar a los anglosajones. Su labor logró la conversión del rey Ethelberto y el establecimiento de la sede arzobispal de Canterbury, unificando la fe de las islas británicas bajo la autoridad eclesiástica romana.", icon: "fa-compass" },
+                { year: "622 d.C.", title: "La Hégira y el Surgimiento del Islam", desc: "Mahoma huye de La Meca hacia Medina, marcando el nacimiento formal del Islam. En pocas décadas, la rápida y violenta expansión militar islámica conquistó los antiguos territorios cristianos de Siria, Palestina, Egipto y el norte de África, arrasando con sedes eclesiásticas históricas como Jerusalén, Antioquía y Cartago.", icon: "fa-moon" },
+                { year: "635 d.C.", title: "Llegada del Cristianismo Nestoriano a China", desc: "El misionero sirio Alopen llega a la capital de la dinastía Tang, Chang'an, introduciendo el cristianismo en China. La edificación de monasterios y la traducción de textos bíblicos quedaron registradas en la famosa 'Estela de Singanfú', demostrando la capacidad de expansión de la iglesia oriental hacia el continente asiático.", icon: "fa-scroll" },
+                { year: "664 d.C.", title: "Sínodo de Whitby", desc: "Una asamblea eclesiástica en Northumbria decide que la iglesia celta de las islas británicas abandone sus antiguas costumbres locales (como el cálculo de la Pascua y la tonsura) y adopte formalmente la liturgia y la autoridad de la sede de Roma, unificando administrativamente la cristiandad anglosajona.", icon: "fa-gavel" },
+                { year: "680 d.C.", title: "Sexto Concilio Ecuménico de Constantinopla III", desc: "Este concilio ecuménico condenó la doctrina del monotelismo, la cual afirmaba que Jesucristo poseía dos naturalezas pero una sola voluntad divina. La asamblea decretó que Cristo posee dos voluntades perfectas (divina y humana) que actúan en armonía, protegiendo la humanidad completa del Salvador.", icon: "fa-users" },
+                { year: "711 d.C.", title: "Invasión Islámica de la Península Ibérica", desc: "Las fuerzas musulmanas cruzan el estrecho de Gibraltar y derrotan al rey visigodo Rodrigo en la batalla de Guadalete, conquistando casi la totalidad de Hispania en pocos años. Este hecho dio inicio a un largo periodo de dominio islámico (al-Ándalus) y al nacimiento de los núcleos cristianos de resistencia en el norte.", icon: "fa-shield-halved" },
+                { year: "726 d.C.", title: "Inicio de la Crisis Iconoclasta", desc: "El emperador bizantino León III el Isáurico emite un decreto prohibiendo rigurosamente el uso y la veneración de imágenes religiosas (iconos) en los templos, ordenando su destrucción pública. Esto desató una violenta guerra civil y teológica en Oriente, enfrentando a la corona con los monjes defensores de las imágenes.", icon: "fa-burst" },
+                { year: "731 d.C.", title: "Beda el Venerable completa su 'Historia Eclesiástica'", desc: "El monje erudito Beda finaliza su obra cumbre sobre la historia del pueblo anglosajón y el desarrollo de la iglesia en Inglaterra. Su riguroso método de datación histórica popularizó definitivamente el uso de la era cristiana (Año del Señor / d.C.) para el registro cronológico de los eventos del mundo.", icon: "fa-feather" },
+                { year: "732 d.C.", title: "Batalla de Poitiers (Tours)", desc: "El líder franco Carlos Martel detiene el avance militar del ejército musulmán en el centro de Francia. Esta victoria militar estratégica frenó la expansión islámica en la Europa occidental, asegurando la supervivencia y el desarrollo de los reinos cristianos europeos frente al Califato Omeya.", icon: "fa-gavel" },
+                { year: "754 d.C.", title: "Donación de Pipino y Nacimiento de los Estados Pontificios", desc: "El rey franco Pipino el Breve derrota a los lombardos y entrega formalmente los territorios conquistados del centro de Italia al Papa Esteban II. Esta concesión jurídica y territorial marcó el nacimiento oficial de los Estados Pontificios, otorgándole al papado romano soberanía política y poder temporal directo.", icon: "fa-file-contract" },
+                { year: "787 d.C.", title: "Séptimo Concilio Ecuménico de Nicea II", desc: "Convocado para resolver la crisis iconoclasta, este concilio restituyó formalmente la veneración de las imágenes religiosas en los templos. Bajo la influencia teológica de Juan Damasceno, la asamblea diferenció claramente entre la adoración debida solo a Dios ('latría') y la veneración respetuosa hacia los iconos ('dulía').", icon: "fa-users" },
+                { year: "800 d.C.", title: "Coronación de Carlomagno como Emperador", desc: "El Papa León III corona al rey franco Carlomagno como Emperador del Sacro Imperio Romano en la Basílica de San Pedro durante la Navidad. Este acontecimiento selló la alianza política entre el papado y la dinastía carolingia, marcando el renacimiento de la idea imperial en Occidente y distanciándolo definitivamente de Bizancio.", icon: "fa-crown" },
+                { year: "863 d.C.", title: "Misión de Cirilo y Metodio en Gran Moravia", desc: "Los hermanos teólogos Cirilo y Metodio parten de Constantinopla para evangelizar a los pueblos eslavos. Para traducir las Escrituras, Cirilo creó el alfabeto glagolítico (origen del alfabeto cirílico), permitiendo el desarrollo de una liturgia vernácula eslava independiente de las presiones de las sedes de Roma o Bizancio.", icon: "fa-language" },
+                { year: "867 d.C.", title: "Cisma de Focio", desc: "Estalla un grave conflicto teológico y político entre el Papa Nicolás I de Roma y el Patriarca Focio de Constantinopla sobre la jurisdicción eclesiástica y la inclusión de la cláusula 'Filioque' en el Credo por parte de Occidente. Aunque la ruptura se sanó temporalmente, evidenció la creciente e irreversible brecha entre ambas sedes.", icon: "fa-handshake-slash" },
+                { year: "910 d.C.", title: "Fundación de la Abadía de Cluny", desc: "El duque Guillermo I de Aquitania funda el monasterio de Cluny en Francia, otorgándole total independencia del poder de los nobles y obispos locales, respondiendo únicamente ante la autoridad del Papa. Cluny inició una profunda reforma monástica centrada en la pureza espiritual que renovó espiritualmente a cientos de monasterios europeos.", icon: "fa-building" },
+                { year: "988 d.C.", title: "Bautismo de Vladimir I y Conversión de la Rus de Kiev", desc: "El príncipe Vladimir I recibe el bautismo ortodoxo en Crimea tras consolidar su alianza con el Imperio Bizantino, ordenando la inmersión masiva de los habitantes de Kiev en el río Dniéper. Este acontecimiento político y religioso integró formalmente a los pueblos eslavos orientales dentro del ámbito cultural de la cristiandad ortodoxa.", icon: "fa-droplet" },
+                { year: "1054 d.C.", title: "El Gran Cisma de Oriente y Occidente", desc: "El legado papal Humberto de Silva Candida deposita una bula de excomunión contra el Patriarca Miguel Cerulario en el altar de la catedral de Santa Sofía en Constantinopla, recibiendo una respuesta idéntica por parte oriental. Este dramático suceso consumó la ruptura formal y definitiva entre la Iglesia Católica Romana y la Iglesia Ortodoxa.", icon: "fa-scissors" },
+                { year: "1073 d.C.", title: "Elección del Papa Gregorio VII y la Reforma Gregoriana", desc: "El monje Hildebrando asume el papado iniciando una profunda reestructuración administrativa destinada a erradicar la compra de cargos eclesiásticos ('simonía') y el matrimonio del clero ('nicolatismo'), buscando independizar por completo el nombramiento de obispos del control de los reyes germánicos.", icon: "fa-user-check" },
+                { year: "1077 d.C.", title: "Humillación de Canosa", desc: "El emperador germánico Enrique IV acude descalzo y vestido de penitente ante el Papa Gregorio VII al castillo de Canosa, solicitando que le sea levantada la excomunión papal dictada en el marco de la Querella de las Investiduras. El evento demostró el apogeo y la supremacía del poder espiritual del papado sobre las coronas de Europa.", icon: "fa-handshake" },
+                { year: "1095 d.C.", title: "Convocatoria a la Primera Cruzada por Urbano II", desc: "Durante el Concilio de Clermont, el Papa Urbano II pronuncia un discurso instando a la nobleza europea a marchar militarmente hacia Oriente para liberar los Santos Lugares del dominio de los turcos selyúcidas, acuñando el lema 'Dios lo quiere'. Esto inauguró el largo y violento periodo histórico de las Cruzadas de la cristiandad.", icon: "fa-shield-halved" },
+                { year: "1099 d.C.", title: "Toma de Jerusalén por los Cruzados", desc: "Los ejércitos de la Primera Cruzada rompen las defensas militares de Jerusalén y capturan la ciudad tras un sangriento asedio, desatando una masacre generalizada contra las poblaciones musulmana y judía locales. Se estableció el Reino Latino de Jerusalén, militarizando la presencia eclesiástica occidental en Tierra Santa.", icon: "fa-monument" },
+                { year: "1115 d.C.", title: "Bernardo de Claraval funda el Monasterio de Císter", desc: "El teólogo Bernardo establece el monasterio de Claraval, impulsando la Reforma Cisterciense como una reacción de estricta austeridad material y silencio contemplativo frente a la opulencia arquitectónica de Cluny. Bernardo se transformó en el principal consejero espiritual y pacificador político de la Europa del siglo XII.", icon: "fa-tree" },
+                { year: "1122 d.C.", title: "Concordato de Worms", desc: "El Papa Calixto II y el emperador Enrique V firman un tratado jurídico que puso fin a la larga Querella de las Investiduras. Se decretó que la iglesia poseía el derecho exclusivo de realizar la investidura espiritual de los obispos mediante el anillo y el báculo, mientras que el monarca retenía la investidura temporal de las tierras.", icon: "fa-file-contract" },
+                { year: "1147 d.C.", title: "Segunda Cruzada", desc: "Convocada por el Papa Eugenio III y promovida por la predicación de Bernardo de Claraval, esta campaña militar unió a los reyes de Francia y Alemania. A pesar de los grandes recursos movilizados, la expedición fracasó rotundamente en su intento por capturar Damasco, debilitando el prestigio político del movimiento de las cruzadas.", icon: "fa-shield" },
+                { year: "1170 d.C.", title: "Asesinato de Thomas Becket en Canterbury", desc: "El arzobispo Thomas Becket es asesinado por caballeros reales dentro de la Catedral de Canterbury tras defender enérgicamente la autonomía judicial de la iglesia frente a las reformas fiscales del rey Enrique II de Inglaterra. Becket fue canonizado de inmediato, transformando su tumba en el principal centro de peregrinación inglés.", icon: "fa-skull" },
+                { year: "1184 d.C.", title: "Bula 'Ad Abolendam' y Nacimiento de la Inquisición Episcopal", desc: "El Papa Lucio III promulga un decreto ordenando a los obispos investigar y juzgar de forma activa a los movimientos considerados heréticos (como los cátaros y valdenses) en sus respectivas diócesis. Esto sentó los precedentes institucionales y procesales para el desarrollo de la futura estructura del Tribunal de la Inquisición.", icon: "fa-gavel" },
+                { year: "1187 d.C.", title: "Saladino reconquista Jerusalén", desc: "El sultán musulmán Saladino derrota a las fuerzas cruzadas en la batalla de Hattin y captura de forma pacífica la ciudad de Jerusalén tras casi un siglo de dominio cristiano latino. La pérdida de la ciudad eterna causó una profunda conmoción en Europa, provocando la inmediata convocatoria de la Tercera Cruzada.", icon: "fa-building-columns" },
+                { year: "1189 d.C.", title: "Tercera Cruzada (De los Reyes)", desc: "Los soberanos Ricardo Corazón de León de Inglaterra, Felipe Augusto de Francia y Federico Barbarroja de Alemania marchan hacia Tierra Santa con el fin de recuperar Jerusalén. Aunque ganaron batallas clave como el sitio de Acre, no lograron capturar la urbe, firmando un tratado con Saladino que permitía el libre acceso a peregrinos desarmados.", icon: "fa-horse" },
+                { year: "1198 d.C.", title: "Ascenso del Papa Inocencio III", desc: "Inocencio III asume el papado, llevando el poder teocrático de la sede romana a su máximo apogeo histórico bajo el concepto del Vicario de Cristo con autoridad sobre reyes y emperadores. Gobernó con firmeza la política europea, convocó la Cuarta Cruzada y combatió con severidad las disidencias doctrinales en el sur de Francia.", icon: "fa-user-tie" },
+                { year: "1204 d.C.", title: "Saqueo de Constantinopla por la Cuarta Cruzada", desc: "Desviados de su objetivo original por intereses financieros y presiones políticas de Venecia, las fuerzas de la Cuarta Cruzada asaltan y saquean brutalmente la capital del Imperio Bizantino, destruyendo bibliotecas e iglesias ortodoxas. Se fundó el Imperio Latino de Constantinopla, profundizando irreversiblemente el odio entre Oriente y Occidente.", icon: "fa-burst" },
+                { year: "1209 d.C.", title: "Aprobación de la Orden Franciscana y Cruzada Albigense", desc: "El Papa Inocencio III aprueba de forma verbal el estilo de vida de Francisco de Asís y su grupo de seguidores, fundando la Orden de los Frailes Menores centrada en la pobreza absoluta y la predicación itinerante. Simultáneamente, el Papa ordena el inicio de la Cruzada Albigense para exterminar militarmente la herejía cátara.", icon: "fa-heart" },
+                { year: "1215 d.C.", title: "Cuarto Concilio de Letrán", desc: "Convocado por Inocencio III, este concilio definió de forma dogmática el concepto de la transustanciación para explicar la presencia real de Cristo en la eucaristía, impuso la obligación de la confesión y comunión anual para todos los fieles y aprobó las reglas de las órdenes mendicantes.", icon: "fa-users" },
+                { year: "1216 d.C.", title: "Aprobación de la Orden Dominicana", desc: "El Papa Honorio III promulga la bula oficial de confirmación para la Orden de Predicadores, fundada por el español Domingo de Guzmán. Esta comunidad combinaba la pobreza mendicante con una sólida preparación académica universitaria, con el objetivo de combatir las herejías mediante la predicación doctrinal y la enseñanza.", icon: "fa-book-open" },
+                { year: "1244 d.C.", title: "Pérdida Definitiva de Jerusalén", desc: "Los ejércitos de los mercenarios corasmios captures y asaltan de forma definitiva la ciudad de Jerusalén, destruyendo las fortificaciones cruzadas instaladas temporalmente tras los tratados diplomáticos de la Sexta Cruzada. La ciudad permaneció bajo control exclusivo musulmán hasta el inicio del siglo XX.", icon: "fa-monument" },
+                { year: "1252 d.C.", title: "Bula 'Ad Extirpanda' autoriza la Tortura", desc: "El Papa Inocencio IV emite un decreto autorizando formalmente a los tribunales de la Inquisición el uso limitado de la tortura física como un mecanismo legal para obtener confesiones de los sospechosos de herejía, regulando de forma procesal las prácticas de los interrogatorios judiciales.", icon: "fa-gavel" },
+                { year: "1274 d.C.", title: "Muerte de Tomás de Aquino y Segundo Concilio de Lyon", desc: "Fallece el gran teólogo escolástico Tomás de Aquino mientras viajaba hacia el Concilio de Lyon. Su obra cumbre, la 'Summa Theologiae', logró armonizar el pensamiento filosófico aristotélico con la doctrina de las Escrituras, convirtiéndose en el principal pilar teológico e intelectual del catolicismo.", icon: "fa-brain" },
+                { year: "1291 d.C.", title: "Caída de Acre y Fin del Reino Cruzado en Tierra Santa", desc: "Las fuerzas de las legiones mamelucas capturan y arrasan la ciudad fortificada de Acre, el último bastión militar de los cruzados en el Levante. Este acontecimiento militar puso fin definitivo a dos siglos de presencia de los estados cristianos latinos en el Oriente Próximo, replegando las misiones a suelo europeo.", icon: "fa-building-columns" },
+                { year: "1302 d.C.", title: "Bula 'Unam Sanctam' de Bonifacio VIII", desc: "En el marco de un violento conflicto político y fiscal con el rey Felipe IV de Francia, el Papa Bonifacio VIII promulga una de las bulas más radicales de la historia, declarando formalmente que la sumisión al Romano Pontífice es un requisito indispensable para la salvación de todo ser humano del mundo.", icon: "fa-file-contract" },
+                { year: "1309 d.C.", title: "Inicio del Cautiverio de Aviñón del Papado", desc: "Bajo la presión directa de la corona de Francia, el Papa Clemente V traslada de forma permanente la sede papal de Roma a la ciudad francesa de Aviñón. Este periodo duró casi setenta años en los cuales el papado operó bajo el control político francés, debilitando gravemente su prestigio espiritual en Europa.", icon: "fa-link" },
+                { year: "1347 d.C.", title: "La Peste Negra asola Europa", desc: "La llegada de la pandemia de la peste bubónica extermina a más de un tercio de la población europea en pocos años. La catástrofe demográfica afectó gravemente al clero e inspiró corrientes de espiritualidad popular marcadas por el temor al juicio divino, las procesiones de flagelantes y el misticismo apocalíptico.", icon: "fa-biohazard" },
+                { year: "1377 d.C.", title: "El Papa Gregorio XI retorna a Roma", desc: "Promovido por las intensas cartas de Catalina de Siena, el Papa Gregorio XI decide abandonar Aviñón y trasladar formalmente la corte papal de regreso a la ciudad eterna de Roma, poniendo fin al periodo del cautiverio pero dejando un clero profundamente dividido en facciones políticas nacionales.", icon: "fa-compass" },
+                { year: "1378 d.C.", title: "Estallido del Cisma de Occidente", desc: "La elección simultánea de dos papas rivales, Urbano VI en Roma y Clemente VII en Aviñón por parte de cardenales disidentes, desata una profunda fractura en la cristiandad occidental. Durante casi cuarenta años, Europa permaneció dividida en obediencias políticas papales rivales, socavando la autoridad central del pontificado.", icon: "fa-scissors" },
+                { year: "1382 d.C.", title: "John Wycliffe publica la Biblia en Inglés", desc: "El teólogo de Oxford, John Wycliffe, completa la traducción completa de la Vulgata al inglés popular, defendiendo que las Escrituras son la única norma de fe y atacando la opulencia papal. Sus seguidores ('lolardos') difundieron clandestinamente los textos, convirtiendo a Wycliffe en el 'Lucero del Alba de la Reforma'.", icon: "fa-language" },
+                { year: "1409 d.C.", title: "Concilio de Pisa y la Crisis de los Tres Papas", desc: "Convocado para resolver el Cisma de Occidente mediante el conciliarismo, el Concilio de Pisa depuso a los dos papas vigentes y eligió a uno nuevo, Alejandro V. Sin embargo, al negarse los anteriores a abdicar, la iglesia se encontró sumida en una crisis institucional sin precedentes al poseer tres papas simultáneos.", icon: "fa-users" },
+                { year: "1415 d.C.", title: "Martirio de Jan Hus en el Concilio de Constanza", desc: "El reformador checo Jan Hus es condenado y quemado vivo en la hoguera tras acudir al Concilio de Constanza bajo un salvoconducto imperial falso. Hus defendía la autoridad de las Escrituras sobre la jerarquía corrupta y exigía la comunión bajo las dos especies para los laicos. Su ejecución desató las sangrientas guerras husitas.", icon: "fa-fire" },
+                { year: "1417 d.C.", title: "Elección de Martín V y Fin del Cisma de Occidente", desc: "El Concilio de Constanza logra deponer a los tres papas rivales y unifica a la cristiandad occidental eligiendo de forma unánime a Martín V como único Romano Pontífice legítimo. Aunque se restauró la unidad eclesiástica, el concilio ignoró las demandas urgentes de reformas doctrinales que los creyentes exigían.", icon: "fa-user-check" },
+                { year: "1453 d.C.", title: "Caída de Constantinopla y Fin de la Edad Media", desc: "Las tropas del Imperio Otomano comandadas por el sultán Mehmed II rompen las murallas antiguas de Constantinopla y capturan la ciudad, convirtiendo la histórica catedral de Santa Sofía en una mezquita. Este dramático suceso puso fin al Imperio Bizantino y provocó la huida de eruditos griegos hacia Occidente, impulsando el Renacimiento.", icon: "fa-burst" }
+            ],
+            era5: [
+                { year: "1456 d.C.", title: "Gutenberg Imprime la Biblia de 42 Líneas", desc: "Johannes Gutenberg completa la impresión de la Biblia utilizando tipos móviles metálicos en Maguncia, Alemania. Este invento revolucionario permitió la producción masiva, rápida y económica de libros, convirtiéndose en la herramienta tecnológica indispensable para la posterior propagación masiva de las ideas reformadas.", icon: "fa-print" },
+                { year: "1492 d.C.", title: "Expulsión de Judíos de España y Llegada a América", desc: "Los Reyes Católicos firman el Decreto de Alhambra ordenando la expulsión inmediata de todos los judíos de España e inician los viajes de Cristóbal Colón. Este año marcó el inicio de la expansión global del catolicismo ibérico hacia el continente americano, instalando las primeras estructuras eclesiásticas coloniales.", icon: "fa-globe" },
+                { year: "1516 d.C.", title: "Erasmo de Rotterdam publica el 'Novum Instrumentum'", desc: "El erudito humanista Erasmo publica su edición crítica del Nuevo Testamento en griego original acompañado de una nueva traducción al latín. Este texto académico corrigió los errores acumulados en la Vulgata y sirvió como la base textual directa para que Lutero y otros traductores vertieran la Biblia a los idiomas del pueblo.", icon: "fa-book-open" },
+                { year: "1517 d.C.", title: "Lutero Clava las 95 Tesis en Wittenberg", desc: "El monje agustino Martín Lutero clava sus 95 Tesis en la puerta de la iglesia del palacio de Wittenberg el 31 de octubre, protestando contra el escándalo de la venta de indulgencias papales autorizadas por el Papa León X. Este hecho histórico marcó el chispazo fundacional e irreversible de la Reforma Protestante.", icon: "fa-scroll" },
+                { year: "1520 d.C.", title: "Bula 'Exsurge Domine' y la Respuesta de Lutero", desc: "El Papa León X promulga un decreto amenazando a Lutero con la excomunión inmediata si no se retractaba de sus escritos. En un acto de abierta ruptura institucional, Lutero quemó públicamente la bula papal en el patio de la universidad de Wittenberg, publicando sus grandes tratados sobre la libertad cristiana y el sacerdocio de los fieles.", icon: "fa-fire" },
+                { year: "1521 d.C.", title: "Dieta de Worms y Exilio en Wartburg", desc: "Lutero comparece ante el emperador Carlos V en la Dieta de Worms, donde se niega rotundamente a retractarse pronunciando su célebre declaración: 'Mi conciencia está cautiva de la Palabra de Dios. No puedo ni quiero retractarme de nada'. Declarado proscrito, fue recluido clandestinamente en el castillo de Wartburg, donde tradujo el Nuevo Testamento al alemán.", icon: "fa-gavel" },
+                { year: "1523 d.C.", title: "Ulrico Zuinglio inicia la Reforma en Zúrich", desc: "Zuinglio presenta sus 67 Artículos ante el consejo de la ciudad de Zúrich, impulsando una reforma radical en Suiza. Su enfoque teológico defendía la autoridad absoluta de las Escrituras, eliminó las imágenes de los templos, suprimió la misa tradicional y la música instrumental, buscando restaurar la sencillez de la iglesia primitiva.", icon: "fa-building-columns" },
+                { year: "1525 d.C.", title: "Nacimiento del Movimiento Anabaptista y Guerra de los Campesinos", desc: "Un grupo de creyentes en Zúrich realiza los primeros bautismos de adultos al rechazar el bautismo infantil por carecer de base bíblica, dando origen al movimiento anabaptista o 'Reforma Radical'. Simultáneamente, estalló la sangrienta Guerra de los Campesinos en Alemania, conflicto social que Lutero condenó con dureza.", icon: "fa-droplet" },
+                { year: "1526 d.C.", title: "William Tyndale publica el Nuevo Testamento en Inglés", desc: "Tyndale completa la traducción e impresión del Nuevo Testamento en inglés directamente desde los textos griegos originales en Worms, introduciéndolos de forma clandestina en Inglaterra dentro de fardos de tela. Perseguido por las autoridades, su labor lingüística y bíblica fijó las bases de la fe anglosajona.", icon: "fa-language" },
+                { year: "1529 d.C.", title: "Coloquio de Marburgo y Protesta de Espira", desc: "Lutero y Zuinglio se reúnen en Marburgo con el fin de unificar los movimientos reformados alemán y suizo, pero fracasan al no alcanzar un acuerdo sobre la presencia física de Cristo en la cena del Señor. Paralelamente, en la Dieta de Espira, los príncipes reformados firmaron una protesta formal, acuñando el término 'Protestante'.", icon: "fa-handshake-slash" },
+                { year: "1530 d.C.", title: "Redacción de la Confesión de Augsburgo", desc: "El erudito Felipe Melanchthon redacta la Confesión de Augsburgo, el primer documento oficial de fe luterana, presentándolo ante el emperador Carlos V durante la Dieta imperial. Este texto expuso con precisión teológica las doctrinas de la justificación por la fe, los sacramentos y la reforma de los abusos eclesiásticos.", icon: "fa-file-lines" },
+                { year: "1531 d.C.", title: "Batalla de Kappel y Muerte de Zuinglio", desc: "Estalla un conflicto armado entre los cantones católicos y reformados en Suiza. Durante la batalla de Kappel, el reformador Ulrico Zuinglio fallece en el frente de batalla mientras ejercía como capellán de las tropas de Zúrich, provocando el repliegue provisional del movimiento reformado helvético.", icon: "fa-shield-halved" },
+                { year: "1534 d.C.", title: "Acta de Supremacía y Fundación de la Compañía de Jesús", desc: "El rey Enrique VIII promulga el Acta de Supremacía, declarando formalmente al monarca como la única cabeza suprema en la tierra de la Iglesia de Inglaterra, consumando la ruptura con Roma y dando origen al Anglicanismo. En París, Ignacio de Loyola funda los Jesuitas, orden religiosa clave para la defensa del catolicismo.", icon: "fa-crown" },
+                { year: "1536 d.C.", title: "Juan Calvino publica la 'Institución de la Religión Cristiana'", desc: "El joven teólogo francés Juan Calvino publica en Basilea la primera edición de su obra maestra, la 'Institución de la Religión Cristiana'. Este texto constituyó la exposición teológica más sistemática, clara y profunda de la fe reformada, sirviendo como la base doctrinal para el desarrollo de las iglesias presbiterianas y reformadas del mundo.", icon: "fa-book" },
+                { year: "1541 d.C.", title: "Establecimiento de la Teocracia de Calvino en Ginebra", desc: "Calvino regresa a Ginebra y redacta las Ordenanzas Eclesiásticas, organizando el gobierno de la iglesia local a través de pastores, doctores, ancianos y diáconos. Bajo su estricto liderazgo teológico, Ginebra se transformó en la 'Roma del Protestantismo', entrenando a cientos de misioneros para toda Europa.", icon: "fa-city" },
+                { year: "1545 d.C.", title: "Apertura del Concilio de Trento y la Contrarreforma", desc: "El Papa Paulo III convoca el Concilio de Trento con el fin de responder a la expansión protestante y reformar los abusos internos de la iglesia. A lo largo de varias sesiones, Trento rechazó de forma tajante las doctrinas de Lutero, ratificó la autoridad de la Vulgata y de la tradición, fijando el dogma del Catolicismo Romano Moderno.", icon: "fa-users" },
+                { year: "1546 d.C.", title: "Muerte de Martín Lutero", desc: "El reformador Martín Lutero fallece en su ciudad natal de Eisleben a los 62 años de edad. Su enorme legado doctrinal fundamentado en las Cinco Solas (Sola Scriptura, Sola Fide, Sola Gratia, Solus Christus, Soli Deo Gloria) transformó por completo la geografía religiosa, política y cultural de la civilización occidental.", icon: "fa-tombstone" },
+                { year: "1553 d.C.", title: "Ejecución de Miguel Servet en Ginebra", desc: "El médico y teólogo español Miguel Servet es condenado a morir en la hoguera en Ginebra por defender doctrinas que negaban la Trinidad y el bautismo infantil. Su ejecución, respaldada por Calvino y el consejo ginebrino, evidenció que el rechazo a las doctrinas trinitarias tradicionales era castigado con severidad por católicos y protestantes.", icon: "fa-fire" },
+                { year: "1555 d.C.", title: "Paz de Augsburgo", desc: "Se firma un tratado de paz en el Sacro Imperio Romano que estableció el principio jurídico de 'Cuius regio, eius religio' (De quien sea la región, de él será la religión). Esto permitió a cada príncipe germánico elegir si su territorio profesaría el luteranismo o el catolicismo, legalizando de forma provisional la división religiosa europea.", icon: "fa-file-signature" },
+                { year: "1559 d.C.", title: "Establecimiento del Asentamiento Isabelino", desc: "La reina Isabel I de Inglaterra promulga una nueva Ley de Supremacía y Uniformidad, fijando el carácter definitivo de la Iglesia Anglicana a través de los Treinta y Nueve Artículos. Su enfoque buscó una vía media, combinando una teología de corte reformado con una estructura litúrgica y episcopal tradicional cercana al catolicismo.", icon: "fa-user-check" },
+                { year: "1560 d.C.", title: "John Knox establece la Reforma en Escocia", desc: "Bajo la predicación de John Knox, discípulo de Calvino, el Parlamento escocés adopta la Confesión Escocesa y prohíbe la misa papal, fundando la Iglesia de Escocia de corte presbiteriano. Su estructura descentralizada gobernada por ancianos sirvió de modelo para la organización eclesiástica representativa.", icon: "fa-scroll" },
+                { year: "1562 d.C.", title: "Inicio de las Guerras de Religión en Francia", desc: "La matanza de hugonotes (protestantes calvinistas franceses) en Wassy desata una sangrienta serie de guerras civiles religiosas que devastaron a Francia durante más de tres décadas, enfrentando a las casas nobiliarias católicas con el movimiento reformado en una lucha brutal por el control de la corona francesa.", icon: "fa-shield-halved" },
+                { year: "1569 d.C.", title: "Casiodoro de Reina publica la Biblia del Oso", desc: "El monje exiliado Casiodoro de Reina completa en Basilea la traducción completa de las Escrituras al idioma castellano directamente desde los textos hebreos y griegos originales. Esta obra maestra literaria y espiritual es considerada la primera Biblia protestante completa en idioma español.", icon: "fa-language" },
+                { year: "1572 d.C.", title: "Matanza de la Noche de San Bartolomé", desc: "Una masacre orquestada en París y extendida por toda Francia cobra la vida de miles de hugonotes reunidos para una boda real. El brutal asesinato del liderazgo protestante debilitó gravemente al movimiento reformado francés, radicalizando los conflictos bélicos religiosos en todo el continente europeo.", icon: "fa-skull" },
+                { year: "1598 d.C.", title: "Edicto de Nantes", desc: "El rey Enrique IV de Francia, antiguo protestante convertido al catolicismo para asumir el trono, promulga un decreto histórico que otorgaba tolerancia legal, libertad de conciencia y derechos civiles limitados a los hugonotes franceses, deteniendo temporalmente las crueles guerras de religión en suelo francés.", icon: "fa-file-contract" },
+                { year: "1602 d.C.", title: "Cipriano de Valera publica la Biblia del Cántaro", desc: "El erudito Cipriano de Valera completa en Ámsterdam una minuciosa revisión y corrección del texto traducido por Casiodoro de Reina. Esta edición dio origen a la célebre versión Reina-Valera, convirtiéndose en el texto bíblico por excelencia y de mayor arraigo histórico para todo el mundo protestante hispanohablante.", icon: "fa-book-open" },
+                { year: "1609 d.C.", title: "Surgimiento del Movimiento Bautista Moderno", desc: "El pastor inglés John Smyth y un grupo de disidentes exiliados en Ámsterdam fundan la primera iglesia bautista moderna al adoptar el bautismo de creyentes por inmersión y defender con firmeza la separación total entre el Estado y la Iglesia, junto con la libertad de conciencia absoluta para todo individuo.", icon: "fa-droplet" },
+                { year: "1611 d.C.", title: "Publicación de la Biblia King James", desc: "Se publica en Inglaterra la traducción oficial de la Biblia autorizada por el rey Jacobo I, elaborada por un comité de eruditos anglicanos y puritanos. Esta versión se transformó en la obra cumbre de la literatura en idioma inglés y en el texto bíblico oficial y más difundido para todo el mundo angloparlante.", icon: "fa-crown" },
+                { year: "1618 – 1619 d.C.", title: "Sínodo de Dort y el Nacimiento de los Cinco Puntos del Calvinismo", desc: "Una asamblea teológica internacional en Holanda se reúne para resolver la controversia provocada por las enseñanzas arminianas sobre el libre albedrío. El sínodo condenó el arminianismo y redactó los Cánones de Dort, fijando los famosos Cinco Puntos del Calvinismo sobre la gracia soberana y la predestinación.", icon: "fa-users" },
+                { year: "1643 – 1647 d.C.", title: "Redacción de la Confesión de Fe de Westminster", desc: "La Asamblea de Westminster, reunida en la Abadía de Londres durante la Guerra Civil Inglesa, redacta su famosa Confesión de Fe junto con los catecismos. Este documento se convirtió en la declaración teológica y organizativa de mayor peso histórico para las iglesias presbiterianas y reformadas del mundo.", icon: "fa-file-lines" },
+                { year: "1648 d.C.", title: "Paz de Westfalia y Fin de la Era de la Reforma", desc: "Se firman los tratados de paz que pusieron fin a la devastadora Guerra de los Treinta Años en Europa Central. Westfalia ratificó los términos de Augsburgo e incluyó al calvinismo como religión legal, marcando el fin definitivo de la Era de la Reforma y el nacimiento del mapa político y religioso de la Europa Moderna.", icon: "fa-file-signature" }
+            ],
+            era6: [
+                { year: "1675 d.C.", title: "Felipe Jakob Spener publica 'Pia Desideria' e inicia el Pietismo", desc: "El teólogo luterano alemán Spener publica su obra cumbre proponiendo grupos de estudio bíblico, oración y un énfasis en la piedad personal. Este escrito reaccionó contra la rigidez intelectual de la ortodoxia protestante, dando origen al Pietismo que transformó la espiritualidad europea.", icon: "fa-heart" },
+                { year: "1738 d.C.", title: "Conversión de John Wesley y Nacimiento del Metodismo", desc: "El sacerdote anglicano John Wesley experimenta una profunda transformación espiritual durante una reunión pietista en la calle Aldersgate de Londres. Junto a su hermano Charles y George Whitefield, inició campañas de predicación al aire libre destinadas a las clases obreras, fundando el movimiento metodista.", icon: "fa-bolt" },
+                { year: "1792 d.C.", title: "William Carey funda la Sociedad Misionera Bautista", desc: "El zapatero inglés William Carey publica su manifiesto misionero y parte hacia la India, ganándose el título de 'Padre de las Misiones Modernas'. Su labor impulsó la fundación de decenas de agencias misioneras occidentales destinadas a traducir la Biblia y llevar el evangelio a continentes enteros.", icon: "fa-compass" },
+                { year: "1901 d.C.", title: "Avivamiento de Topeka y Nacimiento del Pentecostalismo Moderno", desc: "En el Colegio Bíblico Bethel en Topeka, Kansas, la estudiante Agnes Ozman experimenta el bautismo del Espíritu Santo hablando en lenguas bajo la guía de Charles Parham, marcando el chispazo teológico inicial que definió la doctrina básica del movimiento pentecostal contemporáneo.", icon: "fa-fire" },
+                { year: "1906 d.C.", title: "Avivamiento de la Calle Azusa en Los Ángeles", desc: "El predicador afroamericano William J. Seymour lidera una serie de reuniones marcadas por manifestaciones sobrenaturales, sanidades y una profunda integración racial. Azusa se transformó en el principal foco de propagación global del pentecostalismo hacia el mundo.", icon: "fa-users-rays" },
+                { year: "1962 d.C.", title: "Apertura del Concilio Vaticano II", desc: "El Papa Juan XXIII convoca el Concilio Vaticano II con el fin de actualizar la Iglesia Católica ante el mundo contemporáneo. El concilio aprobó el uso de los idiomas locales en la liturgia en sustitución del latín, promovió una lectura más activa de la Biblia por parte de los laicos y abrió el diálogo ecuménico.", icon: "fa-users" },
+                { year: "1974 d.C.", title: "Primer Congreso del Movimiento de Lausana", desc: "Liderado por el evangelista Billy Graham y el teólogo John Stott, miles de líderes protestantes de todo el mundo se reúnen en Suiza para coordinar las misiones globales, enfatizando con equilibrio la evangelización bíblica y la responsabilidad social de la iglesia en el mundo contemporáneo.", icon: "fa-globe" },
+                // INICIO DE LA SECCIÓN DE EL SALVADOR INTACTA
+                { year: "1825 d.C.", title: "Presencia Evangélica Inicial en Centroamérica", desc: "Se registra la primera presencia de creyentes evangélicos aislados en Centroamérica, limitándose casi exclusivamente a comerciantes e inmigrantes británicos o extranjeros que residían de forma temporal en la región, sin realizar labores de evangelización pública entre la población local.", icon: "fa-briefcase" },
+                { year: "1896 d.C.", title: "Llegada de Samuel Purdie a El Salvador", desc: "El misionero Samuel Purdie desembarca en El Salvador enviado por la Misión Centroamericana junto a su esposa e hijo, convirtiéndose en el pionero de la obra evangélica en el país. Purdie instaló una imprenta para difundir tratados bilingües, himnarios y porciones bíblicas entre los habitantes.", icon: "fa-print" },
+                { year: "1896 d.C.", title: "Primer Bautismo Evangélico en El Salvador", desc: "Antes de su prematuro fallecimiento, el misionero pionero Samuel Purdie tiene la bendición histórica de oficiar el primer bautismo evangélico en la República de El Salvador el 27 de diciembre. El creyente bautizado no fue un salvadoreño, sino un ciudadano de origen cubano llamado Marco Aurelio Toledo.", icon: "fa-droplet" },
+                { year: "1897 d.C.", title: "Llegada de Roberto Bender a El Salvador", desc: "El misionero Roberto Bender desembarca en el territorio salvadoreño para unirse a la labor iniciada por la familia Purdie. Bender desarrolló un incansable ministerio misionero e itinerante que se extendió por 37 años, ganándose el entrañable título histórico de 'el amado apóstol de El Salvador'.", icon: "fa-user-tie" },
+                { year: "1898 d.C.", title: "Fundación de la Primera Iglesia Evangélica en Ilopango", desc: "Bajo la guía pastoral directa del misionero Roberto Bender, se organiza y establece formalmente en la localidad de Ilopango la primera iglesia evangélica local constituida en la historia de la República de El Salvador, consolidando el fruto de las primeras conversiones.", icon: "fa-house-chimney-window" },
+                { year: "1899 d.C.", title: "Fundación de la Iglesia Central en San Salvador", desc: "Los esposos Roberto Bender y Bella Purves fundan la primera comunidad evangélica formal dentro de la ciudad capital de San Salvador. Esta congregación creció con rapidez hasta convertirse en la Iglesia Central de la Misión Centroamericana, sirviendo de base administrativa para el resto del país.", icon: "fa-gavel" },
+                { year: "1911 d.C.", title: "Inauguración del Templo de la Iglesia Central de San Salvador", desc: "Se inaugura con regocijo el primer templo físico edificado formalmente para la Iglesia Central de la Misión Centroamericana en San Salvador. La edificación de este santuario dotó de estabilidad, visibilidad pública y arraigo social a la creciente comunidad evangélica en la capital.", icon: "fa-building" },
+                { year: "1914 d.C.", title: "Llegada de los Pioneros de las Asambleas de Dios", desc: "Arriban a suelo salvadoreño los primeros predicadores de corte pentecostal, vinculados de forma inicial con las Asambleas de Dios de los Estados Unidos. Su mensaje centrado en la sanidad divina, el bautismo en el Espíritu Santo y los milagros sobrenaturales abrió paso a una nueva etapa de crecimiento.", icon: "fa-users-rays" },
+                { year: "1930 d.C.", title: "Establecimiento Formal de las Asambleas de Dios", desc: "Se organiza formalmente la estructura eclesiástica y administrativa de las Asambleas de Dios en El Salvador. El movimiento experimentó una propagación masiva, sembrando cientos de iglesias en las zonas rurales del territorio nacional, convirtiéndose en una de las denominaciones más grandes del país.", icon: "fa-folder-open" },
+                { year: "1950 d.C.", title: "Auge del Movimiento de Santidad e Iglesias Independientes", desc: "Comienzan a fundarse diversas misiones y denominaciones de corte evangélico tradicional y de santidad en los centros urbanos del país, tales como la Iglesia Bautista, la Iglesia de Dios y la Iglesia del Nazareno, enriqueciendo la oferta espiritual y el alcance de la obra misionera.", icon: "fa-shield" },
+                { year: "1970 d.C.", title: "Expansión de Megaiglesias Urbanas en El Salvador", desc: "El cristianismo evangélico en El Salvador experimenta un fenómeno de crecimiento explosivo en las principales ciudades del país, marcado por la edificación de megaiglesias urbanas e independientes que convocaban a miles de miembros, transformando el panorama sociorreligioso de la nación.", icon: "fa-landmark" },
+                { year: "1980 d.C.", title: "Papel de las Iglesias Evangélicas durante el Conflicto Armado", desc: "En medio de los años más difíciles de la guerra civil salvadoreña, las iglesias evangélicas locales asumieron un rol histórico clave de refugio espiritual, asistencia humanitaria directa, distribución de alimentos y consejería para miles de familias desplazadas y afectadas por la violencia generalizada.", icon: "fa-hand-holding-hand" },
+                { year: "2026 d.C.", title: "La Iglesia Evangélica Contemporánea en El Salvador", desc: "En la actualidad, la iglesia evangélica en El Salvador representa una fuerza demográfica, cultural, social y espiritual de enorme peso e influencia en la vida nacional, abarcando una rica diversidad de concilios históricos, denominaciones pentecostales, bautistas y comunidades independientes plenamente arraigadas.", icon: "fa-globe" }
+            ]
+        };
+
+        let currentSlideId = 'slide-inicio';
+        const slideSequence = ['slide-inicio', 'slide-era1-portada', 'slide-e1', 'slide-era2-portada', 'slide-e2', 'slide-era3-portada', 'slide-e3', 'slide-era4-portada', 'slide-e4', 'slide-era5-portada', 'slide-e5', 'slide-era6-portada', 'slide-e6'];
+        let eraIndexes = { era1: 0, era2: 0, era3: 0, era4: 0, era5: 0, era6: 0 };
+
+        function goToSlide(slideId) {
+            document.getElementById(currentSlideId).classList.remove('active');
+            const newSlide = document.getElementById(slideId);
+            if (newSlide) {
+                newSlide.classList.add('active');
+                currentSlideId = slideId;
+            }
+            const nav = document.getElementById('nav-superior');
+            if (slideId.startsWith('slide-e') && !slideId.includes('portada')) {
+                nav.classList.remove('hidden');
+            } else {
+                nav.classList.add('hidden');
+            }
+            updateNavHighlights();
+            updateIndicators();
+        }
+
+        function updateNavHighlights() {
+            document.querySelectorAll('.nav-era-btn').forEach(b => {
+                b.classList.remove('bg-amber-800/80', 'bg-red-800/80', 'bg-yellow-800/80', 'bg-blue-800/80', 'bg-slate-700/80', 'bg-emerald-800/80', 'text-white');
+                b.classList.add('text-slate-400');
+            });
+            if (currentSlideId === 'slide-e1') document.getElementById('nav-btn-era1').classList.add('bg-amber-800/80', 'text-white');
+            if (currentSlideId === 'slide-e2') document.getElementById('nav-btn-era2').classList.add('bg-red-800/80', 'text-white');
+            if (currentSlideId === 'slide-e3') document.getElementById('nav-btn-era3').classList.add('bg-yellow-800/80', 'text-white');
+            if (currentSlideId === 'slide-e4') document.getElementById('nav-btn-era4').classList.add('bg-blue-800/80', 'text-white');
+            if (currentSlideId === 'slide-e5') document.getElementById('nav-btn-era5').classList.add('bg-slate-700/80', 'text-white');
+            if (currentSlideId === 'slide-e6') document.getElementById('nav-btn-era6').classList.add('bg-emerald-800/80', 'text-white');
+        }
+
+        function updateIndicators() {
+            const index = slideSequence.indexOf(currentSlideId);
+            document.getElementById('slide-indicator').innerText = `${String(index + 1).padStart(2, '0')} / ${String(slideSequence.length).padStart(2, '0')}`;
+        }
+
+        function nextSlide() {
+            const idx = slideSequence.indexOf(currentSlideId);
+            if (idx < slideSequence.length - 1) goToSlide(slideSequence[idx + 1]);
+        }
+
+        function prevSlide() {
+            const idx = slideSequence.indexOf(currentSlideId);
+            if (idx > 0) goToSlide(slideSequence[idx - 1]);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // ==========================================
+        // FUNCIÓN CENTRAL REESTRUCTURADA E INTELIGENTE
+        // ==========================================
+        function loadEvent(eraKey, idx) {
+            eraIndexes[eraKey] = idx;
+            const event = eventsData[eraKey][idx];
+            const numKey = eraKey.replace('era', 'e');
+
+            const titleEl = document.getElementById(`${numKey}-title`);
+            const descEl = document.getElementById(`${numKey}-desc`);
+            const progressEl = document.getElementById(`${eraKey}-progress-num`);
+            const mediaContainer = document.getElementById(`${numKey}-media-container`);
+
+            if (titleEl) titleEl.innerText = event.title;
+            if (descEl) descEl.innerText = event.desc;
+            if (progressEl) progressEl.innerText = idx + 1;
+
+            // Renderizado de Medios Híbrido: Control de Imagen Completa o Icono Dinámico
+            if (mediaContainer) {
+                mediaContainer.innerHTML = "";
+
+                if (event.image) {
+                    // Si el evento posee la propiedad 'image', inyecta la fotografía expandida
+                    const img = document.createElement("img");
+                    img.src = event.image;
+                    img.className = "w-full h-full object-cover absolute inset-0 rounded-xl animate-fade-in";
+                    mediaContainer.appendChild(img);
+                } else {
+                    // Si no tiene imagen, genera automáticamente el icono y el año original
+                    const centerWrap = document.createElement("div");
+                    centerWrap.className = "absolute inset-0 flex flex-col items-center justify-center p-4 text-center";
+
+
+                    if (eraKey === 'era1') centerWrap.classList.add('text-amber-800');
+                    if (eraKey === 'era2') centerWrap.classList.add('text-red-500');
+                    if (eraKey === 'era3') centerWrap.classList.add('text-yellow-800');
+                    if (eraKey === 'era4') centerWrap.classList.add('text-blue-400');
+                    if (eraKey === 'era5') centerWrap.classList.add('text-slate-700');
+                    if (eraKey === 'era6') centerWrap.classList.add('text-blue-800');
+
+                    const image = document.createElement("i");
+                    image.className = `fa-solid ${event.icon || 'fa-fire'} text-5xl md:text-7xl mb-2 md:mb-4`;
+
+
+                    const badge = document.createElement("div");
+                    badge.className = "font-cinzel text-base md:text-xl font-bold";
+                    badge.innerText = event.year;
+
+                    centerWrap.appendChild(icon);
+                    centerWrap.appendChild(badge);
+                    mediaContainer.appendChild(centerWrap);
+                }
+            }
+
+            // Mantiene intacto el sistema original de resaltar los botones inferiores
+            document.querySelectorAll(`.btn-${eraKey}`).forEach((btn, bIdx) => {
+                if (bIdx === idx) {
+                    btn.classList.add('bg-slate-900', 'text-white', 'scale-105');
+                    btn.classList.remove('bg-white/40', 'text-slate-800');
+                } else {
+                    btn.classList.remove('bg-slate-900', 'text-white', 'scale-105');
+                    btn.classList.add('bg-white/40', 'text-slate-800');
+                }
+            });
+        }
+
+        function renderTimelineNavigation() {
+            Object.keys(eventsData).forEach(eraKey => {
+                const scrollContainer = document.getElementById(`timeline-scroll-${eraKey}`);
+                if (scrollContainer) {
+                    scrollContainer.innerHTML = '';
+                    eventsData[eraKey].forEach((ev, idx) => {
+                        const btn = document.createElement('button');
+                        btn.className = `btn-${eraKey} px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap bg-white/40 text-slate-800`;
+                        btn.innerHTML = `${ev.year}<br>${ev.title}`;
+                        btn.onclick = () => loadEvent(eraKey, idx);
+                        scrollContainer.appendChild(btn);
+                    });
+                }
+            });
+        }
+
+        // CONTROL DE PANTALLA COMPLETA NATIVA (MOBILE & PC)
+        function toggleFullscreen() {
+            const elem = document.getElementById("contenedor-presentacion");
+            const icon = document.getElementById("fs-icon");
+            const text = document.getElementById("fs-text");
+
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().then(() => {
+                    icon.className = "fa-solid fa-compress text-amber-400";
+                    text.innerText = "SALIR PANTALLA COMPLETA";
+                }).catch(err => {
+                    alert(`Error al activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+                icon.className = "fa-solid fa-expand text-amber-400";
+                text.innerText = "PANTALLA COMPLETA";
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById("fs-icon");
+            const text = document.getElementById("fs-text");
+            if (!document.fullscreenElement) {
+                if (icon && text) {
+                    icon.className = "fa-solid fa-expand text-amber-400";
+                    text.innerText = "PANTALLA COMPLETA";
+                }
+            }
+        });
+
+        window.onload = function () {
+            renderTimelineNavigation();
+            loadEvent('era1', 0);
+            loadEvent('era2', 0);
+            loadEvent('era3', 0);
+            loadEvent('era4', 0);
+            loadEvent('era5', 0);
+            loadEvent('era6', 0);
+        };
+    </script>
+</body>
+
+</html>
