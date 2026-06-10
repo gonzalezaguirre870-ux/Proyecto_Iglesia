@@ -143,53 +143,53 @@
    ======================================================= */
         @media (max-width: 768px) {
 
-            /* Hace que el texto y la imagen se pongan uno abajo del otro en vertical */
+            /* Agrega un margen arriba para que el título no choque con el menú superior */
             .slide.active {
                 flex-direction: column !important;
                 overflow-y: auto !important;
-                /* Permite hacer scroll hacia abajo si el texto es largo */
-                padding: 15px !important;
+                padding: 80px 15px 20px 15px !important;
+                /* El 80px empuja todo el contenido abajo del menú */
+                justify-content: flex-start !important;
+                /* Elimina los espacios vacíos gigantes en medio */
             }
 
-            /* Quita las restricciones de altura y el contenedor elástico en móviles */
+            /* Ajusta el bloque de texto para que fluya seguido sin estirarse artificialmente */
             .texto-evento,
             .slide>div:first-of-type {
                 height: auto !important;
                 padding-right: 0 !important;
-                /* Quita el espacio derecho ya que la imagen irá abajo */
-                margin-bottom: 20px !important;
-                /* Separa el texto de la imagen que viene abajo */
+                margin-bottom: 15px !important;
+                /* Espacio controlado antes de la imagen */
                 display: block !important;
-                /* Desactiva flex temporalmente para evitar empujes raros */
             }
 
-            /* Reduce el título a un tamaño ideal para celulares */
+            /* Asegura que el título respire */
             .slide h2,
             .slide h1 {
                 font-size: 1.8rem !important;
                 line-height: 1.2 !important;
+                margin-top: 10px !important;
                 margin-bottom: 1rem !important;
             }
 
-            /* Ajusta el párrafo para que tenga un tamaño de lectura móvil perfecto */
+            /* Párrafo limpio */
             .slide p {
                 font-size: 1rem !important;
                 line-height: 1.5 !important;
                 text-align: left !important;
-                /* Evita huecos gigantes entre palabras al justificar en pantallas angostas */
                 display: block !important;
             }
 
-            /* Asegura que la imagen no flote ni tape nada, sino que ocupe su propio bloque */
+            /* Ajuste de la sección de la imagen para que suba y quede pegada a la cronología */
             .slide img,
             .slide div:nth-of-type(2) {
                 width: 100% !important;
                 height: auto !important;
-                max-height: 250px !important;
-                /* Limita el alto de la imagen para que no tape toda la pantalla */
+                max-height: 220px !important;
                 object-fit: cover !important;
                 position: relative !important;
-                top: 0 !important;
+                margin-top: 15px !important;
+                /* Acerca la imagen al bloque superior */
             }
         }
     </style>
