@@ -826,9 +826,32 @@
         };
 
         // 2. VARIABLES DE CONTROL DE DIAPOSITIVAS
-        let currentSlideId = 'slide-inicio';
-        const slideSequence = ['slide-inicio', 'slide-era1-portada', 'slide-e1', 'slide-era2-portada', 'slide-e2', 'slide-era3-portada', 'slide-e3', 'slide-era4-portada', 'slide-e4', 'slide-era5-portada', 'slide-e5', 'slide-era6-portada', 'slide-e6'];
-        let eraIndexes = { era1: 0, era2: 0, era3: 0, era4: 0, era5: 0, era6: 0 };
+        function actualizaControlesPantallaCompleta() {
+            const icon = document.getElementById("fs-icon");
+            const text = document.getElementById("fs-text");
+            const btnFs = document.getElementById("btn-fs"); // Seleccionamos el botón completo
+
+            if (!icon || !text || !btnFs) return;
+
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                // Entró a pantalla completa
+                icon.className = "fa-solid fa-compress text-amber-400";
+                text.innerText = "SALIR PANTALLA COMPLETA";
+                btnFs.classList.remove("hidden"); // Asegura que se vea dentro de la pantalla completa
+            } else {
+                // Salió de pantalla completa (por botón, teclado Esc o gestos)
+                icon.className = "fa-solid fa-expand text-amber-400";
+                text.innerText = "PANTALLA COMPLETA";
+
+                // ¡LA CLAVE! Solo dejamos visible el botón si seguimos dentro de un evento activo
+                if (currentSlideId.startsWith('slide-e') && !currentSlideId.includes('portada')) {
+                    btnFs.classList.remove("hidden"); // Fuerza a que NO se oculte al salir
+                } else {
+                    btnFs.classList.add("hidden"); // Si por alguna razón volvió al inicio, se oculta
+                }
+            }
+        }
+
 
         // 3. LOGÍSTICA DE NAVEGACIÓN ENTRE DIAPOSITIVAS
         function goToSlide(slideId) {
