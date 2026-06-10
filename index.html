@@ -208,7 +208,7 @@
         class="relative w-full max-w-[1280px] h-screen md:h-[720px] bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-none md:border border-slate-800 transition-all duration-300">
 
         <button onclick="toggleFullscreen()" id="btn-fs"
-            class="btn-pantalla-completa fixed top-4 right-4 z-[60] bg-slate-900/80 hover:bg-slate-800 text-white px-3 py-2 rounded-lg text-xs font-bold border border-slate-700/50 flex items-center gap-2 backdrop-blur transition shadow-lg">
+            class="btn-pantalla-completa hidden fixed top-4 right-4 z-[60] bg-slate-900/80 hover:bg-slate-800 text-white px-3 py-2 rounded-lg text-xs font-bold border border-slate-700/50 flex items-center gap-2 backdrop-blur transition shadow-lg">
             <i class="fa-solid fa-expand text-amber-400" id="fs-icon"></i>
             <span id="fs-text">PANTALLA COMPLETA</span>
         </button>
@@ -839,13 +839,18 @@
                 currentSlideId = slideId;
             }
             const nav = document.getElementById('nav-superior');
+            const btnFs = document.getElementById('btn-fs'); // Detecta el botón de pantalla completa
+
             if (slideId.startsWith('slide-e') && !slideId.includes('portada')) {
                 nav.classList.remove('hidden');
+                if (btnFs) btnFs.classList.remove('hidden'); // MUESTRA el botón si estás viendo un evento
             } else {
                 nav.classList.add('hidden');
+                if (btnFs) btnFs.classList.add('hidden'); // OCULTA el botón en portadas, inicio o pantallas vacías
             }
             updateNavHighlights();
             updateIndicators();
+
         }
 
         function updateNavHighlights() {
