@@ -85,28 +85,34 @@
             background: rgba(0, 0, 0, 0.3);
             border-radius: 4px;
         }
+
         /* =======================================================
            4. SISTEMA DE AJUSTE UNIVERSAL 100% AUTOMÁTICO (ANY SCREEN)
            ======================================================= */
-        
+
         /* El contenedor izquierdo se vuelve un radar que mide su propio espacio beige */
-        .texto-evento, 
-        .slide > div:first-of-type {
+        .texto-evento,
+        .slide>div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: space-between !important; /* ¡CLAVE! Empuja el título al techo y el texto al fondo sin dejar vacíos */
+            justify-content: space-between !important;
+            /* ¡CLAVE! Empuja el título al techo y el texto al fondo sin dejar vacíos */
             height: 100% !important;
             min-height: 0 !important;
             flex: 1 !important;
-            padding-right: 5% !important;           /* Separación fija y elegante con la imagen */
-            container-type: size !important;         /* Activa la medición de ancho y alto de la caja */
+            padding-right: 5% !important;
+            /* Separación fija y elegante con la imagen */
+            container-type: size !important;
+            /* Activa la medición de ancho y alto de la caja */
         }
 
         /* El título cambia de tamaño basándose estrictamente en el alto de la zona beige */
-        .slide h2, .slide h1 {
+        .slide h2,
+        .slide h1 {
             /* clamp(MÍNIMO CELULAR, ELÁSTICO AUTOMÁTICO, MÁXIMO MONITOR) */
-            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important; 
-            font-weight: 800 !important;            /* Título imponente en negrita */
+            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important;
+            font-weight: 800 !important;
+            /* Título imponente en negrita */
             margin-top: 0 !important;
             margin-bottom: 0.5rem !important;
             position: relative !important;
@@ -116,17 +122,76 @@
         /* El párrafo absorbe todo el espacio restante adaptando su letra al milímetro */
         .slide p {
             /* Se calcula según la altura (cqh) y el ancho (cqw) para un llenado perfecto */
-            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important; 
-            line-height: 1.5 !important;            /* Interlineado compacto y limpio */
-            text-align: justify !important;         /* Bordes rectos como un libro */
-            text-justify: inter-word !important;     
-            text-align-last: left !important;       /* Última línea natural a la izquierda */
+            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important;
+            line-height: 1.5 !important;
+            /* Interlineado compacto y limpio */
+            text-align: justify !important;
+            /* Bordes rectos como un libro */
+            text-justify: inter-word !important;
+            text-align-last: left !important;
+            /* Última línea natural a la izquierda */
             margin-bottom: 0 !important;
-            flex-grow: 1 !important;                /* Se estira como liga para rellenar todo el alto */
+            flex-grow: 1 !important;
+            /* Se estira como liga para rellenar todo el alto */
             display: flex !important;
-            align-items: flex-start !important;     /* Inicia el texto inmediatamente después del título */
+            align-items: flex-start !important;
+            /* Inicia el texto inmediatamente después del título */
         }
 
+        /* =======================================================
+   5. CORRECCIÓN ESPECÍFICA PARA TELÉFONOS (PANTALLAS MÓVILES)
+   ======================================================= */
+        @media (max-width: 768px) {
+
+            /* Hace que el texto y la imagen se pongan uno abajo del otro en vertical */
+            .slide.active {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                /* Permite hacer scroll hacia abajo si el texto es largo */
+                padding: 15px !important;
+            }
+
+            /* Quita las restricciones de altura y el contenedor elástico en móviles */
+            .texto-evento,
+            .slide>div:first-of-type {
+                height: auto !important;
+                padding-right: 0 !important;
+                /* Quita el espacio derecho ya que la imagen irá abajo */
+                margin-bottom: 20px !important;
+                /* Separa el texto de la imagen que viene abajo */
+                display: block !important;
+                /* Desactiva flex temporalmente para evitar empujes raros */
+            }
+
+            /* Reduce el título a un tamaño ideal para celulares */
+            .slide h2,
+            .slide h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.2 !important;
+                margin-bottom: 1rem !important;
+            }
+
+            /* Ajusta el párrafo para que tenga un tamaño de lectura móvil perfecto */
+            .slide p {
+                font-size: 1rem !important;
+                line-height: 1.5 !important;
+                text-align: left !important;
+                /* Evita huecos gigantes entre palabras al justificar en pantallas angostas */
+                display: block !important;
+            }
+
+            /* Asegura que la imagen no flote ni tape nada, sino que ocupe su propio bloque */
+            .slide img,
+            .slide div:nth-of-type(2) {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 250px !important;
+                /* Limita el alto de la imagen para que no tape toda la pantalla */
+                object-fit: cover !important;
+                position: relative !important;
+                top: 0 !important;
+            }
+        }
     </style>
 </head>
 
@@ -570,22 +635,22 @@
     <script>
         const eventsData = {
             era1: [
-                { year: "30 d.C.", title: "Pentecostés", desc: "En el año 30 d.C., el descenso del Espíritu Santo sobre los discípulos reunidos en Jerusalén durante la fiesta de Pentecostés marca el nacimiento formal de la Iglesia cristiana. Este acontecimiento sobrenatural otorgó valentía al apóstol Pedro para predicar un discurso masivo que sumó a tres mil nuevos creyentes, consolidando de inmediato los pilares de la primera comunidad: la oración unánime, las enseñanzas apostólicas y la comunión fraternal.", "image": "imgapostolica/pentecostes.jpeg"},
-                { year: "34 d.C.", title: "Martirio de Esteban", desc: "En el año 34 d.C., el diácono Esteban es ejecutado por lapidación tras pronunciar una valiente defensa ante el Sanedrín, convirtiéndose en el primer mártir de la fe cristiana. Su death desató la primera gran persecución local en Jerusalén, un conflicto que obligó a los fieles a huir de la ciudad e involuntariamente transformó la crisis en un motor que expandió el evangelio hacia Samaria y regiones vecinas.", "image": "imgapostolica/mesteban.jpeg"},
-                { year: "35 d.C.", title: "Conversión de Saulo (Pablo)", desc: "Hacia el año 35 d.C., en el camino hacia Damasco, el implacable perseguidor de cristianos Saulo de Tarso experimenta un encuentro místico y radical con Jesús resucitado que lo deja temporalmente ciego. Este evento transformó por completo su vida, convirtiendo al temido fariseo en el apóstol Pablo, quien asumió la misión de estructurar la teología primitiva y ser el principal estratega misionero para el mundo no judío.", "image": "imgapostolica/saulo.jpeg"},
-                { year: "44 d.C.", title: "Martirio de Jacobo (Santiago)", desc: "En el año 44 d.C., el rey Herodes Agripa I ordena la ejecución por espada del apóstol Jacobo (Santiago), hermano de Juan, convirtiéndose en el primer miembro del círculo íntimo de los doce apóstoles en ser martirizado. Este asalto político buscaba complacer a los líderes religiosos tradicionales y marcó el inicio de una persecución gubernamental directa contra el liderazgo central de la iglesia en Jerusalén.", image: "imgapostolica/mjacobo.jpeg"},
+                { year: "30 d.C.", title: "Pentecostés", desc: "En el año 30 d.C., el descenso del Espíritu Santo sobre los discípulos reunidos en Jerusalén durante la fiesta de Pentecostés marca el nacimiento formal de la Iglesia cristiana. Este acontecimiento sobrenatural otorgó valentía al apóstol Pedro para predicar un discurso masivo que sumó a tres mil nuevos creyentes, consolidando de inmediato los pilares de la primera comunidad: la oración unánime, las enseñanzas apostólicas y la comunión fraternal.", "image": "imgapostolica/pentecostes.jpeg" },
+                { year: "34 d.C.", title: "Martirio de Esteban", desc: "En el año 34 d.C., el diácono Esteban es ejecutado por lapidación tras pronunciar una valiente defensa ante el Sanedrín, convirtiéndose en el primer mártir de la fe cristiana. Su death desató la primera gran persecución local en Jerusalén, un conflicto que obligó a los fieles a huir de la ciudad e involuntariamente transformó la crisis en un motor que expandió el evangelio hacia Samaria y regiones vecinas.", "image": "imgapostolica/mesteban.jpeg" },
+                { year: "35 d.C.", title: "Conversión de Saulo (Pablo)", desc: "Hacia el año 35 d.C., en el camino hacia Damasco, el implacable perseguidor de cristianos Saulo de Tarso experimenta un encuentro místico y radical con Jesús resucitado que lo deja temporalmente ciego. Este evento transformó por completo su vida, convirtiendo al temido fariseo en el apóstol Pablo, quien asumió la misión de estructurar la teología primitiva y ser el principal estratega misionero para el mundo no judío.", "image": "imgapostolica/saulo.jpeg" },
+                { year: "44 d.C.", title: "Martirio de Jacobo (Santiago)", desc: "En el año 44 d.C., el rey Herodes Agripa I ordena la ejecución por espada del apóstol Jacobo (Santiago), hermano de Juan, convirtiéndose en el primer miembro del círculo íntimo de los doce apóstoles en ser martirizado. Este asalto político buscaba complacer a los líderes religiosos tradicionales y marcó el inicio de una persecución gubernamental directa contra el liderazgo central de la iglesia en Jerusalén.", image: "imgapostolica/mjacobo.jpeg" },
                 { year: "47 – 49 d.C.", title: "Primer viaje de Pablo", desc: "Entre los años 47 y 49 d.C., los misioneros Pablo y Bernabé son enviados por la iglesia de Antioquía en el primer viaje misionero formal, recorriendo la isla de Chipre y la región de Asia Menor. A pesar de enfrentar una dura oposición y peligros físicos, esta expedición logró establecer iglesias pioneras en ciudades como Iconio, Listra y Derbe, demostrando la alta receptividad del evangelio entre la población gentil.", "image": "imgapostolica/pvpablo.jpeg" },
                 { year: "49 d.C.", title: "Concilio de Jerusalén", desc: "En el año 49 d.C. se convoca el Concilio de Jerusalén, considerado la primera gran asamblea teológica de la cristiandad para resolver si los nuevos creyentes no judíos debían circuncidarse y seguir las leyes de Moisés. Liderado por los apóstoles Pablo, Pedro y Santiago, el concilio decretó formalmente la exención de los ritos judíos para los gentiles, rompiendo el vínculo legalista y universalizando el acceso a la fe cristiana.", "image": "imgapostolica/cjerusalen.jpeg" },
                 { year: "50 – 53 d.C.", title: "Segundo viaje de Pablo", desc: "Durante los años 50 a 53 d.C., el apóstol Pablo emprende su segundo viaje misionero, cruzando por primera vez a suelo europeo tras recibir una visión de un varón macedonio que pedía ayuda. Esta travesía histórica sembró el cristianismo en centros culturales y políticos clave como Filipos, Tesalónica y Atenas, donde Pablo pronunció su famoso discurso en el Areópago adaptando el mensaje al pensamiento griego.", image: "imgapostolica/spablo.jpeg" },
-                { year: "53 – 58 d.C.", title: "Tercer viaje de Pablo", desc: "Entre los años 53 y 58 d.C., el apóstol Pablo realiza su tercer viaje misionero, centrando sus esfuerzos durante casi tres años en la metrópolis de Éfeso, que se convirtió en el epicentro espiritual de Asia Menor. Este periodo de madurez eclesiástica fue fundamental, ya que el apóstol no solo fortaleció la organización de las iglesias locales, sino que también redactó varias de sus cartas epistolares y pastorales más doctrinales.", "image": "imgapostolica/tpablo.jpeg"},
-                { year: "60 – 62 d.C.", title: "Arresto de Pablo en Roma", desc: "Hacia el año 60 d.C., tras ser arrestado falsamente en Jerusalén y apelar a su derecho como ciudadano romano ante el César, el apóstol Pablo es trasladado a Roma para ser juzgado. Durante dos años permaneció bajo arresto domiciliario custodiado por soldados, un confinamiento que aprovechó estratégicamente para recibir visitas, pastorear a la iglesia local y redactar las llamadas 'epístolas de la prisión' como Efesios y Filipenses.", icon: "fa-link" },
-                { year: "62 d.C.", title: "Martirio de Jacobo 'el Justo'", desc: "En el año 62 d.C., aprovechando un vacío de poder político tras la muerte del procurador romano Porcio Festo, el sumo sacerdote Ananías ordena apedrear a Jacobo 'el Justo', hermano de Jesús y líder principal de la iglesia en Jerusalén. Respetado incluso por los judíos debido a su piedad, su ejecución radicalizó la brecha entre el judaísmo tradicional y el cristianismo, debilitando el liderazgo de la iglesia madre.", icon: "fa-gavel" },
-                { year: "64 d.C.", title: "Incendio de Roma", desc: "En julio del año 64 d.C., un devastador incendio destruye gran parte de la ciudad de Roma y el emperador Nerón, buscando desviar los rumores que lo acusaban a él del desastre, utiliza a los cristianos como chivos expiatorios. Este hecho desató la primera persecución sistemática del Imperio Romano, caracterizada por torturas crueles en los jardines imperiales y el uso de los creyentes como antorchas humanas.", icon: "fa-fire-flame-curved" },
-                { year: "67 d.C.", title: "Martirio de Pedro y Pablo", desc: "En el año 67 d.C., en el clímax de la sangrienta persecución desatada por el emperador Nerón, los dos pilares de la iglesia primitiva sufren el martirio en Roma. El apóstol Pablo es ejecutado por decapitación debido a su estatus de ciudadano romano, mientras que el apóstol Pedro es crucificado boca abajo en el monte Vaticano, cumpliendo su petición de no morir igual que su Maestro.", icon: "fa-monument" },
-                { year: "70 d.C.", title: "Destrucción de Jerusalén", desc: "En el año 70 d.C., las legiones romanas comandadas por el futuro emperador Tito sitian y destruyen por completo la ciudad de Jerusalén, arrasando el majestuoso Templo judío tal como Jesús lo había profetizado. Este catastrófico evento militar puso fin al estado judío y obligó a una dispersión permanente conocida como la Diáspora, provocando que el centro de gravedad del cristianismo se trasladara definitivamente hacia centros gentiles como Antioquía, Éfeso y Roma.", icon: "fa-building-columns" },
-                { year: "90 – 96 d.C.", title: "Persecución de Domiciano", desc: "Durante los años 90 a 96 d.C., el emperador Domiciano desata la segunda gran persecución imperial al exigir que se le adorara rigurosamente bajo el título divino de 'Señor y Dios'. Los cristianos se convirtieron en el blanco de ejecuciones y confiscaciones de bienes al negarse a participar en el culto imperial, lo que obligó a la iglesia a fortalecer su estructura interna frente al acoso estatal generalizado.", icon: "fa-shield-halved" },
-                { year: "95 d.C.", title: "Exilio de Juan en Patmos", desc: "En el año 95 d.C., en el marco de las represiones de Domiciano, el apóstol Juan, ya anciano y siendo el último sobreviviente de los doce originales, es desterrado a los trabajos forzados en la inhóspita isla de Patmos. En este aislamiento geográfico, Juan recibe una serie de visiones proféticas y triunfales sobre el destino final de la humanidad y el triunfo de Cristo, dando origen a la redacción del libro del Apocalipsis.", icon: "fa-scroll" },
-                { year: "100 d.C.", title: "Muerte del Apóstol Juan", desc: "Alrededor del año 100 d.C., tras ser liberado de su exilio, el apóstol Juan fallece por causas naturales en la ciudad de Éfeso, donde pastoreaba activamente. Su muerte marca el cierre definitivo de la Era Apostólica, concluyendo el periodo de revelación directa de los testigos oculares de Jesús y abriendo paso a una nueva generación de líderes conocidos como los Padres de la Iglesia.", icon: "fa-feather" }
+                { year: "53 – 58 d.C.", title: "Tercer viaje de Pablo", desc: "Entre los años 53 y 58 d.C., el apóstol Pablo realiza su tercer viaje misionero, centrando sus esfuerzos durante casi tres años en la metrópolis de Éfeso, que se convirtió en el epicentro espiritual de Asia Menor. Este periodo de madurez eclesiástica fue fundamental, ya que el apóstol no solo fortaleció la organización de las iglesias locales, sino que también redactó varias de sus cartas epistolares y pastorales más doctrinales.", "image": "imgapostolica/tpablo.jpeg" },
+                { year: "60 – 62 d.C.", title: "Arresto de Pablo en Roma", desc: "Hacia el año 60 d.C., tras ser arrestado falsamente en Jerusalén y apelar a su derecho como ciudadano romano ante el César, el apóstol Pablo es trasladado a Roma para ser juzgado. Durante dos años permaneció bajo arresto domiciliario custodiado por soldados, un confinamiento que aprovechó estratégicamente para recibir visitas, pastorear a la iglesia local y redactar las llamadas 'epístolas de la prisión' como Efesios y Filipenses.", "image": "imgapostolica/aproma.jpeg" },
+                { year: "62 d.C.", title: "Martirio de Jacobo 'el Justo'", desc: "En el año 62 d.C., aprovechando un vacío de poder político tras la muerte del procurador romano Porcio Festo, el sumo sacerdote Ananías ordena apedrear a Jacobo 'el Justo', hermano de Jesús y líder principal de la iglesia en Jerusalén. Respetado incluso por los judíos debido a su piedad, su ejecución radicalizó la brecha entre el judaísmo tradicional y el cristianismo, debilitando el liderazgo de la iglesia madre.", "image": "imgapostolica/mjacoboJ.jpeg" },
+                { year: "64 d.C.", title: "Incendio de Roma", desc: "En julio del año 64 d.C., un devastador incendio destruye gran parte de la ciudad de Roma y el emperador Nerón, buscando desviar los rumores que lo acusaban a él del desastre, utiliza a los cristianos como chivos expiatorios. Este hecho desató la primera persecución sistemática del Imperio Romano, caracterizada por torturas crueles en los jardines imperiales y el uso de los creyentes como antorchas humanas.", "image": "imgapostolica/iroma.jpeg" },
+                { year: "67 d.C.", title: "Martirio de Pedro y Pablo", desc: "En el año 67 d.C., en el clímax de la sangrienta persecución desatada por el emperador Nerón, los dos pilares de la iglesia primitiva sufren el martirio en Roma. El apóstol Pablo es ejecutado por decapitación debido a su estatus de ciudadano romano, mientras que el apóstol Pedro es crucificado boca abajo en el monte Vaticano, cumpliendo su petición de no morir igual que su Maestro.", "image": "imgapostolica/mpedropablo.jpeg" },
+                { year: "70 d.C.", title: "Destrucción de Jerusalén", desc: "En el año 70 d.C., las legiones romanas comandadas por el futuro emperador Tito sitian y destruyen por completo la ciudad de Jerusalén, arrasando el majestuoso Templo judío tal como Jesús lo había profetizado. Este catastrófico evento militar puso fin al estado judío y obligó a una dispersión permanente conocida como la Diáspora, provocando que el centro de gravedad del cristianismo se trasladara definitivamente hacia centros gentiles como Antioquía, Éfeso y Roma.", "image": "imgapostolica/djerusalen" },
+                { year: "90 – 96 d.C.", title: "Persecución de Domiciano", desc: "Durante los años 90 a 96 d.C., el emperador Domiciano desata la segunda gran persecución imperial al exigir que se le adorara rigurosamente bajo el título divino de 'Señor y Dios'. Los cristianos se convirtieron en el blanco de ejecuciones y confiscaciones de bienes al negarse a participar en el culto imperial, lo que obligó a la iglesia a fortalecer su estructura interna frente al acoso estatal generalizado.", "image": "imgapostolica/pdomiciano" },
+                { year: "95 d.C.", title: "Exilio de Juan en Patmos", desc: "En el año 95 d.C., en el marco de las represiones de Domiciano, el apóstol Juan, ya anciano y siendo el último sobreviviente de los doce originales, es desterrado a los trabajos forzados en la inhóspita isla de Patmos. En este aislamiento geográfico, Juan recibe una serie de visiones proféticas y triunfales sobre el destino final de la humanidad y el triunfo de Cristo, dando origen a la redacción del libro del Apocalipsis.", "image": "imgapostolica/ejuanp" },
+                { year: "100 d.C.", title: "Muerte del Apóstol Juan", desc: "Alrededor del año 100 d.C., tras ser liberado de su exilio, el apóstol Juan fallece por causas naturales en la ciudad de Éfeso, donde pastoreaba activamente. Su muerte marca el cierre definitivo de la Era Apostólica, concluyendo el periodo de revelación directa de los testigos oculares de Jesús y abriendo paso a una nueva generación de líderes conocidos como los Padres de la Iglesia.", "image": "imgapostolica/majuan" }
             ],
             era2: [
                 { year: "107 d.C.", title: "Martirio de Ignacio de Antioquía", desc: "Arrestado y enviado a Roma, Ignacio fue devorado por las fieras en el Anfiteatro Flavio. Camino al martirio escribió siete cartas fundamentales que delinean la eclesiología primitiva, la firme resistencia al error doctrinal y acuñó por primera vez de forma registrada el término 'Iglesia Católica' para referirse a la universalidad de los fieles.", icon: "fa-shield-dog" },
