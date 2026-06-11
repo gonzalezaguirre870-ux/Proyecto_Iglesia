@@ -195,6 +195,21 @@
                 border-radius: 8px !important;
             }
 
+            /* AJUSTE PARA PORTADAS: Centra el texto en pantallas de inicio de cada era */
+            .slide[id$="-portada"] {
+                justify-content: center !important; /* Centra el título verticalmente en el teléfono */
+                align-items: center !important;
+                text-align: center !important;
+                height: 100vh !important;
+            }
+
+            .slide[id$="-portada"] div:first-of-type {
+                justify-content: center !important;
+                height: auto !important;
+                margin-bottom: 0 !important;
+            }
+
+
             /* Reubicación inteligente del botón de pantalla completa en celulares */
             .btn-pantalla-completa {
                 top: 72px !important; 
