@@ -95,24 +95,115 @@
         }
 
         /* =======================================================
-        4. ESTRUCTURA BASE UNIVERSAL (Box-Sizing Obligatorio)
-        ======================================================= */
+           4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
+           ======================================================= */
         html,
-        body {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body,
+        #contenedor-presentacion {
+            width: 100% !important;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
         }
 
-        *,
-        *:before,
-        *:after {
-            box-sizing: inherit;
-            /* Evita que el padding extra colapse los elementos en Android */
+        /* Asegura que cada diapositiva fluya con tamaño completo */
+        .slide {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            box-sizing: border-box !important;
         }
 
-                /* =======================================================
+        /* Restablece el menú de inicio para que los 6 botones distribuyan bien el espacio en PC */
+        #slide-inicio.active {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            height: 100% !important;
+            padding: 40px !important;
+        }
+
+        /* CORRECCIÓN DE DISTORSIÓN: Divide la pantalla de PC en dos columnas simétricas (Texto / Multimedia) */
+        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) {
+            display: grid !important;
+            grid-template-columns: 1.2fr 0.8fr !important;
+            /* Columna izquierda de texto ligeramente más ancha */
+            gap: 40px !important;
+            /* Espacio elegante entre columnas */
+            padding: 100px 60px 40px 60px !important;
+            /* Respeta la barra superior */
+            height: 100vh !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Contenedor de Texto izquierdo estable */
+        .texto-evento,
+        .slide>div:first-of-type {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            /* Evita que los elementos se estiren solos de arriba a abajo */
+            height: 100% !important;
+            flex: 1 !important;
+            padding-right: 0 !important;
+        }
+
+        /* Títulos estables en PC utilizando rem tradicionales */
+        .slide h2,
+        .slide h1 {
+            font-size: 2.5rem !important;
+            /* Tamaño equilibrado para monitores */
+            font-weight: 800 !important;
+            margin-top: 0 !important;
+            margin-bottom: 24px !important;
+        }
+
+        /* Párrafo elástico pero controlado */
+        .slide p {
+            font-size: 1.2rem !important;
+            line-height: 1.6 !important;
+            text-align: justify !important;
+            margin-bottom: 24px !important;
+            /* Separa el párrafo de la cronología */
+            display: block !important;
+        }
+
+        /* CONTROL DE LA CRONOLOGÍA EN PC: Limita su altura máxima para que no se deforme */
+        /* Reemplaza este selector por el id o clase de tu rejilla de columnas beige de la cronología */
+        [id$="-media-container"]~div,
+        .cronologia-contenedor-botones {
+            height: auto !important;
+            max-height: 180px !important;
+            /* Fija un tope máximo para que las cajas beige mantengan aspecto de botones */
+            margin-top: auto !important;
+            /* La empuja elegantemente hacia la base del texto */
+        }
+
+        /* CONTRALADO DE MULTIMEDIA EN PC: Alineación vertical perfecta para la imagen y la caja marrón */
+        .slide div:nth-of-type(2),
+        [id$="-media-container"] {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            /* Reparte la imagen arriba y la tarjeta de diapositiva abajo */
+            height: 100% !important;
+            max-height: calc(100vh - 140px) !important;
+        }
+
+        /* Imagen en PC: Limpia, centrada y sin aplastarse */
+        .slide img {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 55vh !important;
+            /* Ocupa más de la mitad vertical asignada de forma fluida */
+            object-fit: cover !important;
+            border-radius: 16px !important;
+        }
+
+        /* =======================================================
            5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
            ======================================================= */
         @media (max-width: 768px) {
@@ -206,7 +297,8 @@
                 flex-direction: column !important;
                 justify-content: center !important;
                 align-items: center !important;
-                gap: 16px !important; /* Espacio uniforme de 16px entre cada uno de los 6 bloques */
+                gap: 16px !important;
+                /* Espacio uniforme de 16px entre cada uno de los 6 bloques */
                 padding: 100px 16px 40px 16px !important;
                 height: 100vh !important;
             }
@@ -260,10 +352,10 @@
             }
 
             /* SOLUCIÓN LÍNEA VERDE: Empuja las flechas de navegación y el contador a la esquina derecha */
-            #nav-superior > div:last-of-type,
-            .contenedor-flechas-navegacion { 
-                margin-left: auto !important; 
-                padding-right: 8px !important; 
+            #nav-superior>div:last-of-type,
+            .contenedor-flechas-navegacion {
+                margin-left: auto !important;
+                padding-right: 8px !important;
             }
         }
 
