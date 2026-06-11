@@ -94,40 +94,42 @@
         }
 
         /* =======================================================
-           4. SISTEMA ELÁSTICO UNIVERSAL PARA COMPUTADORAS
+           4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
            ======================================================= */
+        /* Asegura que las diapositivas ocupen la pantalla completa sin encogerse */
+        .slide {
+            width: 100% !important;
+            height: 100vh !important;
+            box-sizing: border-box !important;
+        }
+
+        /* El contenedor izquierdo expande el texto horizontalmente de forma segura */
         .texto-evento,
         .slide>div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: space-between !important;
-            height: 100% !important;
-            min-height: 0 !important;
+            justify-content: flex-start !important;
+            height: auto !important;
             flex: 1 !important;
             padding-right: 5% !important;
-            container-type: size !important;
         }
 
+        /* Títulos estables en PC utilizando rem tradicionales en lugar de cqh */
         .slide h2,
         .slide h1 {
-            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important;
+            font-size: 3rem !important;
             font-weight: 800 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.5rem !important;
-            position: relative !important;
-            top: 0 !important;
+            margin-bottom: 1rem !important;
         }
 
+        /* Párrafo elástico pero controlado */
         .slide p {
-            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important;
-            line-height: 1.5 !important;
+            font-size: 1.35rem !important;
+            line-height: 1.6 !important;
             text-align: justify !important;
-            text-justify: inter-word !important;
-            text-align-last: left !important;
             margin-bottom: 0 !important;
-            flex-grow: 1 !important;
-            display: flex !important;
-            align-items: flex-start !important;
+            display: block !important;
         }
 
         /* =======================================================
@@ -140,21 +142,18 @@
                 display: flex !important;
                 flex-direction: column !important;
                 overflow-y: auto !important;
-                padding: 80px 20px 20px 20px !important;
+                padding: 90px 20px 20px 20px !important;
                 justify-content: flex-start !important;
                 height: 100vh !important;
             }
 
             /* Asegura que el contenido de la portada no empuje los botones hacia el fondo */
             .slide[id$="-portada"].active {
-                display: flex !important;
-                flex-direction: column !important;
                 justify-content: center !important;
                 align-items: center !important;
                 height: auto !important;
-                min-height: 50vh !important;
-                padding-top: 20px !important;
-                padding-bottom: 20px !important;
+                min-height: 60vh !important;
+                padding-top: 10px !important;
             }
 
         }
