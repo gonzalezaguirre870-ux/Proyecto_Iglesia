@@ -113,240 +113,165 @@
         }
 
         /* =======================================================
-        5. DISEÑO BASE: MOBILE-FIRST (Optimizado para 360dp - 423dp)
-        ======================================================= */
-        #contenedor-presentacion {
-            width: 100%;
-            min-height: 100vh;
-        }
+           5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
+           ======================================================= */
+        @media (max-width: 768px) {
 
-        /* --- PÁGINA PRINCIPAL / MENÚ DE INICIO --- */
-        #slide-inicio.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            /* Alineación superior para ganar espacio vertical */
-            align-items: center;
-            width: 100%;
-            height: auto;
-            min-height: 100vh;
-            /* Se estira si los botones rebasan la pantalla de 360dp */
-            padding: 48px 16px 32px 16px;
-            /* Rejilla de 8 */
-            overflow-y: auto;
-        }
+            /* Ajuste estructural de las diapositivas de contenido interno en vertical */
+            .slide.active {
+                display: flex !important;
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                padding: 96px 16px 16px 16px !important;
+                /* Ajustado estrictamente a la rejilla de 8px */
+                justify-content: flex-start !important;
+                height: 100vh !important;
+            }
 
-        #slide-inicio h1 {
-            font-size: 1.8rem;
-            line-height: 1.2;
-            margin-top: 8px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
+            /* SOLUCIÓN AL BOTÓN CORTADO: Da flexibilidad a las portadas si el texto es muy largo */
+            .slide[id$="-portada"].active {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                height: 100vh !important;
+                /* Mantiene el fondo en toda la pantalla */
+                padding-top: 80px !important;
+                /* Reduce espacio arriba para ganar área útil */
+                padding-bottom: 24px !important;
+                overflow-y: auto !important;
+                /* ¡CLAVE! Permite scroll vertical si el texto empuja el botón */
+            }
 
-        #slide-inicio p {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            text-align: center;
-            margin-bottom: 24px;
-        }
+            /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
+            .texto-evento,
+            .slide>div:first-of-type {
+                height: auto !important;
+                width: 100% !important;
+                padding-right: 0 !important;
+                margin-bottom: 16px !important;
+                /* Ajustado a múltiplo de 8 */
+                display: block !important;
+            }
 
-        /* Rejilla adaptativa de los 6 botones en móvil */
-        /* Nota: Asegúrate de usar una clase contenedora para tus 6 botones en el HTML */
-        .contenedor-botones,
-        #slide-inicio>div:last-of-type {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            /* Mantiene la matriz de 3 columnas */
-            gap: 8px;
-            /* Espaciado compacto estricto */
-            width: 100%;
-            max-width: 100%;
-            padding: 0;
-            margin-bottom: 16px;
-        }
+            /* Redimensiona el título de forma equilibrada en móviles */
+            .slide h2,
+            .slide h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.2 !important;
+                margin-top: 8px !important;
+                margin-bottom: 16px !important;
+                text-align: center !important;
+            }
 
-        .contenedor-botones button,
-        .contenedor-botones .btn-era,
-        #slide-inicio button {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 56px;
-            /* Supera con holgura los 48px obligatorios de accesibilidad táctil */
-            padding: 8px;
-            font-size: 0.75rem;
-            /* Evita que textos como "IV. MEDIEVAL" se corten */
-            border-radius: 8px;
-        }
+            /* Párrafo fluido con lectura anatómica a la izquierda para los eventos comunes */
+            .slide p {
+                font-size: 1rem !important;
+                line-height: 1.5 !important;
+                text-align: left !important;
+                display: block !important;
+            }
 
-        /* --- PORTADAS DE CADA ERA --- */
-        .slide[id$="-portada"].active {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            height: auto;
-            min-height: 100vh;
-            /* Retiene el fondo completo */
-            padding: 48px 16px 32px 16px;
-            overflow-y: auto;
-            /* Activa scroll de emergencia en celulares muy cortos */
-        }
+            /* SOLUCIÓN LÍNEA ROJA: Contenedor multimedia sube y elimina espacio muerto */
+            .slide div:nth-of-type(2),
+            [id$="-media-container"] {
+                position: static !important;
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: 25vh !important;
+                /* Incrementado un 5% para mejorar visibilidad de imagen */
+                margin-top: 8px !important;
+                /* Reducido para pegarse más al texto */
+                margin-bottom: 8px !important;
+                overflow: hidden !important;
+            }
 
-        .slide[id$="-portada"] .texto-evento,
-        .slide[id$="-portada"] div:first-of-type {
-            width: 100%;
-            height: auto;
-            margin-top: 24px;
-            margin-bottom: 16px;
-            padding: 0 16px;
-            text-align: center;
-            display: block;
-        }
+            /* Imagen interna: Cero distorsión, mantiene proporción real */
+            .slide img {
+                position: static !important;
+                display: block !important;
+                width: auto !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: 25vh !important;
+                object-fit: contain !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                border-radius: 8px !important;
+            }
 
-        .slide[id$="-portada"] h2 {
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
+            /* Reubicación del botón de pantalla completa en celulares */
+            .btn-pantalla-completa {
+                top: 16px !important;
+                right: 16px !important;
+            }
 
-        .slide[id$="-portada"] p {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            margin-bottom: 24px;
-            /* Empuja con seguridad el botón */
-        }
+            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones */
+            #slide-inicio.active {
+                justify-content: space-around !important;
+                padding: 80px 16px 32px 16px !important;
+                /* Rejilla de 8px */
+                height: 100vh !important;
+            }
 
-        /* Botón "Iniciar Era" Rescatado */
-        .slide[id$="-portada"] button,
-        .slide[id$="-portada"] .btn-iniciar-era {
-            position: static;
-            display: inline-block;
-            width: auto;
-            min-width: 200px;
-            min-height: 48px;
-            /* Regla de oro de toque de 48px */
-            margin: 0 auto 16px auto;
-            padding: 12px 24px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            line-height: 1.2;
-        }
+            /* Compacta el bloque de texto en las portadas móviles para que el botón suba */
+            .slide[id$="-portada"] .texto-evento,
+            .slide[id$="-portada"] div:first-of-type {
+                padding-top: 8px !important;
+                margin-bottom: 8px !important;
+            }
 
-        /* Texto inferior ("16 Eventos...") */
-        .slide[id$="-portada"] span,
-        .slide[id$="-portada"] .text-xs {
-            position: static;
-            display: block;
-            margin-top: 8px;
-            margin-bottom: 16px;
-            font-size: 0.75rem;
-            text-align: center;
-            opacity: 0.8;
-        }
+            /* Reduce ligeramente la descripción en la portada del celular */
+            .slide[id$="-portada"] p {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 16px !important;
+                text-align: center !important;
+            }
 
-        /* --- DIAPOSITIVAS INTERNAS DE EVENTOS (ESTILO PENTECOSTÉS) --- */
-        .slide.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            width: 100%;
-            height: auto;
-            min-height: 100vh;
-            padding: 80px 16px 24px 16px;
-            /* Da aire para el menú superior compacto */
-            overflow-y: auto;
-        }
+            /* DISEÑO DEL BOTÓN INICIAR ERA (MÓVIL ESTÁNDAR 48PX COMPLETO) */
+            .slide[id$="-portada"] button,
+            .slide[id$="-portada"] .btn-iniciar-era {
+                position: static !important;
+                display: flex !important;
+                /* Flex para controlar dimensiones exactas */
+                align-items: center !important;
+                justify-content: center !important;
+                height: 48px !important;
+                /* Estándar estricto de Android para área táctil */
+                min-height: 48px !important;
+                line-height: 1 !important;
+                margin-top: 24px !important;
+                margin-bottom: 24px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: auto !important;
+                min-width: 200px !important;
+                /* Base horizontal firme */
+                max-width: 90% !important;
+                font-size: 0.9rem !important;
+                padding: 0 24px !important;
+                box-sizing: border-box !important;
+            }
 
-        .texto-evento,
-        .slide>div:first-of-type {
-            width: 100%;
-            height: auto;
-            margin-bottom: 16px;
-            display: block;
-        }
+            /* TEXTO INFERIOR COMPACTO ("16 Eventos...") */
+            .slide[id$="-portada"] span,
+            .slide[id$="-portada"] .text-xs {
+                position: static !important;
+                display: block !important;
+                margin-top: 8px !important;
+                font-size: 0.7rem !important;
+                text-align: center !important;
+                opacity: 0.8 !important;
+            }
 
-        .slide h1,
-        .slide h2 {
-            font-size: 1.75rem;
-            line-height: 1.2;
-            margin-top: 8px;
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .slide p {
-            font-size: 1rem;
-            line-height: 1.5;
-            text-align: left;
-            margin-bottom: 16px;
-        }
-
-        /* Bloque multimedia / imagen en móvil */
-        .slide div:nth-of-type(2),
-        [id$="-media-container"] {
-            position: static;
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            max-height: 35vh;
-            /* Reserva espacio inteligente para que la imagen no opaque el texto */
-            margin-top: 16px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .slide img {
-            display: block;
-            width: auto;
-            max-width: 100%;
-            height: auto;
-            max-height: 30vh;
-            object-fit: contain;
-            margin: 0 auto;
-            border-radius: 8px;
-        }
-
-        /* Botón flotante de pantalla completa */
-        .btn-pantalla-completa {
-            top: 16px;
-            right: 16px;
-            min-width: 48px;
-            min-height: 48px;
-            padding: 8px 16px;
-        }
-
-        /* BARRA CRONOLÓGICA INFERIOR EN MÓVIL */
-        /* Cambia el comportamiento destructivo por un scroll horizontal táctil elegante */
-        .cronologia-era,
-        .slide div:last-of-type {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 8px;
-            overflow-x: auto;
-            /* Permite deslizar los años lateralmente */
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.03);
-            border-radius: 8px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .cronologia-era div,
-        .cronologia-item {
-            flex: 0 0 auto;
-            /* Bloquea el colapso de los bloques de tiempo */
-            width: 100px;
-            padding: 6px;
-            font-size: 0.75rem;
-            text-align: center;
+            /* SOLUCIÓN LÍNEA VERDE: Empuja las flechas de navegación y el contador a la esquina derecha */
+            #nav-superior>div:last-of-type,
+            .contenedor-flechas-navegacion {
+                margin-left: auto !important;
+                padding-right: 8px !important;
+            }
         }
 
         /* =======================================================
