@@ -1199,7 +1199,7 @@
 
             if (titleEl) titleEl.innerText = event.title;
             if (descEl) descEl.innerText = event.desc;
-            if (progressEl) progressEl.innerText = idx + 1;
+            if (progressEl) progressEl.innerHTML = `&nbsp;${idx + 1}`;
 
             if (mediaContainer) {
                 mediaContainer.innerHTML = "";
