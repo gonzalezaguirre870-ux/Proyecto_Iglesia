@@ -270,29 +270,38 @@
                 text-align: center !important;
             }
 
-            /* FUERZA AL BOTÓN DE INICIAR ERA A SUBIR Y RESPIRAR EN MÓVILES */
+            /* OPTIMIZACIÓN ABSOLUTA PARA PANTALLAS DE FÁBRICA 360dp */
             .slide[id$="-portada"] button,
             .slide[id$="-portada"] .btn-iniciar-era {
                 position: static !important;
-                display: inline-block !important;
+                display: block !important;
+                height: auto !important;
+                min-height: 40px !important;
+                /* Altura compacta ideal para móviles estándar */
+                line-height: 1.2 !important;
                 margin-top: 15px !important;
-                margin-bottom: 10px !important;
-                width: auto !important;
+                /* Reduce la separación para empujar el botón hacia arriba */
+                margin-bottom: 8px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: max-content !important;
                 max-width: 90% !important;
-                font-size: 0.9rem !important;
+                font-size: 0.85rem !important;
+                /* Letra un poco más pequeña para ahorrar espacio */
                 padding: 10px 20px !important;
+                /* Botón estilizado y esbelto */
             }
 
-            /* COMPACTA EL TEXTO DE ABAJO ("16 Eventos...") PARA QUE NO EMPUJE */
+            /* TEXTO INFERIOR COMPACTO ("16 Eventos...") */
             .slide[id$="-portada"] span,
             .slide[id$="-portada"] .text-xs {
                 position: static !important;
                 display: block !important;
-                margin-top: 5px !important;
-                font-size: 0.75rem !important;
+                margin-top: 2px !important;
+                font-size: 0.7rem !important;
                 text-align: center !important;
+                opacity: 0.8 !important;
             }
-
         }
     </style>
 </head>
