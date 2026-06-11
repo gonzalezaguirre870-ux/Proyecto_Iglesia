@@ -436,11 +436,10 @@
         class="relative w-full max-w-[1280px] h-screen md:h-[720px] bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-none md:border border-slate-800 transition-all duration-300">
 
         <button onclick="toggleFullscreen()" id="btn-fs"
-            class="btn-pantalla-completa hidden fixed top-4 right-4 z-[60] bg-slate-900/80 hover:bg-slate-800 text-white px-3 py-2 rounded-lg text-xs font-bold border border-slate-700/50 flex items-center gap-2 backdrop-blur transition shadow-lg">
+            class="btn-pantalla-completa hidden fixed top-4 right-4 z-[60] bg-slate-900/80 hover:bg-slate-800 text-white px-4 py-3 md:px-3 md:py-2 min-h-[48px] md:min-h-0 rounded-lg text-sm md:text-xs font-bold border border-slate-700/50 flex items-center justify-center gap-2 backdrop-blur transition shadow-lg">
             <i class="fa-solid fa-expand text-amber-400" id="fs-icon"></i>
             <span id="fs-text">PANTALLA COMPLETA</span>
         </button>
-
 
         <div id="slide-inicio"
             class="slide active w-full h-full bg-gradient-to-br from-amber-950 via-slate-900 to-amber-900 text-white flex-col justify-between p-6 md:p-12 overflow-y-auto md:overflow-hidden">
@@ -1205,10 +1204,11 @@
         }
 
         // =======================================================
-        // 5. CONTROL INTELIGENTE DE PANTALLA COMPLETA NATIVA
+        // 5. CONTROL INTELIGENTE DE PANTALLA COMPLETA NATIVA (UNIFICADO)
         // =======================================================
         function toggleFullscreen() {
-            const elem = document.getElementById("contenedor-presentacion");
+            // SOLUCIÓN: Aplicamos la pantalla completa a la raíz (documentElement) para abarcar todas las diapositivas
+            const elem = document.documentElement;
             const btnFs = document.getElementById("btn-fs");
             if (!elem) return;
 
@@ -1219,7 +1219,9 @@
                     if (btnFs) btnFs.classList.add("hidden");
 
                     requestFS.call(elem).catch(err => {
-                        if (btnFs) btnFs.classList.remove("hidden");
+                        // Si falla la activación, evaluamos si debe reaparecer según la diapositiva actual
+                        const esPortadaOInicio = currentSlideId === 'slide-inicio' || currentSlideId.includes('-portada');
+                        if (btnFs && esPortadaOInicio) btnFs.classList.remove("hidden");
                         console.log(`Error al activar pantalla completa: ${err.message}`);
                     });
                 }
@@ -1236,22 +1238,31 @@
             const text = document.getElementById("fs-text");
             const btnFs = document.getElementById("btn-fs");
 
-            if (!icon || !text || !btnFs) return;
+            if (!btnFs) return;
 
-            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                // Se mantiene oculto si la pantalla completa está activa
+            const estaEnCompleta = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+            if (estaEnCompleta) {
+                // Se oculta globalmente al estar activa la pantalla completa (no obstruye textos)
                 btnFs.classList.add("hidden");
             } else {
-                // Reaparece al salir del modo presentación
-                icon.className = "fa-solid fa-expand text-amber-400";
-                text.innerText = "PANTALLA COMPLETA";
-                btnFs.classList.remove("hidden");
+                // CONDICIONAL CLAVE: Al salir con Esc o Gestos, solo vuelve a aparecer si estás en el inicio o en una portada
+                const esPortadaOInicio = currentSlideId === 'slide-inicio' || currentSlideId.includes('-portada');
+
+                if (esPortadaOInicio) {
+                    if (icon) icon.className = "fa-solid fa-expand text-amber-400";
+                    if (text) text.innerText = "PANTALLA COMPLETA";
+                    btnFs.classList.remove("hidden");
+                } else {
+                    btnFs.classList.add("hidden"); // Si estás dentro de una lectura, se queda oculto
+                }
             }
         }
 
+        // Escuchadores multi-navegador nativos para PC y Android
         document.addEventListener("fullscreenchange", actualizaControlesPantallaCompleta);
         document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
-        document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta);
+        document.addEventListener("mozfullscreenchange", actualizaControlesPantacleata);
         document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
 
         // =======================================================
@@ -1266,6 +1277,10 @@
             loadEvent('era4', 0);
             loadEvent('era5', 0);
             loadEvent('era6', 0);
+
+            // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
+            // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
+            actualizaControlesPantallaCompleta();
         };
 
     </script>
