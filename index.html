@@ -168,26 +168,22 @@
                 flex-direction: column !important;
                 overflow-y: auto !important;
                 padding: 90px 20px 20px 20px !important;
+                /* Espacio superior para no obstruir el menú */
                 justify-content: flex-start !important;
                 height: 100vh !important;
             }
 
-            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones táctiles */
-            #slide-inicio.active {
-                justify-content: space-around !important;
-                padding: 80px 15px 30px 15px !important;
-                height: 100vh !important;
-            }
-
-            /* Forzado elástico para centrar portadas cubriendo más pantalla en móviles */
+            /* Permite scroll vertical y cubre el 100% de la pantalla beige en las portadas */
             .slide[id$="-portada"].active {
-                justify-content: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 height: auto !important;
-                min-height: 78vh !important;
-                /* ¡AUMENTADO! Estira el fondo beige hacia abajo en el celular */
-                padding-top: 10px !important;
-                padding-bottom: 20px !important;
+                min-height: 100vh !important;
+                padding-top: 90px !important;
+                padding-bottom: 40px !important;
+                overflow-y: auto !important;
             }
 
             /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
@@ -210,7 +206,7 @@
                 text-align: center !important;
             }
 
-            /* Párrafo fluido con lectura anatómica a la izquierda */
+            /* Párrafo fluido con lectura anatómica a la izquierda para los eventos comunes */
             .slide p {
                 font-size: 1rem !important;
                 line-height: 1.5 !important;
@@ -250,6 +246,28 @@
                 top: 20px !important;
                 right: 15px !important;
                 padding: 6px 10px !important;
+            }
+
+            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones táctiles */
+            #slide-inicio.active {
+                justify-content: space-around !important;
+                padding: 80px 15px 30px 15px !important;
+                height: 100vh !important;
+            }
+
+            /* Compacta el bloque de texto en las portadas móviles para que el botón suba */
+            .slide[id$="-portada"] .texto-evento,
+            .slide[id$="-portada"] div:first-of-type {
+                padding-top: 10px !important;
+                margin-bottom: 10px !important;
+            }
+
+            /* Reduce ligeramente la descripción en la portada del celular para ganar espacio vertical */
+            .slide[id$="-portada"] p {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 15px !important;
+                text-align: center !important;
             }
         }
     </style>
