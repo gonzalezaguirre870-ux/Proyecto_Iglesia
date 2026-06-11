@@ -1081,8 +1081,16 @@
                 if (nav) nav.classList.add('hidden');
             }
 
-            // El botón de pantalla completa SIEMPRE visible en las diapositivas
-            if (btnFs) btnFs.classList.remove('hidden');
+            // LÓGICA DE PANTALLA COMPLETA SIMPLIFICADA AL CAMBIAR DIAPOSITIVA
+            if (btnFs) {
+                const estaEnCompleta = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+                if (estaEnCompleta) {
+                    btnFs.classList.add('hidden'); // Si está maximizado, SIEMPRE oculto en cualquier página
+                } else {
+                    btnFs.classList.remove('hidden'); // Si NO está maximizado, SIEMPRE visible listo para usarse
+                }
+            }
 
             updateNavHighlights();
             updateIndicators();
@@ -1232,7 +1240,6 @@
                 }
             }
         }
-
         function actualizaControlesPantallaCompleta() {
             const icon = document.getElementById("fs-icon");
             const text = document.getElementById("fs-text");
@@ -1243,19 +1250,13 @@
             const estaEnCompleta = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
             if (estaEnCompleta) {
-                // Se oculta globalmente al estar activa la pantalla completa (no obstruye textos)
+                // Al dar clic y entrar a pantalla completa, se esfuma de TODAS las páginas
                 btnFs.classList.add("hidden");
             } else {
-                // CONDICIONAL CLAVE: Al salir con Esc o Gestos, solo vuelve a aparecer si estás en el inicio o en una portada
-                const esPortadaOInicio = currentSlideId === 'slide-inicio' || currentSlideId.includes('-portada');
-
-                if (esPortadaOInicio) {
-                    if (icon) icon.className = "fa-solid fa-expand text-amber-400";
-                    if (text) text.innerText = "PANTALLA COMPLETA";
-                    btnFs.classList.remove("hidden");
-                } else {
-                    btnFs.classList.add("hidden"); // Si estás dentro de una lectura, se queda oculto
-                }
+                // REGLA DE ORO: Al salir con Esc o gestos en CUALQUIER página, el botón resucita automáticamente
+                if (icon) icon.className = "fa-solid fa-expand text-amber-400";
+                if (text) text.innerText = "PANTALLA COMPLETA";
+                btnFs.classList.remove("hidden");
             }
         }
 
