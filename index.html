@@ -97,7 +97,7 @@
         /* =======================================================
            4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
            ======================================================= */
-        /* Fuerza a la presentación a abarcar la pantalla física limpia sin recortar nada abajo */
+        /* Fuerza a la presentación a abarcar la pantalla real sin deformar el contenido */
         html,
         body,
         #contenedor-presentacion {
@@ -109,13 +109,24 @@
             overflow: hidden !important;
         }
 
-        /* Asegura que cada slide fluya con el tamaño del contenedor raíz */
+        /* Asegura el flujo correcto a pantalla completa */
         .slide {
             width: 100% !important;
             height: 100% !important;
             min-height: 100% !important;
             box-sizing: border-box !important;
         }
+
+        /* Restablece el menú de inicio original de PC para que la cuadrícula fluyera perfecta */
+        #slide-inicio.active {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            height: 100% !important;
+            padding: 40px !important;
+        }
+
 
         /* =======================================================
            5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
