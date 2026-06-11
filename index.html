@@ -355,13 +355,19 @@
             }
         }
 
-        /* =======================================================
-           7. CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC
+                /* =======================================================
+           CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
+            /* SOLUCIÓN FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
+            #contenedor-presentacion {
+                max-width: 100% !important; 
+                width: 100% !important;
+                border-radius: 0px !important; 
+            }
 
-            /* 1. Restaura la cronología beige de PC para que deje de ser gigante y elimine el fondo azul */
-            [id$="-media-container"]~div,
+            /* SOLUCIÓN SCROLL CONGELADO: Devuelve el desplazamiento de las tarjetas beige en PC */
+            [id$="-media-container"] ~ div,
             [id^="timeline-scroll-"],
             .flex.gap-2.overflow-x-auto {
                 display: flex !important;
@@ -369,28 +375,25 @@
                 height: auto !important;
                 max-height: none !important;
                 margin-top: 0 !important;
+                overflow-x: auto !important; /* Reactiva el scroll horizontal con mouse o trackpad */
+                -webkit-overflow-scrolling: touch !important;
+                width: 100% !important;
             }
 
-            /* Devuelve el aspecto horizontal nativo de los botones beige en PC */
+            /* Devuelve el aspecto elástico y fluido original a los botones de eventos en PC */
             [id^="timeline-scroll-"] button,
-            .btn-era1,
-            .btn-era2,
-            .btn-era3,
-            .btn-era4,
-            .btn-era5,
-            .btn-era6 {
+            .btn-era1, .btn-era2, .btn-era3, .btn-era4, .btn-era5, .btn-era6 {
                 display: inline-block !important;
                 width: auto !important;
                 height: auto !important;
                 min-height: 0 !important;
                 padding: 8px 16px !important;
-                background-color: rgba(255, 255, 255, 0.4) !important;
-                /* Retorna el beige translúcido original */
-                color: #1e293b !important;
-                /* Texto slate oscuro legible original */
+                background-color: rgba(255, 255, 255, 0.4) !important; 
+                color: #1e293b !important; 
+                flex-shrink: 0 !important; /* Impide que las tarjetas beige colapsen o se encojan */
             }
 
-            /* 2. Corrige el contenedor multimedia de la derecha (Imagen y Caja Marrón) */
+            /* Mantiene la simetría nativa de la imagen y la tarjeta marrón de la derecha */
             .slide div:nth-of-type(2),
             [id$="-media-container"] {
                 position: relative !important;
@@ -403,7 +406,6 @@
                 overflow: hidden !important;
             }
 
-            /* Restaura la imagen a su tamaño nativo de PC */
             .slide img {
                 position: absolute !important;
                 inset: 0 !important;
@@ -413,23 +415,37 @@
                 object-fit: cover !important;
             }
 
-            /* 3. Devuelve los 6 botones del Menú de Inicio a su tamaño original compacto en PC */
+            /* SOLUCIÓN DE DISEÑO DEL MENÚ: Revive la rejilla nativa Grid de 6 columnas horizontales */
             #slide-inicio.active {
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
+                display: grid !important; /* ¡CORREGIDO! Cambiado de flex a grid estricto para PC */
+                grid-template-rows: auto 1fr !important; /* Separa el título arriba y la rejilla abajo */
+                align-content: space-between !important;
                 height: 100% !important;
+                padding: 60px 40px 40px 40px !important;
             }
 
-            /* Fuerza a la rejilla de los 6 botones a ser horizontal y simétrica en monitores */
+            /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC: Altura controlada y armónica */
             #slide-inicio.active .grid {
                 display: grid !important;
-                grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-                /* Rejilla estricta de 6 columnas */
-                gap: 16px !important;
+                grid-template-columns: repeat(6, minmax(0, 1fr)) !important; /* Fuerza las 6 columnas perfectas a lo ancho */
+                gap: 20px !important; /* Separación elegante entre las etapas */
                 width: 100% !important;
+                align-items: center !important;
+                margin-top: auto !important; /* Empuja las tarjetas limpiamente hacia el tercio inferior */
+                margin-bottom: auto !important;
+            }
+
+            /* Ajusta los botones internos para que dejen de estirarse hasta el suelo y luzcan como tarjetas */
+            #slide-inicio.active .grid button {
+                height: 140px !important; /* Altura perfecta tipo tarjeta rectangular estética en PC */
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                box-sizing: border-box !important;
             }
         }
+
     </style>
 </head>
 
