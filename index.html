@@ -126,13 +126,15 @@
             padding: 40px !important;
         }
 
-        /* El contenedor izquierdo expande el texto horizontalmente de forma segura */
+        /* El contenedor izquierdo expande el texto y distribuye el espacio en computadoras */
         .texto-evento,
         .slide>div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: flex-start !important;
-            height: auto !important;
+            justify-content: space-between !important;
+            /* ¡CAMBIADO! Distribuye uniformemente de arriba a abajo */
+            height: 100% !important;
+            /* Ocupa el 100% del contenedor para estirar la distribución */
             flex: 1 !important;
             padding-right: 5% !important;
         }
@@ -177,13 +179,15 @@
                 height: 100vh !important;
             }
 
-            /* Forzado elástico para centrar portadas sin tapar el menú o el scroll inferior */
+            /* Forzado elástico para centrar portadas cubriendo más pantalla en móviles */
             .slide[id$="-portada"].active {
                 justify-content: center !important;
                 align-items: center !important;
                 height: auto !important;
-                min-height: 60vh !important;
+                min-height: 78vh !important;
+                /* ¡AUMENTADO! Estira el fondo beige hacia abajo en el celular */
                 padding-top: 10px !important;
+                padding-bottom: 20px !important;
             }
 
             /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
