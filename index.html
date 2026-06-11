@@ -94,7 +94,7 @@
             border-radius: 4px;
         }
 
-        /* =======================================================
+                /* =======================================================
            4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
            ======================================================= */
         /* Fuerza a la presentación a abarcar la pantalla real sin deformar el contenido */
@@ -117,16 +117,17 @@
             box-sizing: border-box !important;
         }
 
-        /* Restablece el menú de inicio original de PC para que la cuadrícula fluyera perfecta */
-        #slide-inicio.active {
+        /* CORRECCIÓN CRÍTICA: Estilos exclusivos para la lectura interna de los eventos */
+        /* Excluye al inicio y a las portadas para que no rompa ni desalinee los textos */
+        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento, 
+        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
-            align-items: center !important;
             height: 100% !important;
-            padding: 40px !important;
+            flex: 1 !important;
+            padding-right: 5% !important;
         }
-
 
         /* =======================================================
            5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
@@ -355,71 +356,74 @@
             }
         }
 
-        /* =======================================================
+                /* =======================================================
            CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
-
             /* FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
             #contenedor-presentacion {
-                max-width: 100% !important;
+                max-width: 100% !important; 
                 width: 100% !important;
-                border-radius: 0px !important;
+                border-radius: 0px !important; 
             }
 
-            /* SOLUCIÓN TEXTO MÁS GRANDE EN PC: Apuntado a las clases nativas de texto de tu HTML */
-            .slide h2,
-            .text-2xl,
-            .md\:text-4xl,
-            [id$="-title"] {
-                font-size: 3.5rem !important;
-                /* Título de Pentecostés mucho más grande */
+            /* SOLUCIÓN AL CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
+            /* Une y fuerza el centrado absoluto del h1, subtítulos y la línea amarilla */
+            #slide-inicio.active .text-center,
+            #slide-inicio h1,
+            .slide h1 {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            /* SOLUCIÓN TEXTO MUCHO MÁS GRANDE EN PC */
+            #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
+            .slide h2 {
+                font-size: 4rem !important; /* Títulos gigantes y majestuosos en computadoras */
                 line-height: 1.1 !important;
                 margin-bottom: 24px !important;
             }
 
-            .slide p,
-            .text-sm,
-            .md\:text-lg,
-            [id$="-desc"] {
-                font-size: 1.55rem !important;
-                /* Texto un 30% más grande y legible en PC */
-                line-height: 1.7 !important;
+            #e1-desc, #e2-desc, #e3-desc, #e4-desc, #e5-desc, #e6-desc,
+            .slide p {
+                font-size: 1.75rem !important; /* Historias ultra legibles en monitores de escritorio */
+                line-height: 1.75 !important;
                 text-align: justify !important;
-                margin-bottom: 48px !important;
-                /* Colchón de espacio masivo abajo del párrafo */
+                margin-bottom: 64px !important; /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
             }
 
-            /* SOLUCIÓN SCROLL SEPARADO: Espacia y activa el deslizamiento de las tarjetas beige en PC */
-            .flex.gap-2.overflow-x-auto,
-            [id^="timeline-scroll-"] {
+            /* SOLUCIÓN SCROLL HASTA ABAJO: Separa drásticamente la cronología de la lectura */
+            .flex.gap-2.overflow-x-auto, [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
                 height: auto !important;
                 max-height: none !important;
-                margin-top: 32px !important;
-                /* Empuja el scroll hacia abajo alejándolo del texto */
-                overflow-x: auto !important;
-                /* Asegura el avance horizontal en PC */
+                margin-top: 40px !important; /* Mayor separación física desde arriba */
+                overflow-x: auto !important; /* Asegura el desplazamiento hacia los lados en PC */
                 width: 100% !important;
             }
 
-            /* Devuelve el aspecto horizontal y fluido original a los botones de eventos en PC */
+            /* Mantiene estables las tarjetas beige de los eventos en horizontal */
             [id^="timeline-scroll-"] button {
                 display: inline-block !important;
                 width: auto !important;
                 height: auto !important;
                 min-height: 0 !important;
-                padding: 10px 20px !important;
-                background-color: rgba(255, 255, 255, 0.4) !important;
-                color: #1e293b !important;
-                flex-shrink: 0 !important;
-                /* Impide que las tarjetas beige se deformen o encojan */
+                padding: 12px 24px !important;
+                background-color: rgba(255, 255, 255, 0.4) !important; 
+                color: #1e293b !important; 
+                flex-shrink: 0 !important; 
             }
 
-            /* Mantiene la simetría nativa de la imagen y la tarjeta marrón de la derecha */
-            .slide div:nth-of-type(2),
-            [id$="-media-container"] {
+            /* Contenedor multimedia e imágenes en PC */
+            .slide div:nth-of-type(2), [id$="-media-container"] {
                 position: relative !important;
                 display: block !important;
                 width: 100% !important;
@@ -439,44 +443,31 @@
                 object-fit: cover !important;
             }
 
-            /* DISEÑO DEL MENÚ: Revive la rejilla nativa Grid de 6 columnas horizontales */
+            /* DISEÑO DEL MENÚ: Cuadrícula horizontal fluida */
             #slide-inicio.active {
-                display: grid !important;
-                grid-template-rows: auto 1fr !important;
+                display: grid !important; 
+                grid-template-rows: auto 1fr !important; 
                 align-content: space-between !important;
                 height: 100% !important;
                 padding: 60px 40px 40px 40px !important;
             }
 
-            /* CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
-            #slide-inicio.active .text-center {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                text-align: center !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-            }
-
-            /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC: Altura controlada y armónica */
+            /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC */
             #slide-inicio.active .grid {
                 display: grid !important;
-                grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-                gap: 24px !important;
+                grid-template-columns: repeat(6, minmax(0, 1fr)) !important; 
+                gap: 24px !important; 
                 width: 100% !important;
-                max-width: 1152px !important;
+                max-width: 1152px !important; 
                 margin-left: auto !important;
                 margin-right: auto !important;
                 align-items: center !important;
-                margin-top: auto !important;
+                margin-top: auto !important; 
                 margin-bottom: auto !important;
             }
 
-            /* Ajusta los botones del menú inicial en PC */
             #slide-inicio.active .grid button {
-                height: 140px !important;
+                height: 140px !important; 
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: center !important;
@@ -484,6 +475,7 @@
                 box-sizing: border-box !important;
             }
         }
+
     </style>
 </head>
 
