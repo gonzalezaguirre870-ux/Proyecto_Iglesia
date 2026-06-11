@@ -355,42 +355,66 @@
             }
         }
 
-                /* =======================================================
+        /* =======================================================
            CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
-            /* SOLUCIÓN FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
+
+            /* FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
             #contenedor-presentacion {
-                max-width: 100% !important; 
+                max-width: 100% !important;
                 width: 100% !important;
-                border-radius: 0px !important; 
+                border-radius: 0px !important;
             }
 
-            /* SOLUCIÓN SCROLL CONGELADO: Devuelve el desplazamiento de las tarjetas beige en PC */
-            [id$="-media-container"] ~ div,
-            [id^="timeline-scroll-"],
-            .flex.gap-2.overflow-x-auto {
+            /* SOLUCIÓN TEXTO MÁS GRANDE EN PC: Apuntado a las clases nativas de texto de tu HTML */
+            .slide h2,
+            .text-2xl,
+            .md\:text-4xl,
+            [id$="-title"] {
+                font-size: 3.5rem !important;
+                /* Título de Pentecostés mucho más grande */
+                line-height: 1.1 !important;
+                margin-bottom: 24px !important;
+            }
+
+            .slide p,
+            .text-sm,
+            .md\:text-lg,
+            [id$="-desc"] {
+                font-size: 1.55rem !important;
+                /* Texto un 30% más grande y legible en PC */
+                line-height: 1.7 !important;
+                text-align: justify !important;
+                margin-bottom: 48px !important;
+                /* Colchón de espacio masivo abajo del párrafo */
+            }
+
+            /* SOLUCIÓN SCROLL SEPARADO: Espacia y activa el deslizamiento de las tarjetas beige en PC */
+            .flex.gap-2.overflow-x-auto,
+            [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
                 height: auto !important;
                 max-height: none !important;
-                margin-top: 0 !important;
-                overflow-x: auto !important; /* Reactiva el scroll horizontal con mouse o trackpad */
-                -webkit-overflow-scrolling: touch !important;
+                margin-top: 32px !important;
+                /* Empuja el scroll hacia abajo alejándolo del texto */
+                overflow-x: auto !important;
+                /* Asegura el avance horizontal en PC */
                 width: 100% !important;
             }
 
-            /* Devuelve el aspecto elástico y fluido original a los botones de eventos en PC */
-            [id^="timeline-scroll-"] button,
-            .btn-era1, .btn-era2, .btn-era3, .btn-era4, .btn-era5, .btn-era6 {
+            /* Devuelve el aspecto horizontal y fluido original a los botones de eventos en PC */
+            [id^="timeline-scroll-"] button {
                 display: inline-block !important;
                 width: auto !important;
                 height: auto !important;
                 min-height: 0 !important;
-                padding: 8px 16px !important;
-                background-color: rgba(255, 255, 255, 0.4) !important; 
-                color: #1e293b !important; 
-                flex-shrink: 0 !important; /* Impide que las tarjetas beige colapsen o se encojan */
+                padding: 10px 20px !important;
+                background-color: rgba(255, 255, 255, 0.4) !important;
+                color: #1e293b !important;
+                flex-shrink: 0 !important;
+                /* Impide que las tarjetas beige se deformen o encojan */
             }
 
             /* Mantiene la simetría nativa de la imagen y la tarjeta marrón de la derecha */
@@ -415,29 +439,44 @@
                 object-fit: cover !important;
             }
 
-            /* SOLUCIÓN DE DISEÑO DEL MENÚ: Revive la rejilla nativa Grid de 6 columnas horizontales */
+            /* DISEÑO DEL MENÚ: Revive la rejilla nativa Grid de 6 columnas horizontales */
             #slide-inicio.active {
-                display: grid !important; /* ¡CORREGIDO! Cambiado de flex a grid estricto para PC */
-                grid-template-rows: auto 1fr !important; /* Separa el título arriba y la rejilla abajo */
+                display: grid !important;
+                grid-template-rows: auto 1fr !important;
                 align-content: space-between !important;
                 height: 100% !important;
                 padding: 60px 40px 40px 40px !important;
             }
 
+            /* CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
+            #slide-inicio.active .text-center {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+
             /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC: Altura controlada y armónica */
             #slide-inicio.active .grid {
                 display: grid !important;
-                grid-template-columns: repeat(6, minmax(0, 1fr)) !important; /* Fuerza las 6 columnas perfectas a lo ancho */
-                gap: 20px !important; /* Separación elegante entre las etapas */
+                grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+                gap: 24px !important;
                 width: 100% !important;
+                max-width: 1152px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
                 align-items: center !important;
-                margin-top: auto !important; /* Empuja las tarjetas limpiamente hacia el tercio inferior */
+                margin-top: auto !important;
                 margin-bottom: auto !important;
             }
 
-            /* Ajusta los botones internos para que dejen de estirarse hasta el suelo y luzcan como tarjetas */
+            /* Ajusta los botones del menú inicial en PC */
             #slide-inicio.active .grid button {
-                height: 140px !important; /* Altura perfecta tipo tarjeta rectangular estética en PC */
+                height: 140px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: center !important;
@@ -445,7 +484,6 @@
                 box-sizing: border-box !important;
             }
         }
-
     </style>
 </head>
 
