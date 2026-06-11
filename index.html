@@ -112,7 +112,7 @@
             /* Evita que el padding extra colapse los elementos en Android */
         }
 
-        /* =======================================================
+                /* =======================================================
            5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
            ======================================================= */
         @media (max-width: 768px) {
@@ -123,7 +123,6 @@
                 flex-direction: column !important;
                 overflow-y: auto !important;
                 padding: 96px 16px 16px 16px !important;
-                /* Ajustado estrictamente a la rejilla de 8px */
                 justify-content: flex-start !important;
                 height: 100vh !important;
             }
@@ -135,12 +134,9 @@
                 justify-content: flex-start !important;
                 align-items: center !important;
                 height: 100vh !important;
-                /* Mantiene el fondo en toda la pantalla */
                 padding-top: 80px !important;
-                /* Reduce espacio arriba para ganar área útil */
                 padding-bottom: 24px !important;
                 overflow-y: auto !important;
-                /* ¡CLAVE! Permite scroll vertical si el texto empuja el botón */
             }
 
             /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
@@ -150,7 +146,6 @@
                 width: 100% !important;
                 padding-right: 0 !important;
                 margin-bottom: 16px !important;
-                /* Ajustado a múltiplo de 8 */
                 display: block !important;
             }
 
@@ -180,9 +175,7 @@
                 width: 100% !important;
                 height: auto !important;
                 max-height: 25vh !important;
-                /* Incrementado un 5% para mejorar visibilidad de imagen */
                 margin-top: 8px !important;
-                /* Reducido para pegarse más al texto */
                 margin-bottom: 8px !important;
                 overflow: hidden !important;
             }
@@ -207,11 +200,14 @@
                 right: 16px !important;
             }
 
-            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones */
+            /* SOLUCIÓN AL MENÚ APARTADO EN ANDROID: Separa los 6 bloques limpiamente con la rejilla */
             #slide-inicio.active {
-                justify-content: space-around !important;
-                padding: 80px 16px 32px 16px !important;
-                /* Rejilla de 8px */
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 16px !important; /* Espacio uniforme de 16px entre cada uno de los 6 bloques */
+                padding: 100px 16px 40px 16px !important;
                 height: 100vh !important;
             }
 
@@ -230,16 +226,14 @@
                 text-align: center !important;
             }
 
-            /* DISEÑO DEL BOTÓN INICIAR ERA (MÓVIL ESTÁNDAR 48PX COMPLETO) */
-            .slide[id$="-portada"] button,
+            /* ARREGLO ABSOLUTO PARA EL BOTÓN INICIAR ERA (MÓVIL ESTÁNDAR 48PX COMPLETO) */
+            /* Se removió la etiqueta genérica button para que NO afecte al botón de pantalla completa */
             .slide[id$="-portada"] .btn-iniciar-era {
                 position: static !important;
                 display: flex !important;
-                /* Flex para controlar dimensiones exactas */
                 align-items: center !important;
                 justify-content: center !important;
                 height: 48px !important;
-                /* Estándar estricto de Android para área táctil */
                 min-height: 48px !important;
                 line-height: 1 !important;
                 margin-top: 24px !important;
@@ -248,7 +242,6 @@
                 margin-right: auto !important;
                 width: auto !important;
                 min-width: 200px !important;
-                /* Base horizontal firme */
                 max-width: 90% !important;
                 font-size: 0.9rem !important;
                 padding: 0 24px !important;
@@ -267,10 +260,10 @@
             }
 
             /* SOLUCIÓN LÍNEA VERDE: Empuja las flechas de navegación y el contador a la esquina derecha */
-            #nav-superior>div:last-of-type,
-            .contenedor-flechas-navegacion {
-                margin-left: auto !important;
-                padding-right: 8px !important;
+            #nav-superior > div:last-of-type,
+            .contenedor-flechas-navegacion { 
+                margin-left: auto !important; 
+                padding-right: 8px !important; 
             }
         }
 
