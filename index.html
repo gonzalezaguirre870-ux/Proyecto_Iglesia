@@ -122,7 +122,7 @@
            ======================================================= */
         @media (max-width: 768px) {
 
-            /* AJUSTE DE DIAPOSITIVAS INTERNAS: Permite scroll si el texto es largo */
+            /* AJUSTE DE DIAPOSITIVAS INTERNES: Permite scroll si el texto es largo */
             .slide.active {
                 padding-top: 96px !important;
                 padding-bottom: 24px !important;
@@ -135,16 +135,13 @@
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
-                /* Mantiene la distribución original vertical */
                 align-items: stretch !important;
-                /* Hace que el contenido ocupe el ancho real del celular */
                 height: 100vh !important;
                 padding: 100px 24px 40px 24px !important;
-                /* Rellenos limpios múltiplos de 8 */
                 overflow-y: auto !important;
             }
 
-            /* Restablece la caja de texto interna de las portadas para que use el 100% de ancho */
+            /* Restablece la caja de texto interna de las portadas */
             .slide[id$="-portada"] .max-w-2xl {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -182,22 +179,32 @@
                 display: block !important;
             }
 
-            /* REPARACIÓN FINAL MULTIMEDIA: Caja elástica de 30vh que centra la ilustración */
-            .slide div:nth-of-type(2),
+            /* CORRECCIÓN DE CRONOLOGÍA CONGELADA Y LÍNEA ROJA MULTIMEDIA */
+            /* Apuntamos de forma estricta por el ID del contenedor de la imagen para que NO tape ni congele la barra beige */
             [id$="-media-container"] {
                 position: static !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 width: 100% !important;
-                height: 100% !important;
+                height: auto !important;
                 max-height: 30vh !important;
                 margin-top: 12px !important;
                 margin-bottom: 8px !important;
                 overflow: hidden !important;
             }
 
-            /* IMAGEN RESPONSIVA: Ocupa el espacio sin recortar los lados */
+            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA BEIGE */
+            [id$="-media-container"]~div,
+            [id^="timeline-scroll-"] {
+                display: flex !important;
+                overflow-x: auto !important;
+                /* Devuelve el giro y deslizamiento horizontal */
+                -webkit-overflow-scrolling: touch !important;
+                width: 100% !important;
+            }
+
+            /* IMAGEN RESPONSIVA COMPLETA */
             .slide img {
                 width: auto !important;
                 max-width: 100% !important;
@@ -215,11 +222,11 @@
                 right: 16px !important;
             }
 
-            /* MENÚ DE INICIO EN ANDROID: Respeta la cuadrícula original de Tailwind sin desbordar */
+            /* REPARACIÓN DEL MENÚ PRINCIPAL: Respetamos la rejilla nativa grid de Tailwind CSS */
             #slide-inicio.active {
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
+                display: grid !important;
+                /* Cambiado de flex a grid para revivir la cuadricula */
+                align-content: space-between !important;
                 padding: 100px 20px 40px 20px !important;
                 height: 100vh !important;
             }
@@ -230,7 +237,6 @@
                 align-items: center !important;
                 justify-content: center !important;
                 height: 48px !important;
-                /* Altura táctil reglamentaria de Android */
                 min-height: 48px !important;
                 line-height: 1 !important;
                 margin-top: 24px !important;
@@ -259,8 +265,6 @@
                 padding-right: 8px !important;
             }
         }
-
-        /* << LLAVE DE CIERRE OBLIGATORIA DEL @MEDIA DE MÓVILES */
 
         /* =======================================================
    6. OPTIMIZACIÓN DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
