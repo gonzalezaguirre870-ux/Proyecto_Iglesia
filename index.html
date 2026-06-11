@@ -122,96 +122,145 @@
            ======================================================= */
         @media (max-width: 768px) {
 
-            /* AJUSTE GENERAL DE DIAPOSITIVAS INTERNAS: Deja que respiren sin estirarse con dureza */
+            /* AJUSTE DE DIAPOSITIVAS INTERNAS: Permite scroll si el texto es largo */
             .slide.active {
                 padding-top: 96px !important;
-                /* Espacio para no obstruir el menú superior oscuro */
                 padding-bottom: 24px !important;
                 height: 100vh !important;
                 overflow-y: auto !important;
-                /* Permite scroll vertical en el celular si el texto es muy largo */
             }
 
-            /* SOLUCIÓN AL BOTÓN CORTADO: Da elasticidad a las Portadas de las 6 Eras en Android */
+            /* PORTADAS DE LAS ERAS: Evita que el texto se comprima al centro o se deforme */
             .slide[id$="-portada"].active {
-                padding-top: 96px !important;
-                padding-bottom: 32px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                /* Mantiene la distribución original vertical */
+                align-items: stretch !important;
+                /* Hace que el contenido ocupe el ancho real del celular */
                 height: 100vh !important;
+                padding: 100px 24px 40px 24px !important;
+                /* Rellenos limpios múltiplos de 8 */
                 overflow-y: auto !important;
-                /* ¡CLAVE! Si el texto de Apostólica/Reformada empuja el botón, permite bajar con el dedo suavemente */
             }
 
-            /* MENÚ DE INICIO EN ANDROID: Evita el colapso de los 6 botones oscuros dándoles espacio anatómico */
-            #slide-inicio.active {
-                padding-top: 100px !important;
-                padding-bottom: 32px !important;
-                height: 100vh !important;
-                justify-content: center !important;
-                /* Cambiado para permitir que el gap actúe libremente */
-                gap: 24px !important;
-                /* Separación de la rejilla estándar para evitar que se amontonen */
+            /* Restablece la caja de texto interna de las portadas para que use el 100% de ancho */
+            .slide[id$="-portada"] .max-w-2xl {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: auto 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
             }
 
-            /* REPARACIÓN FINAL MULTIMEDIA: Permite al contenedor adaptarse a la imagen entera */
+            /* Libera el bloque de texto en los eventos para que no se encime */
+            .texto-evento,
+            .slide>div:first-of-type {
+                height: auto !important;
+                width: 100% !important;
+                padding-right: 0 !important;
+                margin-bottom: 16px !important;
+                display: block !important;
+                flex: none !important;
+            }
+
+            /* Títulos equilibrados en pantallas táctiles */
+            .slide h2,
+            .slide h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.2 !important;
+                margin-top: 8px !important;
+                margin-bottom: 16px !important;
+                text-align: center !important;
+            }
+
+            /* Párrafos legibles en celulares */
+            .slide p {
+                font-size: 1rem !important;
+                line-height: 1.5 !important;
+                text-align: justify !important;
+                display: block !important;
+            }
+
+            /* REPARACIÓN FINAL MULTIMEDIA: Caja elástica de 30vh que centra la ilustración */
             .slide div:nth-of-type(2),
             [id$="-media-container"] {
                 position: static !important;
-                display: flex !important; 
+                display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 width: 100% !important;
-                height: 100% !important; 
-                max-height: 30vh !important; 
-                margin-top: 12px !important;  
+                height: 100% !important;
+                max-height: 30vh !important;
+                margin-top: 12px !important;
                 margin-bottom: 8px !important;
                 overflow: hidden !important;
             }
 
-            /* IMAGEN RESPONSIVA: Evita distorsiones en las ilustraciones históricas del celular */
+            /* IMAGEN RESPONSIVA: Ocupa el espacio sin recortar los lados */
             .slide img {
                 width: auto !important;
                 max-width: 100% !important;
                 height: auto !important;
-                max-height: 25vh !important;
+                max-height: 30vh !important;
                 object-fit: contain !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 border-radius: 12px !important;
             }
 
-            /* REUBICACIÓN DEL BOTÓN FLOTANTE EN CELULARES */
+            /* Reubicación del botón de pantalla completa en móviles */
             .btn-pantalla-completa {
                 top: 16px !important;
                 right: 16px !important;
             }
 
+            /* MENÚ DE INICIO EN ANDROID: Respeta la cuadrícula original de Tailwind sin desbordar */
+            #slide-inicio.active {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                padding: 100px 20px 40px 20px !important;
+                height: 100vh !important;
+            }
+
             /* ARREGLO MAESTRO PARA EL BOTÓN DE INICIAR ERA EN ANDROID (48PX COMPLETO) */
-            /* Busca de forma inteligente cualquier botón dentro de las portadas que use la función de navegación */
             .slide[id$="-portada"] button[onclick^="goToSlide"] {
                 display: flex !important;
-                /* Activamos flex para centrar el texto y la flechita interna */
                 align-items: center !important;
                 justify-content: center !important;
                 height: 48px !important;
-                /* Altura táctil obligatoria según las guías de Android */
+                /* Altura táctil reglamentaria de Android */
                 min-height: 48px !important;
                 line-height: 1 !important;
-                margin-top: 32px !important;
-                /* Le da espacio de protección respecto al párrafo largo */
-                margin-bottom: 16px !important;
+                margin-top: 24px !important;
+                margin-bottom: 0 !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 width: max-content !important;
-                max-width: 95% !important;
+                max-width: 100% !important;
                 box-sizing: border-box !important;
             }
 
-            /* SOLUCIÓN LÍNEA VERDE: Empuja las flechas de navegación a la esquina sin encoger el menú superior de PC */
+            /* CONTADOR INFERIOR DE EVENTOS */
+            .slide[id$="-portada"] span,
+            .slide[id$="-portada"] .text-xs {
+                position: static !important;
+                display: block !important;
+                margin-top: 16px !important;
+                font-size: 0.75rem !important;
+                text-align: center !important;
+                opacity: 0.8 !important;
+            }
+
+            /* CONTROLES SUPERIORES: Mueve las flechas a la esquina derecha limpiamente */
             #nav-superior>div:last-of-type {
                 margin-left: auto !important;
                 padding-right: 8px !important;
             }
         }
+
+        /* << LLAVE DE CIERRE OBLIGATORIA DEL @MEDIA DE MÓVILES */
 
         /* =======================================================
    6. OPTIMIZACIÓN DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
