@@ -30,8 +30,8 @@
     </script>
     <style>
         /* =======================================================
-           1. CORE & SISTEMA DE TRANSICIONES (CANVA/PREZI STYLE)
-           ======================================================= */
+        1. CORE & SISTEMA DE TRANSICIONES (CANVA/PREZI STYLE)
+        ======================================================= */
         .slide {
             display: none;
             opacity: 0;
@@ -46,8 +46,8 @@
         }
 
         /* =======================================================
-           2. FONDOS DINÁMICOS EVOLUTIVOS DE LAS ERAS
-           ======================================================= */
+        2. FONDOS DINÁMICOS EVOLUTIVOS DE LAS ERAS
+        ======================================================= */
         .bg-era-1 {
             background: linear-gradient(135deg, #f4e4bc 0%, #e4d0a0 100%);
             color: #3b2a1a;
@@ -79,8 +79,8 @@
         }
 
         /* =======================================================
-           3. PERSONALIZACIÓN DE SCROLLBARS INTERNOS
-           ======================================================= */
+        3. PERSONALIZACIÓN DE SCROLLBARS INTERNOS
+        ======================================================= */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -95,213 +95,335 @@
         }
 
         /* =======================================================
-           4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
-           ======================================================= */
-        /* Fuerza a toda la aplicación a abarcar la pantalla real sin recortar nada abajo */
+        4. ESTRUCTURA BASE UNIVERSAL (Box-Sizing Obligatorio)
+        ======================================================= */
         html,
-        body,
-        #contenedor-presentacion {
-            width: 100% !important;
-            height: 100vh !important;
-            min-height: 100vh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow: hidden !important;
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Asegura que cada diapositiva fluya con tamaño completo */
-        .slide {
-            width: 100% !important;
-            height: 100% !important;
-            min-height: 100% !important;
-            box-sizing: border-box !important;
-        }
-
-        /* Restablece el menú de inicio para que los 6 botones suban y se muestren en PC */
-        #slide-inicio.active {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            height: 100% !important;
-            padding: 40px !important;
-        }
-
-        /* El contenedor izquierdo expande el texto y distribuye el espacio en computadoras */
-        .texto-evento,
-        .slide>div:first-of-type {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            /* ¡CAMBIADO! Distribuye uniformemente de arriba a abajo */
-            height: 100% !important;
-            /* Ocupa el 100% del contenedor para estirar la distribución */
-            flex: 1 !important;
-            padding-right: 5% !important;
-        }
-
-        /* Títulos estables en PC utilizando rem tradicionales */
-        .slide h2,
-        .slide h1 {
-            font-size: 3rem !important;
-            font-weight: 800 !important;
-            margin-top: 0 !important;
-            margin-bottom: 1rem !important;
-        }
-
-        /* Párrafo elástico pero controlado */
-        .slide p {
-            font-size: 1.35rem !important;
-            line-height: 1.6 !important;
-            text-align: justify !important;
-            margin-bottom: 0 !important;
-            display: block !important;
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+            /* Evita que el padding extra colapse los elementos en Android */
         }
 
         /* =======================================================
-           5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
-           ======================================================= */
-        @media (max-width: 768px) {
+        5. DISEÑO BASE: MOBILE-FIRST (Optimizado para 360dp - 423dp)
+        ======================================================= */
+        #contenedor-presentacion {
+            width: 100%;
+            min-height: 100vh;
+        }
 
-            /* Ajuste estructural de la diapositiva en vertical */
-            .slide.active {
-                display: flex !important;
-                flex-direction: column !important;
-                overflow-y: auto !important;
-                padding: 90px 20px 20px 20px !important;
-                /* Espacio superior para no obstruir el menú */
-                justify-content: flex-start !important;
-                height: 100vh !important;
+        /* --- PÁGINA PRINCIPAL / MENÚ DE INICIO --- */
+        #slide-inicio.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            /* Alineación superior para ganar espacio vertical */
+            align-items: center;
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            /* Se estira si los botones rebasan la pantalla de 360dp */
+            padding: 48px 16px 32px 16px;
+            /* Rejilla de 8 */
+            overflow-y: auto;
+        }
+
+        #slide-inicio h1 {
+            font-size: 1.8rem;
+            line-height: 1.2;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        #slide-inicio p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Rejilla adaptativa de los 6 botones en móvil */
+        /* Nota: Asegúrate de usar una clase contenedora para tus 6 botones en el HTML */
+        .contenedor-botones,
+        #slide-inicio>div:last-of-type {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* Mantiene la matriz de 3 columnas */
+            gap: 8px;
+            /* Espaciado compacto estricto */
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+
+        .contenedor-botones button,
+        .contenedor-botones .btn-era,
+        #slide-inicio button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 56px;
+            /* Supera con holgura los 48px obligatorios de accesibilidad táctil */
+            padding: 8px;
+            font-size: 0.75rem;
+            /* Evita que textos como "IV. MEDIEVAL" se corten */
+            border-radius: 8px;
+        }
+
+        /* --- PORTADAS DE CADA ERA --- */
+        .slide[id$="-portada"].active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            /* Retiene el fondo completo */
+            padding: 48px 16px 32px 16px;
+            overflow-y: auto;
+            /* Activa scroll de emergencia en celulares muy cortos */
+        }
+
+        .slide[id$="-portada"] .texto-evento,
+        .slide[id$="-portada"] div:first-of-type {
+            width: 100%;
+            height: auto;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            padding: 0 16px;
+            text-align: center;
+            display: block;
+        }
+
+        .slide[id$="-portada"] h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .slide[id$="-portada"] p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 24px;
+            /* Empuja con seguridad el botón */
+        }
+
+        /* Botón "Iniciar Era" Rescatado */
+        .slide[id$="-portada"] button,
+        .slide[id$="-portada"] .btn-iniciar-era {
+            position: static;
+            display: inline-block;
+            width: auto;
+            min-width: 200px;
+            min-height: 48px;
+            /* Regla de oro de toque de 48px */
+            margin: 0 auto 16px auto;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Texto inferior ("16 Eventos...") */
+        .slide[id$="-portada"] span,
+        .slide[id$="-portada"] .text-xs {
+            position: static;
+            display: block;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* --- DIAPOSITIVAS INTERNAS DE EVENTOS (ESTILO PENTECOSTÉS) --- */
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            padding: 80px 16px 24px 16px;
+            /* Da aire para el menú superior compacto */
+            overflow-y: auto;
+        }
+
+        .texto-evento,
+        .slide>div:first-of-type {
+            width: 100%;
+            height: auto;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .slide h1,
+        .slide h2 {
+            font-size: 1.75rem;
+            line-height: 1.2;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .slide p {
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        /* Bloque multimedia / imagen en móvil */
+        .slide div:nth-of-type(2),
+        [id$="-media-container"] {
+            position: static;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 35vh;
+            /* Reserva espacio inteligente para que la imagen no opaque el texto */
+            margin-top: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .slide img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 30vh;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
+        /* Botón flotante de pantalla completa */
+        .btn-pantalla-completa {
+            top: 16px;
+            right: 16px;
+            min-width: 48px;
+            min-height: 48px;
+            padding: 8px 16px;
+        }
+
+        /* BARRA CRONOLÓGICA INFERIOR EN MÓVIL */
+        /* Cambia el comportamiento destructivo por un scroll horizontal táctil elegante */
+        .cronologia-era,
+        .slide div:last-of-type {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            /* Permite deslizar los años lateralmente */
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .cronologia-era div,
+        .cronologia-item {
+            flex: 0 0 auto;
+            /* Bloquea el colapso de los bloques de tiempo */
+            width: 100px;
+            padding: 6px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        /* =======================================================
+   6. OPTIMIZACIÓN DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
+   ======================================================= */
+        @media (min-width: 768px) {
+
+            html,
+            body,
+            #contenedor-presentacion {
+                height: 100vh;
+                overflow: hidden;
+                /* Congela el scroll en ordenadores */
             }
 
-            /* Permite scroll vertical y cubre el 100% de la pantalla beige en las portadas */
-            .slide[id$="-portada"].active {
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                align-items: center !important;
-                height: auto !important;
-                min-height: 100vh !important;
-                padding-top: 90px !important;
-                padding-bottom: 40px !important;
-                overflow-y: auto !important;
+            .slide {
+                width: 100%;
+                height: 100%;
             }
 
-            /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
+            /* Restablece la composición horizontal limpia en PC */
+            #slide-inicio.active {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                padding: 48px;
+            }
+
+            .contenedor-botones,
+            #slide-inicio>div:last-of-type {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+                margin-bottom: 0;
+            }
+
             .texto-evento,
             .slide>div:first-of-type {
-                height: auto !important;
-                width: 100% !important;
-                padding-right: 0 !important;
-                margin-bottom: 15px !important;
-                display: block !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+                flex: 1;
+                padding-right: 48px;
+                margin-bottom: 0;
             }
 
-            /* Redimensiona el título de forma equilibrada en móviles */
             .slide h2,
             .slide h1 {
-                font-size: 1.8rem !important;
-                line-height: 1.2 !important;
-                margin-top: 10px !important;
-                margin-bottom: 1rem !important;
-                text-align: center !important;
+                font-size: 3rem;
+                font-weight: 800;
+                margin-top: 0;
+                margin-bottom: 16px;
+                text-align: left;
             }
 
-            /* Párrafo fluido con lectura anatómica a la izquierda para los eventos comunes */
             .slide p {
-                font-size: 1rem !important;
-                line-height: 1.5 !important;
-                text-align: left !important;
-                display: block !important;
+                font-size: 1.35rem;
+                line-height: 1.6;
+                text-align: justify;
+                margin-bottom: 0;
             }
 
-            /* Contenedor multimedia: Espera su turno abajo de la cronología */
             .slide div:nth-of-type(2),
             [id$="-media-container"] {
-                position: static !important;
-                display: block !important;
-                width: 100% !important;
-                height: auto !important;
-                max-height: 20vh !important;
-                margin-top: 15px !important;
-                margin-bottom: 5px !important;
-                overflow: hidden !important;
+                max-height: none;
+                height: 100%;
             }
 
-            /* Imagen interna: Cero distorsión, mantiene proporción real */
             .slide img {
-                position: static !important;
-                display: block !important;
-                width: auto !important;
-                max-width: 100% !important;
-                height: auto !important;
-                max-height: 20vh !important;
-                object-fit: contain !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                border-radius: 8px !important;
+                max-height: none;
             }
 
-            /* Reubicación del botón de pantalla completa en celulares */
-            .btn-pantalla-completa {
-                top: 20px !important;
-                right: 15px !important;
-                padding: 6px 10px !important;
-            }
-
-            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones táctiles */
-            #slide-inicio.active {
-                justify-content: space-around !important;
-                padding: 80px 15px 30px 15px !important;
-                height: 100vh !important;
-            }
-
-            /* Compacta el bloque de texto en las portadas móviles para que el botón suba */
-            .slide[id$="-portada"] .texto-evento,
-            .slide[id$="-portada"] div:first-of-type {
-                padding-top: 10px !important;
-                margin-bottom: 10px !important;
-            }
-
-            /* Reduce ligeramente la descripción en la portada del celular para ganar espacio vertical */
-            .slide[id$="-portada"] p {
-                font-size: 0.95rem !important;
-                line-height: 1.4 !important;
-                margin-bottom: 15px !important;
-                text-align: center !important;
-            }
-
-            /* OPTIMIZACIÓN ABSOLUTA PARA PANTALLAS DE FÁBRICA 360dp */
-            .slide[id$="-portada"] button,
-            .slide[id$="-portada"] .btn-iniciar-era {
-                position: static !important;
-                display: block !important;
-                height: auto !important;
-                min-height: 40px !important;
-                /* Altura compacta ideal para móviles estándar */
-                line-height: 1.2 !important;
-                margin-top: 15px !important;
-                /* Reduce la separación para empujar el botón hacia arriba */
-                margin-bottom: 8px !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                width: max-content !important;
-                max-width: 90% !important;
-                font-size: 0.85rem !important;
-                /* Letra un poco más pequeña para ahorrar espacio */
-                padding: 10px 20px !important;
-                /* Botón estilizado y esbelto */
-            }
-
-            /* TEXTO INFERIOR COMPACTO ("16 Eventos...") */
-            .slide[id$="-portada"] span,
-            .slide[id$="-portada"] .text-xs {
-                position: static !important;
-                display: block !important;
-                margin-top: 2px !important;
-                font-size: 0.7rem !important;
-                text-align: center !important;
-                opacity: 0.8 !important;
+            .cronologia-era,
+            .slide div:last-of-type {
+                overflow-x: visible;
             }
         }
     </style>
