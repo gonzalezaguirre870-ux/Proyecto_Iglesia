@@ -94,7 +94,7 @@
             border-radius: 4px;
         }
 
-                /* =======================================================
+        /* =======================================================
            4. SISTEMA DE AJUSTE UNIVERSAL PARA COMPUTADORAS (PC)
            ======================================================= */
         /* Fuerza a la presentación a abarcar la pantalla real sin deformar el contenido */
@@ -119,8 +119,8 @@
 
         /* CORRECCIÓN CRÍTICA: Estilos exclusivos para la lectura interna de los eventos */
         /* Excluye al inicio y a las portadas para que no rompa ni desalinee los textos */
-        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento, 
-        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
+        .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
+        .slide.active:not([id$="-inicio"]):not([id$="-portada"])>div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
@@ -356,15 +356,16 @@
             }
         }
 
-                /* =======================================================
+        /* =======================================================
            CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
+
             /* FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
             #contenedor-presentacion {
-                max-width: 100% !important; 
+                max-width: 100% !important;
                 width: 100% !important;
-                border-radius: 0px !important; 
+                border-radius: 0px !important;
             }
 
             /* SOLUCIÓN AL CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
@@ -384,29 +385,45 @@
             }
 
             /* SOLUCIÓN TEXTO MUCHO MÁS GRANDE EN PC */
-            #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
+            #e1-title,
+            #e2-title,
+            #e3-title,
+            #e4-title,
+            #e5-title,
+            #e6-title,
             .slide h2 {
-                font-size: 4rem !important; /* Títulos gigantes y majestuosos en computadoras */
+                font-size: 4rem !important;
+                /* Títulos gigantes y majestuosos en computadoras */
                 line-height: 1.1 !important;
                 margin-bottom: 24px !important;
             }
 
-            #e1-desc, #e2-desc, #e3-desc, #e4-desc, #e5-desc, #e6-desc,
+            #e1-desc,
+            #e2-desc,
+            #e3-desc,
+            #e4-desc,
+            #e5-desc,
+            #e6-desc,
             .slide p {
-                font-size: 1.75rem !important; /* Historias ultra legibles en monitores de escritorio */
+                font-size: 1.75rem !important;
+                /* Historias ultra legibles en monitores de escritorio */
                 line-height: 1.75 !important;
                 text-align: justify !important;
-                margin-bottom: 64px !important; /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
+                margin-bottom: 64px !important;
+                /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
             }
 
             /* SOLUCIÓN SCROLL HASTA ABAJO: Separa drásticamente la cronología de la lectura */
-            .flex.gap-2.overflow-x-auto, [id^="timeline-scroll-"] {
+            .flex.gap-2.overflow-x-auto,
+            [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
                 height: auto !important;
                 max-height: none !important;
-                margin-top: 40px !important; /* Mayor separación física desde arriba */
-                overflow-x: auto !important; /* Asegura el desplazamiento hacia los lados en PC */
+                margin-top: 40px !important;
+                /* Mayor separación física desde arriba */
+                overflow-x: auto !important;
+                /* Asegura el desplazamiento hacia los lados en PC */
                 width: 100% !important;
             }
 
@@ -417,13 +434,14 @@
                 height: auto !important;
                 min-height: 0 !important;
                 padding: 12px 24px !important;
-                background-color: rgba(255, 255, 255, 0.4) !important; 
-                color: #1e293b !important; 
-                flex-shrink: 0 !important; 
+                background-color: rgba(255, 255, 255, 0.4) !important;
+                color: #1e293b !important;
+                flex-shrink: 0 !important;
             }
 
             /* Contenedor multimedia e imágenes en PC */
-            .slide div:nth-of-type(2), [id$="-media-container"] {
+            .slide div:nth-of-type(2),
+            [id$="-media-container"] {
                 position: relative !important;
                 display: block !important;
                 width: 100% !important;
@@ -445,8 +463,8 @@
 
             /* DISEÑO DEL MENÚ: Cuadrícula horizontal fluida */
             #slide-inicio.active {
-                display: grid !important; 
-                grid-template-rows: auto 1fr !important; 
+                display: grid !important;
+                grid-template-rows: auto 1fr !important;
                 align-content: space-between !important;
                 height: 100% !important;
                 padding: 60px 40px 40px 40px !important;
@@ -455,19 +473,19 @@
             /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC */
             #slide-inicio.active .grid {
                 display: grid !important;
-                grid-template-columns: repeat(6, minmax(0, 1fr)) !important; 
-                gap: 24px !important; 
+                grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+                gap: 24px !important;
                 width: 100% !important;
-                max-width: 1152px !important; 
+                max-width: 1152px !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 align-items: center !important;
-                margin-top: auto !important; 
+                margin-top: auto !important;
                 margin-bottom: auto !important;
             }
 
             #slide-inicio.active .grid button {
-                height: 140px !important; 
+                height: 140px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: center !important;
@@ -475,7 +493,6 @@
                 box-sizing: border-box !important;
             }
         }
-
     </style>
 </head>
 
@@ -1333,6 +1350,35 @@
             // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
             actualizaControlesPantallaCompleta();
         };
+
+        // =======================================================
+        // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
+        // =======================================================
+        let touchStartY = 0;
+        let touchMoveY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            // Solo registra el inicio si el usuario está en el tope absoluto del scroll vertical
+            if (window.scrollY === 0) {
+                touchStartY = e.touches[0].clientY;
+            } else {
+                touchStartY = 0;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (touchStartY === 0) return;
+
+            touchMoveY = e.touches[0].clientY;
+            const distance = touchMoveY - touchStartY;
+
+            // Si desliza hacia abajo más de 150 píxeles, recarga la aplicación
+            if (distance > 150) {
+                touchStartY = 0; // resetea el control
+                window.location.reload(); // Recarga la página limpiamente
+            }
+        }, { passive: true });
+
 
     </script>
 </body>
