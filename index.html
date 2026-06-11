@@ -1017,7 +1017,7 @@
                 if (event.image) {
                     const img = document.createElement("img");
                     img.src = event.image;
-                    img.className = "w-full h-full object-cover absolute inset-0 rounded-xl animate-fade-in";
+                    img.className = "w-full max-h-full object-contain rounded-xl animate-fade-in";
                     mediaContainer.appendChild(img);
                 } else {
                     const centerWrap = document.createElement("div");
