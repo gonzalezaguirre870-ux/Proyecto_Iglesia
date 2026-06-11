@@ -269,6 +269,30 @@
                 margin-bottom: 15px !important;
                 text-align: center !important;
             }
+
+            /* FUERZA AL BOTÓN DE INICIAR ERA A SUBIR Y RESPIRAR EN MÓVILES */
+            .slide[id$="-portada"] button,
+            .slide[id$="-portada"] .btn-iniciar-era {
+                position: static !important;
+                display: inline-block !important;
+                margin-top: 15px !important;
+                margin-bottom: 10px !important;
+                width: auto !important;
+                max-width: 90% !important;
+                font-size: 0.9rem !important;
+                padding: 10px 20px !important;
+            }
+
+            /* COMPACTA EL TEXTO DE ABAJO ("16 Eventos...") PARA QUE NO EMPUJE */
+            .slide[id$="-portada"] span,
+            .slide[id$="-portada"] .text-xs {
+                position: static !important;
+                display: block !important;
+                margin-top: 5px !important;
+                font-size: 0.75rem !important;
+                text-align: center !important;
+            }
+
         }
     </style>
 </head>
