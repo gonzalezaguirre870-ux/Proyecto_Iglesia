@@ -28,7 +28,7 @@
         }
     </script>
     <style>
-                /* =======================================================
+        /* =======================================================
            1. CORE & SISTEMA DE TRANSICIONES (CANVA/PREZI STYLE)
            ======================================================= */
         .slide {
@@ -96,21 +96,22 @@
         /* =======================================================
            4. SISTEMA ELÁSTICO UNIVERSAL PARA COMPUTADORAS
            ======================================================= */
-        .texto-evento, 
-        .slide > div:first-of-type {
+        .texto-evento,
+        .slide>div:first-of-type {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: space-between !important; 
+            justify-content: space-between !important;
             height: 100% !important;
             min-height: 0 !important;
             flex: 1 !important;
-            padding-right: 5% !important;           
-            container-type: size !important;         
+            padding-right: 5% !important;
+            container-type: size !important;
         }
 
-        .slide h2, .slide h1 {
-            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important; 
-            font-weight: 800 !important;            
+        .slide h2,
+        .slide h1 {
+            font-size: clamp(1.8rem, 15cqh, 3.8rem) !important;
+            font-weight: 800 !important;
             margin-top: 0 !important;
             margin-bottom: 0.5rem !important;
             position: relative !important;
@@ -118,46 +119,58 @@
         }
 
         .slide p {
-            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important; 
-            line-height: 1.5 !important;            
-            text-align: justify !important;         
-            text-justify: inter-word !important;     
-            text-align-last: left !important;       
+            font-size: clamp(1.1rem, 5.5cqh, 2.1rem) !important;
+            line-height: 1.5 !important;
+            text-align: justify !important;
+            text-justify: inter-word !important;
+            text-align-last: left !important;
             margin-bottom: 0 !important;
-            flex-grow: 1 !important;                
+            flex-grow: 1 !important;
             display: flex !important;
-            align-items: flex-start !important;     
+            align-items: flex-start !important;
         }
 
         /* =======================================================
            5. OPTIMIZACIÓN MULTIPLATAFORMA (MÓVILES DE 360dp A 423dp)
            ======================================================= */
         @media (max-width: 768px) {
-            
+
             /* Ajuste estructural de la diapositiva en vertical */
             .slide.active {
+                display: flex !important;
                 flex-direction: column !important;
                 overflow-y: auto !important;
-                padding: 80px 15px 20px 15px !important; /* Espacio para que respire abajo del menú */
+                padding: 80px 20px 20px 20px !important;
                 justify-content: flex-start !important;
+                height: 100vh !important;
             }
 
-            /* Libera el bloque de texto para evitar empujes innecesarios */
+            /* Estilo específico para corregir las portadas de cada era */
+            .slide[id$="-portada"].active {
+                justify-content: center !important;
+                /* Centra el contenido en pantallas cortas */
+                padding-top: 40px !important;
+            }
+
+            /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
             .texto-evento,
             .slide>div:first-of-type {
                 height: auto !important;
+                width: 100% !important;
                 padding-right: 0 !important;
                 margin-bottom: 15px !important;
                 display: block !important;
             }
 
-            /* Redimensiona el título para pantallas angostas */
+            /* Redimensiona el título de forma equilibrada */
             .slide h2,
             .slide h1 {
                 font-size: 1.8rem !important;
                 line-height: 1.2 !important;
                 margin-top: 10px !important;
                 margin-bottom: 1rem !important;
+                text-align: center !important;
+                /* Centrado estético en móviles */
             }
 
             /* Párrafo fluido con lectura anatómica a la izquierda */
@@ -175,46 +188,32 @@
                 display: block !important;
                 width: 100% !important;
                 height: auto !important;
-                max-height: 20vh !important; /* Límite de alto para salvaguardar la barra inferior */
+                max-height: 22vh !important;
                 margin-top: 15px !important;
                 margin-bottom: 5px !important;
                 overflow: hidden !important;
             }
 
-            /* Imagen interna: Cero distorsión, mantiene proporción real en 360dp y 423dp */
+            /* Imagen interna: Cero distorsión, mantiene proporción real */
             .slide img {
                 position: static !important;
                 display: block !important;
-                width: auto !important;       
-                max-width: 100% !important;   
+                width: auto !important;
+                max-width: 100% !important;
                 height: auto !important;
-                max-height: 20vh !important;  
-                object-fit: contain !important; 
+                max-height: 22vh !important;
+                object-fit: contain !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 border-radius: 8px !important;
             }
 
-            /* AJUSTE PARA PORTADAS: Centra el texto en pantallas de inicio de cada era */
-            .slide[id$="-portada"] {
-                justify-content: center !important; /* Centra el título verticalmente en el teléfono */
-                align-items: center !important;
-                text-align: center !important;
-                height: 100vh !important;
-            }
-
-            .slide[id$="-portada"] div:first-of-type {
-                justify-content: center !important;
-                height: auto !important;
-                margin-bottom: 0 !important;
-            }
-
-
-            /* Reubicación inteligente del botón de pantalla completa en celulares */
+            /* Reubicación del botón de pantalla completa en celulares */
             .btn-pantalla-completa {
-                top: 72px !important; 
-                right: 12px !important;
-                padding: 5px 8px !important; 
+                top: 20px !important;
+                /* Sube para alinearse cómodamente en la pantalla de inicio */
+                right: 15px !important;
+                padding: 6px 10px !important;
             }
         }
     </style>
@@ -866,52 +865,20 @@
             const nav = document.getElementById('nav-superior');
             const btnFs = document.getElementById('btn-fs');
 
+            // El menú superior se rige por su lógica nativa
             if (slideId.startsWith('slide-e') && !slideId.includes('portada')) {
                 if (nav) nav.classList.remove('hidden');
-                if (btnFs) btnFs.classList.remove('hidden');
             } else {
                 if (nav) nav.classList.add('hidden');
-                if (btnFs) btnFs.classList.add('hidden');
             }
+
+            // EL BOTÓN YA NO SE OCULTA AL CAMBIAR DE DIAPOSITIVA: Siempre forzamos su visibilidad aquí
+            if (btnFs) btnFs.classList.remove('hidden');
+
             updateNavHighlights();
             updateIndicators();
         }
 
-        function updateNavHighlights() {
-            document.querySelectorAll('.nav-era-btn').forEach(b => {
-                b.classList.remove('bg-amber-800/80', 'bg-red-800/80', 'bg-yellow-800/80', 'bg-blue-800/80', 'bg-slate-700/80', 'bg-emerald-800/80', 'text-white');
-                b.classList.add('text-slate-400');
-            });
-            if (currentSlideId === 'slide-e1') document.getElementById('nav-btn-era1')?.classList.add('bg-amber-800/80', 'text-white');
-            if (currentSlideId === 'slide-e2') document.getElementById('nav-btn-era2')?.classList.add('bg-red-800/80', 'text-white');
-            if (currentSlideId === 'slide-e3') document.getElementById('nav-btn-era3')?.classList.add('bg-yellow-800/80', 'text-white');
-            if (currentSlideId === 'slide-e4') document.getElementById('nav-btn-era4')?.classList.add('bg-blue-800/80', 'text-white');
-            if (currentSlideId === 'slide-e5') document.getElementById('nav-btn-era5')?.classList.add('bg-slate-700/80', 'text-white');
-            if (currentSlideId === 'slide-e6') document.getElementById('nav-btn-era6')?.classList.add('bg-emerald-800/80', 'text-white');
-        }
-
-        function updateIndicators() {
-            const index = slideSequence.indexOf(currentSlideId);
-            const indicator = document.getElementById('slide-indicator');
-            if (indicator) {
-                indicator.innerText = `${String(index + 1).padStart(2, '0')} / ${String(slideSequence.length).padStart(2, '0')}`;
-            }
-        }
-
-        function nextSlide() {
-            const idx = slideSequence.indexOf(currentSlideId);
-            if (idx < slideSequence.length - 1) goToSlide(slideSequence[idx + 1]);
-        }
-
-        function prevSlide() {
-            const idx = slideSequence.indexOf(currentSlideId);
-            if (idx > 0) goToSlide(slideSequence[idx - 1]);
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
 
         // =======================================================
         // 4. CARGA DINÁMICA DE EVENTOS (NUEVO RENDER)
@@ -1022,25 +989,15 @@
             if (!icon || !text || !btnFs) return;
 
             if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                icon.className = "fa-solid fa-compress text-amber-400";
-                text.innerText = "SALIR PANTALLA COMPLETA";
-                btnFs.classList.remove("hidden");
+                // SI ENTRÓ A PANTALLA COMPLETA: Ocultamos el botón por completo para que no obstruya la vista
+                btnFs.classList.add("hidden");
             } else {
+                // SI SALIÓ DE PANTALLA COMPLETA: El botón vuelve a aparecer inmediatamente
                 icon.className = "fa-solid fa-expand text-amber-400";
                 text.innerText = "PANTALLA COMPLETA";
-
-                if (currentSlideId.startsWith('slide-e') && !currentSlideId.includes('portada')) {
-                    btnFs.classList.remove("hidden");
-                } else {
-                    btnFs.classList.add("hidden");
-                }
+                btnFs.classList.remove("hidden");
             }
         }
-
-        document.addEventListener("fullscreenchange", actualizaControlesPantallaCompleta);
-        document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
-        document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta);
-        document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
 
         // =======================================================
         // 6. INICIALIZADOR DE LA APP WEB
