@@ -1353,17 +1353,15 @@
         document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
         document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta); // ¡CORREGIDO AQUÍ!
         document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
+
         // =======================================================
-        // 6. INICIALIZADOR DE LA APP WEB (EDICIÓN DEFINITIVA)
+        // 6. INICIALIZADOR DE LA APP WEB (VERSIÓN FINAL SEGURA)
         // =======================================================
         window.onload = function () {
             // Asigna los datos históricos globales de forma segura
             if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
 
-            // 1. CONEXIÓN CLAVE: Dibuja dinámicamente los botones de la cronología beige en las 6 etapas
-            renderTimelineNavigation();
-
-            // 2. Ejecuta la carga nativa del primer evento de cada era al arrancar
+            // 1. Ejecuta la carga nativa del primer evento de cada era al arrancar
             loadEvent('era1', 0);
             loadEvent('era2', 0);
             loadEvent('era3', 0);
@@ -1371,7 +1369,8 @@
             loadEvent('era5', 0);
             loadEvent('era6', 0);
 
-            // 3. Temporizador controlado exclusivo para móviles Android
+            // 2. Temporizador controlado exclusivo para móviles Android
+            // Solo ejecuta el ajuste del scroll si la pantalla es táctil pequeña (max-width: 768px)
             if (window.innerWidth <= 768) {
                 setTimeout(function () {
                     for (let i = 1; i <= 6; i++) {
@@ -1399,11 +1398,9 @@
                 }, 150);
             }
 
-            // 4. Fuerza al botón de pantalla completa a revivir en la portada principal
+            // 3. COMPLEMENTO OBLIGATORIO: Fuerza al botón de pantalla completa a revivir en la portada
             actualizaControlesPantallaCompleta();
-        }; // Cierra la función window.onload
-
-
+        }; // Cierra de forma estricta e impecable la función window.onload
 
         // =======================================================
         // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
