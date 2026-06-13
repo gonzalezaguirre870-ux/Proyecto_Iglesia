@@ -1359,10 +1359,10 @@
         // =======================================================
         window.onload = function () {
             if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
-            
+
             // 1. Renderiza los botones de la barra de eventos beige
             renderTimelineNavigation();
-            
+
             // 2. Ejecuta la carga nativa del primer evento de cada era al arrancar
             loadEvent('era1', 0);
             loadEvent('era2', 0);
@@ -1370,10 +1370,6 @@
             loadEvent('era4', 0);
             loadEvent('era5', 0);
             loadEvent('era6', 0);
-
-            // 3. Comprueba el estado de la pantalla completa para quitar el hidden si estás en el inicio
-            actualizaControlesPantallaCompleta();
-        }; // << Llave y punto y coma obligatorios para cerrar el window.onload
 
             // =======================================================
             // FORZAR SCROLL HORIZONTAL EN TODAS LAS CRONOLOGÍAS
@@ -1399,7 +1395,6 @@
                             btn.style.whiteSpace = 'normal';
                             btn.style.wordBreak = 'break-word';
                         });
-
                         console.log(`✅ Era${i} - Scroll horizontal activado con ${buttons.length} botones`);
                     } else {
                         console.log(`❌ Era${i} - Contenedor no encontrado`);
@@ -1410,7 +1405,7 @@
             // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
             // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
             actualizaControlesPantallaCompleta();
-        };
+        }; // << ¡REPARADO AQUÍ! Una sola llave con punto y coma para cerrar el window.onload
 
         // =======================================================
         // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
