@@ -1228,7 +1228,7 @@
         });
 
         // =======================================================
-        // 4. CARGA DINÁMICA DE EVENTOS (PREVENCIÓN DE BLOQUEO TÁCTIL EN ANDROID)
+        // 4. CARGA DINÁMICA DE EVENTOS (VERSIÓN DEFINITIVA CORREGIDA)
         // =======================================================
         function loadEvent(eraKey, idx) {
             if (!window.eventsData || !window.eventsData[eraKey] || !window.eventsData[eraKey][idx]) return;
@@ -1237,19 +1237,19 @@
             const event = window.eventsData[eraKey][idx];
             const numKey = eraKey.replace('era', 'e');
 
-            // SOLUCIÓN AL CONGELAMIENTO: Buscamos los elementos estrictamente dentro de su slide padre
+            // Buscamos los elementos de manera segura dentro del slide padre correspondiente
             const slidePadre = document.getElementById(`slide-${numKey}`);
             if (!slidePadre) return;
 
-            const titleEl = slidePadre.querySelector(`[id$="-title"]`);
-            const descEl = slidePadre.querySelector(`[id$="-desc"]`);
-            const progressEl = slidePadre.querySelector(`[id$="-progress-num]`) || document.getElementById(`${eraKey}-progress-num`);
-            const mediaContainer = slidePadre.querySelector(`[id$="-media-container"]`);
+            const titleEl = slidePadre.querySelector('h2');
+            const descEl = slidePadre.querySelector('p');
+            const progressEl = document.getElementById(`${eraKey}-progress-num`);
+            const mediaContainer = document.getElementById(`${numKey}-media-container`);
 
             if (titleEl) titleEl.innerText = event.title;
             if (descEl) descEl.innerText = event.desc;
 
-            // Corrige la separación estética obligatoria agregando el espacio real HTML
+            // Corrige de forma segura el espacio que querías entre la 'a' y el '1'
             if (progressEl) progressEl.innerHTML = `&nbsp;${idx + 1}`;
 
             if (mediaContainer) {
@@ -1284,7 +1284,7 @@
                 }
             }
 
-            // Actualiza el estado visual del botón activo dentro de su respectiva cronología
+            // Mantiene actualizados los botones beige de la cronología activa
             const cronoContenedor = document.getElementById(`timeline-scroll-${eraKey}`);
             if (cronoContenedor) {
                 cronoContenedor.querySelectorAll(`.btn-${eraKey}`).forEach((btn, bIdx) => {
