@@ -207,13 +207,24 @@
             }
 
             /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA BEIGE */
-            [id$="-media-container"]~div,
             [id^="timeline-scroll-"] {
                 display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
                 overflow-x: auto !important;
-                /* Devuelve el giro y deslizamiento horizontal */
+                overflow-y: hidden !important;
                 -webkit-overflow-scrolling: touch !important;
                 width: 100% !important;
+                gap: 8px !important;
+                padding-bottom: 8px !important;
+            }
+
+            [id^="timeline-scroll-"] button {
+                flex: 0 0 auto !important;
+                min-width: 110px !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                text-align: center !important;
             }
 
             /* IMAGEN RESPONSIVA COMPLETA */
