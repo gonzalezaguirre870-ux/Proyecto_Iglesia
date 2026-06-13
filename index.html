@@ -1353,17 +1353,14 @@
         document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
         document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta); // ¡CORREGIDO AQUÍ!
         document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
-
         // =======================================================
-        // 6. INICIALIZADOR DE LA APP WEB (CORREGIDO Y SEGURO)
+        // 6. INICIALIZADOR DE LA APP WEB (VERSIÓN FINAL SEGURA)
         // =======================================================
         window.onload = function () {
+            // Asigna los datos históricos globales de forma segura
             if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
 
-            // 1. Renderiza los botones de la barra de eventos beige
-            renderTimelineNavigation();
-
-            // 2. Ejecuta la carga nativa del primer evento de cada era al arrancar
+            // 1. Ejecuta la carga nativa del primer evento de cada era al arrancar
             loadEvent('era1', 0);
             loadEvent('era2', 0);
             loadEvent('era3', 0);
@@ -1371,41 +1368,39 @@
             loadEvent('era5', 0);
             loadEvent('era6', 0);
 
-            // =======================================================
-            // FORZAR SCROLL HORIZONTAL EN TODAS LAS CRONOLOGÍAS
-            // =======================================================
-            setTimeout(function () {
-                for (let i = 1; i <= 6; i++) {
-                    const container = document.getElementById(`timeline-scroll-era${i}`);
-                    if (container) {
-                        container.style.display = 'flex';
-                        container.style.flexDirection = 'row';
-                        container.style.flexWrap = 'nowrap';
-                        container.style.overflowX = 'auto';
-                        container.style.overflowY = 'hidden';
-                        container.style.WebkitOverflowScrolling = 'touch';
-                        container.style.gap = '8px';
-                        container.style.paddingBottom = '8px';
+            // 2. Temporizador controlado exclusivo para móviles Android
+            // Solo ejecuta el ajuste del scroll si la pantalla es táctil pequeña (max-width: 768px)
+            if (window.innerWidth <= 768) {
+                setTimeout(function () {
+                    for (let i = 1; i <= 6; i++) {
+                        const container = document.getElementById(`timeline-scroll-era${i}`);
+                        if (container) {
+                            container.style.display = 'flex';
+                            container.style.flexDirection = 'row';
+                            container.style.flexWrap = 'nowrap';
+                            container.style.overflowX = 'auto';
+                            container.style.overflowY = 'hidden';
+                            container.style.WebkitOverflowScrolling = 'touch';
+                            container.style.gap = '8px';
+                            container.style.paddingBottom = '8px';
 
-                        // También arregla los botones dentro del contenedor
-                        const buttons = container.querySelectorAll('button');
-                        buttons.forEach(btn => {
-                            btn.style.flex = '0 0 auto';
-                            btn.style.minWidth = '100px';
-                            btn.style.whiteSpace = 'normal';
-                            btn.style.wordBreak = 'break-word';
-                        });
-                        console.log(`✅ Era${i} - Scroll horizontal activado con ${buttons.length} botones`);
-                    } else {
-                        console.log(`❌ Era${i} - Contenedor no encontrado`);
+                            const buttons = container.querySelectorAll('button');
+                            buttons.forEach(btn => {
+                                btn.style.flex = '0 0 auto';
+                                btn.style.minWidth = '100px';
+                                btn.style.whiteSpace = 'normal';
+                                btn.style.wordBreak = 'break-word';
+                            });
+                            console.log(`✅ Era${i} - Scroll horizontal activo`);
+                        }
                     }
-                }
-            }, 100); // Pequeño retraso para asegurar que el DOM esté listo
+                }, 150);
+            }
 
-            // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
-            // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
+            // 3. COMPLEMENTO OBLIGATORIO: Fuerza al botón de pantalla completa a revivir en la portada
             actualizaControlesPantallaCompleta();
-        }; // << ¡REPARADO AQUÍ! Una sola llave con punto y coma para cerrar el window.onload
+        }; // Cierra de forma estricta e impecable la función window.onload
+
 
         // =======================================================
         // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
