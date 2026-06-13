@@ -1293,11 +1293,16 @@
             if (!window.eventsData) return;
             Object.keys(window.eventsData).forEach(eraKey => {
                 const scrollContainer = document.getElementById(`timeline-scroll-${eraKey}`);
+
                 if (scrollContainer) {
                     scrollContainer.innerHTML = '';
                     (window.eventsData[eraKey] || []).forEach((ev, idx) => {
                         const btn = document.createElement('button');
-                        btn.className = `btn-${eraKey} px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap bg-white/40 text-slate-800`;
+
+                        // Inyecta las clases responsivas correctas de Android para que no se aplasten
+                        btn.className = `btn-${eraKey} px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap bg-white/40 text-slate-800 flex-shrink-0`;
+                        btn.style.flexShrink = "0"; // Asegura el comportamiento elástico horizontal en móviles
+
                         btn.innerHTML = `${ev.year}<br>${ev.title}`;
                         btn.onclick = () => loadEvent(eraKey, idx);
                         scrollContainer.appendChild(btn);
