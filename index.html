@@ -206,42 +206,14 @@
                 overflow: hidden !important;
             }
 
-            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA EN LAS 6 ERAS */
-            /* Listamos explícitamente los 6 IDs de tu HTML para romper el bloqueo táctil en Android */
-            #timeline-scroll-era1,
-            #timeline-scroll-era2,
-            #timeline-scroll-era3,
-            #timeline-scroll-era4,
-            #timeline-scroll-era5,
-            #timeline-scroll-era6,
+            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA BEIGE */
+            [id$="-media-container"]~div,
             [id^="timeline-scroll-"] {
                 display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
                 overflow-x: auto !important;
-                /* Activa por la fuerza el scroll horizontal */
-                overflow-y: hidden !important;
+                /* Devuelve el giro y deslizamiento horizontal */
                 -webkit-overflow-scrolling: touch !important;
-                /* Suaviza el arrastre con el dedo en Android */
                 width: 100% !important;
-                gap: 8px !important;
-                padding-bottom: 8px !important;
-            }
-
-            /* Mantiene los botones beige estables y con base firme para que se puedan pulsar */
-            #timeline-scroll-era1 button,
-            #timeline-scroll-era2 button,
-            #timeline-scroll-era3 button,
-            #timeline-scroll-era4 button,
-            #timeline-scroll-era5 button,
-            #timeline-scroll-era6 button,
-            [id^="timeline-scroll-"] button {
-                flex: 0 0 auto !important;
-                /* Impide de forma estricta que los botones se aplasten o encojan */
-                min-width: 110px !important;
-                white-space: normal !important;
-                word-break: break-word !important;
-                text-align: center !important;
             }
 
             /* IMAGEN RESPONSIVA COMPLETA */
@@ -1228,7 +1200,7 @@
         });
 
         // =======================================================
-        // 4. CARGA DINÁMICA DE EVENTOS (VERSIÓN DEFINITIVA CORREGIDA)
+        // 4. CARGA DINÁMICA DE EVENTOS (NUEVO RENDER DE MEDIOS)
         // =======================================================
         function loadEvent(eraKey, idx) {
             if (!window.eventsData || !window.eventsData[eraKey] || !window.eventsData[eraKey][idx]) return;
@@ -1237,19 +1209,13 @@
             const event = window.eventsData[eraKey][idx];
             const numKey = eraKey.replace('era', 'e');
 
-            // Buscamos los elementos de manera segura dentro del slide padre correspondiente
-            const slidePadre = document.getElementById(`slide-${numKey}`);
-            if (!slidePadre) return;
-
-            const titleEl = slidePadre.querySelector('h2');
-            const descEl = slidePadre.querySelector('p');
+            const titleEl = document.getElementById(`${numKey}-title`);
+            const descEl = document.getElementById(`${numKey}-desc`);
             const progressEl = document.getElementById(`${eraKey}-progress-num`);
             const mediaContainer = document.getElementById(`${numKey}-media-container`);
 
             if (titleEl) titleEl.innerText = event.title;
             if (descEl) descEl.innerText = event.desc;
-
-            // Corrige de forma segura el espacio que querías entre la 'a' y el '1'
             if (progressEl) progressEl.innerHTML = `&nbsp;${idx + 1}`;
 
             if (mediaContainer) {
@@ -1284,19 +1250,32 @@
                 }
             }
 
-            // Mantiene actualizados los botones beige de la cronología activa
-            const cronoContenedor = document.getElementById(`timeline-scroll-${eraKey}`);
-            if (cronoContenedor) {
-                cronoContenedor.querySelectorAll(`.btn-${eraKey}`).forEach((btn, bIdx) => {
-                    if (bIdx === idx) {
-                        btn.classList.add('bg-slate-900', 'text-white', 'scale-105');
-                        btn.classList.remove('bg-white/40', 'text-slate-800');
-                    } else {
-                        btn.classList.remove('bg-slate-900', 'text-white', 'scale-105');
-                        btn.classList.add('bg-white/40', 'text-slate-800');
-                    }
-                });
-            }
+            document.querySelectorAll(`.btn-${eraKey}`).forEach((btn, bIdx) => {
+                if (bIdx === idx) {
+                    btn.classList.add('bg-slate-900', 'text-white', 'scale-105');
+                    btn.classList.remove('bg-white/40', 'text-slate-800');
+                } else {
+                    btn.classList.remove('bg-slate-900', 'text-white', 'scale-105');
+                    btn.classList.add('bg-white/40', 'text-slate-800');
+                }
+            });
+        }
+
+        function renderTimelineNavigation() {
+            if (!window.eventsData) return;
+            Object.keys(window.eventsData).forEach(eraKey => {
+                const scrollContainer = document.getElementById(`timeline-scroll-${eraKey}`);
+                if (scrollContainer) {
+                    scrollContainer.innerHTML = '';
+                    (window.eventsData[eraKey] || []).forEach((ev, idx) => {
+                        const btn = document.createElement('button');
+                        btn.className = `btn-${eraKey} px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap bg-white/40 text-slate-800`;
+                        btn.innerHTML = `${ev.year}<br>${ev.title}`;
+                        btn.onclick = () => loadEvent(eraKey, idx);
+                        scrollContainer.appendChild(btn);
+                    });
+                }
+            });
         }
 
         // =======================================================
@@ -1353,15 +1332,13 @@
         document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
         document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta); // ¡CORREGIDO AQUÍ!
         document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
-        
+
         // =======================================================
-        // 6. INICIALIZADOR DE LA APP WEB (VERSIÓN FINAL SEGURA)
+        // 6. INICIALIZADOR DE LA APP WEB
         // =======================================================
         window.onload = function () {
-            // Asigna los datos históricos globales de forma segura
             if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
-            
-            // 1. Ejecuta la carga nativa del primer evento de cada era al arrancar
+            renderTimelineNavigation();
             loadEvent('era1', 0);
             loadEvent('era2', 0);
             loadEvent('era3', 0);
@@ -1369,38 +1346,10 @@
             loadEvent('era5', 0);
             loadEvent('era6', 0);
 
-            // 2. Temporizador controlado exclusivo para móviles Android
-            // Solo ejecuta el ajuste del scroll si la pantalla es táctil pequeña (max-width: 768px)
-            if (window.innerWidth <= 768) {
-                setTimeout(function () {
-                    for (let i = 1; i <= 6; i++) {
-                        const container = document.getElementById(`timeline-scroll-era${i}`);
-                        if (container) {
-                            container.style.display = 'flex';
-                            container.style.flexDirection = 'row';
-                            container.style.flexWrap = 'nowrap';
-                            container.style.overflowX = 'auto';
-                            container.style.overflowY = 'hidden';
-                            container.style.WebkitOverflowScrolling = 'touch';
-                            container.style.gap = '8px';
-                            container.style.paddingBottom = '8px';
-
-                            const buttons = container.querySelectorAll('button');
-                            buttons.forEach(btn => {
-                                btn.style.flex = '0 0 auto';
-                                btn.style.minWidth = '100px';
-                                btn.style.whiteSpace = 'normal';
-                                btn.style.wordBreak = 'break-word';
-                            });
-                            console.log(`✅ Era${i} - Scroll horizontal activo`);
-                        }
-                    }
-                }, 150);
-            }
-
-            // 3. COMPLEMENTO OBLIGATORIO: Fuerza al botón de pantalla completa a revivir en la portada
+            // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
+            // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
             actualizaControlesPantallaCompleta();
-        }; // Cierra de forma estricta e impecable la función window.onload
+        };
 
         // =======================================================
         // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
@@ -1430,22 +1379,7 @@
             }
         }, { passive: true });
 
-        // Forzar scroll horizontal en todas las eras
-        for (let i = 1; i <= 6; i++) {
-            const container = document.getElementById(`timeline-scroll-era${i}`);
-            if (container) {
-                container.style.display = 'flex';
-                container.style.flexDirection = 'row';
-                container.style.flexWrap = 'nowrap';
-                container.style.overflowX = 'auto';
-                container.style.overflowY = 'hidden';
-                container.style.WebkitOverflowScrolling = 'touch';
-                container.style.gap = '8px';
-                console.log(`Era${i} corregida`);
-            } else {
-                console.log(`Era${i} no encontrada`);
-            }
-        }
+
     </script>
 </body>
 
