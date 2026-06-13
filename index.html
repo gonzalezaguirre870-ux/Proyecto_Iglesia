@@ -206,21 +206,38 @@
                 overflow: hidden !important;
             }
 
-            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA BEIGE */
+            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA EN LAS 6 ERAS */
+            /* Listamos explícitamente los 6 IDs de tu HTML para romper el bloqueo táctil en Android */
+            #timeline-scroll-era1,
+            #timeline-scroll-era2,
+            #timeline-scroll-era3,
+            #timeline-scroll-era4,
+            #timeline-scroll-era5,
+            #timeline-scroll-era6,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
                 flex-wrap: nowrap !important;
                 overflow-x: auto !important;
+                /* Activa por la fuerza el scroll horizontal */
                 overflow-y: hidden !important;
                 -webkit-overflow-scrolling: touch !important;
+                /* Suaviza el arrastre con el dedo en Android */
                 width: 100% !important;
                 gap: 8px !important;
                 padding-bottom: 8px !important;
             }
 
+            /* Mantiene los botones beige estables y con base firme para que se puedan pulsar */
+            #timeline-scroll-era1 button,
+            #timeline-scroll-era2 button,
+            #timeline-scroll-era3 button,
+            #timeline-scroll-era4 button,
+            #timeline-scroll-era5 button,
+            #timeline-scroll-era6 button,
             [id^="timeline-scroll-"] button {
                 flex: 0 0 auto !important;
+                /* Impide de forma estricta que los botones se aplasten o encojan */
                 min-width: 110px !important;
                 white-space: normal !important;
                 word-break: break-word !important;
