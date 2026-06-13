@@ -1176,15 +1176,14 @@
                 if (nav) nav.classList.add('hidden');
             }
 
-            // Lógica del botón de pantalla completa al navegar entre diapositivas
+            // LÓGICA DE PANTALLA COMPLETA SIMPLIFICADA AL CAMBIAR DIAPOSITIVA
             if (btnFs) {
                 const estaEnCompleta = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
-                // El botón solo se muestra en el menú de inicio y portadas si NO está maximizado
-                if (!estaEnCompleta) {
-                    btnFs.classList.remove('hidden');
+                if (estaEnCompleta) {
+                    btnFs.classList.add('hidden'); // Si está maximizado, SIEMPRE oculto en cualquier página
                 } else {
-                    btnFs.classList.add('hidden');
+                    btnFs.classList.remove('hidden'); // Si NO está maximizado, SIEMPRE visible listo para usarse
                 }
             }
 
@@ -1229,7 +1228,7 @@
         });
 
         // =======================================================
-        // 4. CARGA DINÁMICA DE EVENTOS (CÓDIGO DE INYECCIÓN DE DATOS)
+        // 4. CARGA DINÁMICA DE EVENTOS (VERSIÓN DEFINITIVA CORREGIDA)
         // =======================================================
         function loadEvent(eraKey, idx) {
             if (!window.eventsData || !window.eventsData[eraKey] || !window.eventsData[eraKey][idx]) return;
@@ -1238,6 +1237,7 @@
             const event = window.eventsData[eraKey][idx];
             const numKey = eraKey.replace('era', 'e');
 
+            // Buscamos los elementos de manera segura dentro del slide padre correspondiente
             const slidePadre = document.getElementById(`slide-${numKey}`);
             if (!slidePadre) return;
 
@@ -1249,7 +1249,7 @@
             if (titleEl) titleEl.innerText = event.title;
             if (descEl) descEl.innerText = event.desc;
 
-            // Añade el espacio real requerido entre la 'a' y el número
+            // Corrige de forma segura el espacio que querías entre la 'a' y el '1'
             if (progressEl) progressEl.innerHTML = `&nbsp;${idx + 1}`;
 
             if (mediaContainer) {
@@ -1284,6 +1284,7 @@
                 }
             }
 
+            // Mantiene actualizados los botones beige de la cronología activa
             const cronoContenedor = document.getElementById(`timeline-scroll-${eraKey}`);
             if (cronoContenedor) {
                 cronoContenedor.querySelectorAll(`.btn-${eraKey}`).forEach((btn, bIdx) => {
@@ -1298,32 +1299,11 @@
             }
         }
 
-        function renderTimelineNavigation() {
-            if (!window.eventsData) return;
-
-            Object.keys(window.eventsData).forEach(eraKey => {
-                const scrollContainer = document.getElementById(`timeline-scroll-${eraKey}`);
-
-                if (scrollContainer) {
-                    scrollContainer.innerHTML = '';
-                    const eventosDeLaEra = window.eventsData[eraKey] || [];
-
-                    eventosDeLaEra.forEach((ev, idx) => {
-                        const btn = document.createElement('button');
-                        btn.className = `btn-${eraKey} px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap bg-white/40 text-slate-800 flex-shrink-0`;
-                        btn.style.flexShrink = "0";
-                        btn.innerHTML = `${ev.year}<br>${ev.title}`;
-                        btn.onclick = () => loadEvent(eraKey, idx);
-                        scrollContainer.appendChild(btn);
-                    });
-                }
-            });
-        }
-
         // =======================================================
-        // 5. CONTROL INTELIGENTE DE PANTALLA COMPLETA NATIVA
+        // 5. CONTROL INTELIGENTE DE PANTALLA COMPLETA NATIVA (UNIFICADO)
         // =======================================================
         function toggleFullscreen() {
+            // SOLUCIÓN: Aplicamos la pantalla completa a la raíz (documentElement) para abarcar todas las diapositivas
             const elem = document.documentElement;
             const btnFs = document.getElementById("btn-fs");
             if (!elem) return;
@@ -1331,124 +1311,141 @@
             if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
                 const requestFS = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
                 if (requestFS) {
+                    // Ocultar botón inmediatamente al dar clic
                     if (btnFs) btnFs.classList.add("hidden");
+
                     requestFS.call(elem).catch(err => {
-                        if (btnFs) btnFs.classList.remove("hidden");
+                        // Si falla la activación, evaluamos si debe reaparecer según la diapositiva actual
+                        const esPortadaOInicio = currentSlideId === 'slide-inicio' || currentSlideId.includes('-portada');
+                        if (btnFs && esPortadaOInicio) btnFs.classList.remove("hidden");
                         console.log(`Error al activar pantalla completa: ${err.message}`);
                     });
                 }
             } else {
-                const exitFS = document.exitFullscreen ||
-                    document.webkitExitFullscreen ||
-                    document.mozCancelFullScreen ||
-                    document.msExitFullscreen;
+                const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
                 if (exitFS) {
                     exitFS.call(document);
                 }
             }
+        }
+        function actualizaControlesPantallaCompleta() {
+            const icon = document.getElementById("fs-icon");
+            const text = document.getElementById("fs-text");
+            const btnFs = document.getElementById("btn-fs");
 
-            function actualizaControlesPantallaCompleta() {
-                const icon = document.getElementById("fs-icon");
-                const text = document.getElementById("fs-text");
-                const btnFs = document.getElementById("btn-fs");
+            if (!btnFs) return;
 
-                if (!btnFs) return;
+            const estaEnCompleta = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
-                const estaEnCompleta = document.fullscreenElement ||
-                    document.webkitFullscreenElement ||
-                    document.mozFullScreenElement ||
-                    document.msFullscreenElement;
-
-                if (estaEnCompleta) {
-                    btnFs.classList.add("hidden");
-                } else {
-                    if (icon) icon.className = "fa-solid fa-expand text-amber-400";
-                    if (text) text.innerText = "PANTALLA COMPLETA";
-                    btnFs.classList.remove("hidden");
-                }
-            }
-
-            document.addEventListener("fullscreenchange", actualizaControlesPantallaCompleta);
-            document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
-            document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta);
-            document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
-
-            // =======================================================
-            // 6. INICIALIZADOR DE LA APP WEB 
-            // =======================================================
-            window.onload = function () {
-                if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
-
-                renderTimelineNavigation();
-
-                loadEvent('era1', 0);
-                loadEvent('era2', 0);
-                loadEvent('era3', 0);
-                loadEvent('era4', 0);
-                loadEvent('era5', 0);
-                loadEvent('era6', 0);
-
-                if (window.innerWidth <= 768) {
-                    setTimeout(function () {
-                        for (let i = 1; i <= 6; i++) {
-                            const container = document.getElementById(`timeline-scroll-era${i}`);
-                            if (container) {
-                                container.style.display = 'flex';
-                                container.style.flexDirection = 'row';
-                                container.style.flexWrap = 'nowrap';
-                                container.style.overflowX = 'auto';
-                                container.style.overflowY = 'hidden';
-                                container.style.WebkitOverflowScrolling = 'touch';
-                                container.style.gap = '8px';
-                                container.style.paddingBottom = '8px';
-
-                                const buttons = container.querySelectorAll('button');
-                                buttons.forEach(btn => {
-                                    btn.style.flex = '0 0 auto';
-                                    btn.style.minWidth = '100px';
-                                    btn.style.whiteSpace = 'normal';
-                                    btn.style.wordBreak = 'break-word';
-                                });
-                            }
-                        }
-                    }, 150);
-                }
-
-                actualizaControlesPantallaCompleta();
-            };
-
-            // =======================================================
-            // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH COMPATIBLE CON FULLSCREEN
-            // =======================================================
-            let startY = 0;
-            const contenedorPresentacion = document.getElementById('contenedor-presentacion');
-
-            if (contenedorPresentacion) {
-                contenedorPresentacion.addEventListener('touchstart', (e) => {
-                    startY = e.touches.pageY;
-                }, { passive: true });
-
-                contenedorPresentacion.addEventListener('touchmove', (e) => {
-                    if (!startY) return;
-
-                    const currentY = e.touches.pageY;
-                    const diffY = currentY - startY;
-
-                    const activeSlide = document.querySelector('.slide.active');
-                    if (activeSlide && activeSlide.scrollTop > 0) return;
-
-                    if (diffY > 180) {
-                        startY = 0;
-                        window.location.reload();
-                    }
-                }, { passive: true });
-
-                contenedorPresentacion.addEventListener('touchend', () => {
-                    startY = 0;
-                }, { passive: true });
+            if (estaEnCompleta) {
+                // Al dar clic y entrar a pantalla completa, se esfuma de TODAS las páginas
+                btnFs.classList.add("hidden");
+            } else {
+                // REGLA DE ORO: Al salir con Esc o gestos en CUALQUIER página, el botón resucita automáticamente
+                if (icon) icon.className = "fa-solid fa-expand text-amber-400";
+                if (text) text.innerText = "PANTALLA COMPLETA";
+                btnFs.classList.remove("hidden");
             }
         }
 
+        // Escuchadores multi-navegador nativos para PC y Android
+        document.addEventListener("fullscreenchange", actualizaControlesPantallaCompleta);
+        document.addEventListener("webkitfullscreenchange", actualizaControlesPantallaCompleta);
+        document.addEventListener("mozfullscreenchange", actualizaControlesPantallaCompleta); // ¡CORREGIDO AQUÍ!
+        document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
+        
+        // =======================================================
+        // 6. INICIALIZADOR DE LA APP WEB (VERSIÓN FINAL SEGURA)
+        // =======================================================
+        window.onload = function () {
+            // Asigna los datos históricos globales de forma segura
+            if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
+            
+            // 1. Ejecuta la carga nativa del primer evento de cada era al arrancar
+            loadEvent('era1', 0);
+            loadEvent('era2', 0);
+            loadEvent('era3', 0);
+            loadEvent('era4', 0);
+            loadEvent('era5', 0);
+            loadEvent('era6', 0);
+
+            // 2. Temporizador controlado exclusivo para móviles Android
+            // Solo ejecuta el ajuste del scroll si la pantalla es táctil pequeña (max-width: 768px)
+            if (window.innerWidth <= 768) {
+                setTimeout(function () {
+                    for (let i = 1; i <= 6; i++) {
+                        const container = document.getElementById(`timeline-scroll-era${i}`);
+                        if (container) {
+                            container.style.display = 'flex';
+                            container.style.flexDirection = 'row';
+                            container.style.flexWrap = 'nowrap';
+                            container.style.overflowX = 'auto';
+                            container.style.overflowY = 'hidden';
+                            container.style.WebkitOverflowScrolling = 'touch';
+                            container.style.gap = '8px';
+                            container.style.paddingBottom = '8px';
+
+                            const buttons = container.querySelectorAll('button');
+                            buttons.forEach(btn => {
+                                btn.style.flex = '0 0 auto';
+                                btn.style.minWidth = '100px';
+                                btn.style.whiteSpace = 'normal';
+                                btn.style.wordBreak = 'break-word';
+                            });
+                            console.log(`✅ Era${i} - Scroll horizontal activo`);
+                        }
+                    }
+                }, 150);
+            }
+
+            // 3. COMPLEMENTO OBLIGATORIO: Fuerza al botón de pantalla completa a revivir en la portada
+            actualizaControlesPantallaCompleta();
+        }; // Cierra de forma estricta e impecable la función window.onload
+
+        // =======================================================
+        // INTERACCIÓN TÁCTIL: PULL-TO-REFRESH NATIVO PARA ANDROID
+        // =======================================================
+        let touchStartY = 0;
+        let touchMoveY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            // Solo registra el inicio si el usuario está en el tope absoluto del scroll vertical
+            if (window.scrollY === 0) {
+                touchStartY = e.touches[0].clientY;
+            } else {
+                touchStartY = 0;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (touchStartY === 0) return;
+
+            touchMoveY = e.touches[0].clientY;
+            const distance = touchMoveY - touchStartY;
+
+            // Si desliza hacia abajo más de 150 píxeles, recarga la aplicación
+            if (distance > 150) {
+                touchStartY = 0; // resetea el control
+                window.location.reload(); // Recarga la página limpiamente
+            }
+        }, { passive: true });
+
+        // Forzar scroll horizontal en todas las eras
+        for (let i = 1; i <= 6; i++) {
+            const container = document.getElementById(`timeline-scroll-era${i}`);
+            if (container) {
+                container.style.display = 'flex';
+                container.style.flexDirection = 'row';
+                container.style.flexWrap = 'nowrap';
+                container.style.overflowX = 'auto';
+                container.style.overflowY = 'hidden';
+                container.style.WebkitOverflowScrolling = 'touch';
+                container.style.gap = '8px';
+                console.log(`Era${i} corregida`);
+            } else {
+                console.log(`Era${i} no encontrada`);
+            }
+        }
     </script>
 </body>
 
