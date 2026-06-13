@@ -1374,6 +1374,39 @@
             loadEvent('era5', 0);
             loadEvent('era6', 0);
 
+
+            // =======================================================
+            // FORZAR SCROLL HORIZONTAL EN TODAS LAS CRONOLOGÍAS
+            // =======================================================
+            setTimeout(function () {
+                for (let i = 1; i <= 6; i++) {
+                    const container = document.getElementById(`timeline-scroll-era${i}`);
+                    if (container) {
+                        container.style.display = 'flex';
+                        container.style.flexDirection = 'row';
+                        container.style.flexWrap = 'nowrap';
+                        container.style.overflowX = 'auto';
+                        container.style.overflowY = 'hidden';
+                        container.style.WebkitOverflowScrolling = 'touch';
+                        container.style.gap = '8px';
+                        container.style.paddingBottom = '8px';
+
+                        // También arregla los botones dentro del contenedor
+                        const buttons = container.querySelectorAll('button');
+                        buttons.forEach(btn => {
+                            btn.style.flex = '0 0 auto';
+                            btn.style.minWidth = '100px';
+                            btn.style.whiteSpace = 'normal';
+                            btn.style.wordBreak = 'break-word';
+                        });
+
+                        console.log(`✅ Era${i} - Scroll horizontal activado con ${buttons.length} botones`);
+                    } else {
+                        console.log(`❌ Era${i} - Contenedor no encontrado`);
+                    }
+                }
+            }, 100); // Pequeño retraso para asegurar que el DOM esté listo
+
             // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
             // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
             actualizaControlesPantallaCompleta();
@@ -1407,7 +1440,22 @@
             }
         }, { passive: true });
 
-
+        // Forzar scroll horizontal en todas las eras
+        for (let i = 1; i <= 6; i++) {
+            const container = document.getElementById(`timeline-scroll-era${i}`);
+            if (container) {
+                container.style.display = 'flex';
+                container.style.flexDirection = 'row';
+                container.style.flexWrap = 'nowrap';
+                container.style.overflowX = 'auto';
+                container.style.overflowY = 'hidden';
+                container.style.WebkitOverflowScrolling = 'touch';
+                container.style.gap = '8px';
+                console.log(`Era${i} corregida`);
+            } else {
+                console.log(`Era${i} no encontrada`);
+            }
+        }
     </script>
 </body>
 
