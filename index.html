@@ -452,24 +452,25 @@
                 border-radius: 0px !important; 
             }
 
-            /* ESTRUCTURA DE EVENTOS EN PC: Fuerza una distribución vertical elástica perfecta */
-            /* Controla el bloque de texto izquierdo para que ocupe todo el alto disponible sin reventar */
+            /* ESTRUCTURA DE EVENTOS EN PC: Distribución vertical controlada de la columna izquierda */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-between !important; /* Manda el texto arriba y la cronología al fondo */
+                justify-content: flex-start !important; /* Alineación fija desde el techo */
                 height: 100% !important;
                 width: 66.666667% !important;
                 padding-right: 40px !important;
                 box-sizing: border-box !important;
             }
 
-            /* AREA EXCLUSIVA DE PARRAFO: Limita el texto y le da scroll propio si es gigante, destruyendo el imán */
+            /* AREA DEL PÁRRAFO: Rompe el imán limitando estrictamente el espacio del texto */
+            /* En laptops pequeñas, el texto se autocontendrá aquí con un scroll sutil sin mover nada abajo */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) p {
-                max-height: calc(100vh - 340px) !important; /* Tope estricto de lectura en computadoras */
-                overflow-y: auto !important; /* Si la historia es muy larga, sale scroll suave en el texto, no en la cronología */
-                margin-bottom: 24px !important;
+                height: 45vh !important; /* Altura estricta e inamovible para el bloque de lectura en PC */
+                max-height: 45vh !important;
+                overflow-y: auto !important; /* Si la historia es muy larga, sale scroll vertical en el texto */
+                margin-bottom: 32px !important; /* Separación física fija respecto a la cronología */
                 font-size: 1.55rem !important; 
                 line-height: 1.7 !important;
                 text-align: justify !important;
