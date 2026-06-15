@@ -450,29 +450,45 @@
                 max-width: 100% !important; 
                 width: 100% !important;
                 border-radius: 0px !important; 
+                position: relative !important;
             }
 
-            /* ESTRUCTURA DE EVENTOS EN PC: Distribución vertical controlada de la columna izquierda */
+            /* RESTRUCTURACIÓN DE LA COLUMNA IZQUIERDA EN PC */
+            /* Mantiene la distribución vertical ordenada sin que el texto altere la cronología */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: flex-start !important; /* Alineación fija desde el techo */
+                justify-content: flex-start !important; 
                 height: 100% !important;
                 width: 66.666667% !important;
                 padding-right: 40px !important;
                 box-sizing: border-box !important;
             }
 
-            /* AREA DEL PÁRRAFO: Rompe el imán limitando estrictamente el espacio del texto */
-            /* En laptops pequeñas, el texto se autocontendrá aquí con un scroll sutil sin mover nada abajo */
+            /* SOLUCIÓN AL TAMAÑO DE FUENTES Y TÍTULOS LARGOS EN MONITORES */
+            /* Evita que los encabezados de tres líneas empujen la cronología hacia abajo en laptops */
+            #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
+            .slide h2 {
+                font-size: clamp(2rem, 2.6vw, 3.2rem) !important; 
+                line-height: 1.15 !important;
+                margin-bottom: 16px !important;
+                max-height: 2.4em !important; 
+                overflow: hidden !important; 
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important; 
+                -webkit-box-orient: vertical !important;
+            }
+
+            /* REAJUSTE DE ALTURA DEL PÁRRAFO COMPACTO EN PC */
+            /* Al recortar el título arriba, abrimos más espacio libre en medio para el texto largo */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) p {
-                height: 45vh !important; /* Altura estricta e inamovible para el bloque de lectura en PC */
+                height: 45vh !important;
                 max-height: 45vh !important;
-                overflow-y: auto !important; /* Si la historia es muy larga, sale scroll vertical en el texto */
-                margin-bottom: 32px !important; /* Separación física fija respecto a la cronología */
+                overflow-y: auto !important; 
+                margin-bottom: 32px !important;
                 font-size: 1.55rem !important; 
-                line-height: 1.7 !important;
+                line-height: 1.65 !important;
                 text-align: justify !important;
             }
 
@@ -485,29 +501,22 @@
                 text-align: center !important;
             }
 
-            /* SOLUCIÓN AL TAMAÑO DE FUENTES EN MONITORES */
-            #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
-            .slide h2 {
-                font-size: 3.5rem !important; 
-                line-height: 1.1 !important;
-                margin-bottom: 24px !important;
-            }
-
             /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
-            /* SOLUCIÓN DE IMÁN: Caja estática asentada naturalmente abajo */
+            /* SOLUCIÓN DE IMÁN: Al medir el texto exactamente 45vh, esta caja se queda quieta en su sitio siempre */
             #timeline-scroll-era1, #timeline-scroll-era2, #timeline-scroll-era3,
             #timeline-scroll-era4, #timeline-scroll-era5, #timeline-scroll-era6 {
-                margin-top: auto !important; /* Empuja de forma fija las tarjetas beige al suelo absoluto */
+                margin-top: 0 !important; 
             }
 
+            /* SOLUCIÓN SCROLL INTEGRAL PC: Altura perfecta que manda la barra al ras del piso absoluto */
             .flex.gap-2.overflow-x-auto,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
-                height: 120px !important; /* Altura perfecta para los botones y la barra */
-                max-height: 120px !important;
+                height: 125px !important; 
+                max-height: 125px !important;
                 width: 100% !important;
-                padding-bottom: 24px !important; /* Colchón de aire masivo que avienta la barra gris al piso absoluto */
+                padding-bottom: 24px !important; 
                 align-items: flex-start !important; 
                 box-sizing: border-box !important;
                 overflow-x: auto !important; 
@@ -533,7 +542,7 @@
                 box-sizing: border-box !important;
             }
 
-            /* Contenedor multimedia de ilustraciones a la derecha */
+            /* Contenedor multimedia de de ilustraciones a la derecha */
             .slide div:nth-of-type(2), [id$="-media-container"] {
                 position: relative !important;
                 display: block !important;
