@@ -503,13 +503,15 @@
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
-                height: auto !important;
-                max-height: none !important;
-                margin-top: 40px !important;
-                /* Mayor separación física desde arriba */
-                overflow-x: auto !important;
-                /* Asegura el desplazamiento hacia los lados en PC */
+                height: 115px !important; 
+                max-height: 115px !important;
+                margin-top: 24px !important; 
+                overflow-x: auto !important; 
+                overflow-y: hidden !important; 
                 width: 100% !important;
+                padding-bottom: 20px !important; 
+                align-items: flex-start !important; 
+                box-sizing: border-box !important;
             }
 
             /* Mantiene estables las tarjetas beige de los eventos en horizontal */
