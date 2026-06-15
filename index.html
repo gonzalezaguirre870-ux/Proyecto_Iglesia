@@ -451,25 +451,36 @@
                 max-width: 100% !important;
                 width: 100% !important;
                 border-radius: 0px !important;
+                position: relative !important;
+                /* Base necesaria para el anclaje absoluto inferior */
             }
 
-            /* SOLUCIÓN AL CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
-            /* Une y fuerza el centrado absoluto del h1, subtítulos y la línea amarilla */
-            #slide-inicio.active .text-center,
-            #slide-inicio h1,
-            .slide h1 {
+            /* RESTRUCTURACIÓN DE LA COLUMNA IZQUIERDA EN PC */
+            /* SOLUCIÓN DE IMÁN: El texto respira y tiene scroll propio si es muy largo, liberando a la cronología */
+            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
+            .slide.active:not([id$="-inicio"]):not([id$="-portada"])>div:first-of-type {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                height: calc(100vh - 280px) !important;
+                /* Limita el bloque de lectura en monitores compactos o grandes */
+                overflow-y: auto !important;
+                /* Activa scroll interno vertical exclusivo para el párrafo largo */
+                padding-right: 24px !important;
+                box-sizing: border-box !important;
+                width: 66.666667% !important;
+            }
+
+            /* CENTRADO DE BIENVENIDA EN PC: Alineación perfecta de títulos */
+            #slide-inicio.active .text-center {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 text-align: center !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
             }
 
-            /* SOLUCIÓN TEXTO MUCHO MÁS GRANDE EN PC */
+            /* SOLUCIÓN AL TAMAÑO DE FUENTES EN MONITORES */
             #e1-title,
             #e2-title,
             #e3-title,
@@ -477,8 +488,7 @@
             #e5-title,
             #e6-title,
             .slide h2 {
-                font-size: 4rem !important;
-                /* Títulos gigantes y majestuosos en computadoras */
+                font-size: 3.5rem !important;
                 line-height: 1.1 !important;
                 margin-bottom: 24px !important;
             }
@@ -490,41 +500,88 @@
             #e5-desc,
             #e6-desc,
             .slide p {
-                font-size: 1.75rem !important;
-                /* Historias ultra legibles en monitores de escritorio */
-                line-height: 1.75 !important;
+                font-size: 1.55rem !important;
+                line-height: 1.7 !important;
                 text-align: justify !important;
-                margin-bottom: 64px !important;
-                /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
+                margin-bottom: 24px !important;
             }
 
-            /* SOLUCIÓN SCROLL HASTA ABAJO: Separa drásticamente la cronología de la lectura */
+            /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
+            /* SOLUCIÓN DE IMÁN DEFINITIVA: Clava la caja de fondo de forma estática en la base izquierda */
+            .bg-amber-950\/5,
+            .bg-red-950\/40,
+            .bg-blue-950\/40,
+            .bg-slate-950\/5,
+            .bg-blue-950\/5,
+            .slide div[class*="bg-"] {
+                position: absolute !important;
+                /* Independiente del texto para que no flote ni se encoja */
+                bottom: 24px !important;
+                /* Clavado rígidamente a 24px del piso del monitor */
+                left: 24px !important;
+                width: calc(66.666667% - 48px) !important;
+                /* Cubre simétricamente el ancho de la lectura izquierda */
+                height: 135px !important;
+                /* Altura física e inamovible para resguardar el scroll */
+                min-height: 135px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                padding: 12px 16px !important;
+                box-sizing: border-box !important;
+                z-index: 10 !important;
+                border-radius: 12px !important;
+            }
+
+            /* SOLUCIÓN SCROLL INTEGRAL PC: Altura perfecta que manda la barra al ras del piso absoluto */
+            #timeline-scroll-era1,
+            #timeline-scroll-era2,
+            #timeline-scroll-era3,
+            #timeline-scroll-era4,
+            #timeline-scroll-era5,
+            #timeline-scroll-era6,
             .flex.gap-2.overflow-x-auto,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
                 height: 115px !important;
-                max-height: 114px !important;
-                margin-top: 24px !important;
-                /* Mayor separación física desde arriba */
+                max-height: 115px !important;
+                margin-top: auto !important;
                 overflow-x: auto !important;
-                /* Asegura el desplazamiento hacia los lados en PC */
+                overflow-y: hidden !important;
                 width: 100% !important;
+                padding-bottom: 24px !important;
+                /* Colchón que avienta la barra gris al suelo de la caja */
+                align-items: flex-start !important;
+                box-sizing: border-box !important;
             }
 
-            /* Mantiene estables las tarjetas beige de los eventos en horizontal */
-            [id^="timeline-scroll-"] button {
-                display: inline-block !important;
+            /* Botones de la cronología interna horizontal en la computadora */
+            [id^="timeline-scroll-era"] button,
+            .btn-era1,
+            .btn-era2,
+            .btn-era3,
+            .btn-era4,
+            .btn-era5,
+            .btn-era6 {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
                 width: auto !important;
-                height: auto !important;
-                min-height: 0 !important;
-                padding: 12px 24px !important;
+                min-width: 180px !important;
+                /* Ancho extendido premium para que el hito respire */
+                height: 70px !important;
+                padding: 8px 16px !important;
                 background-color: rgba(255, 255, 255, 0.4) !important;
                 color: #1e293b !important;
                 flex-shrink: 0 !important;
+                border-radius: 8px !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
             }
 
-            /* Contenedor multimedia e imágenes en PC */
+            /* Contenedor multimedia de ilustraciones a la derecha */
             .slide div:nth-of-type(2),
             [id$="-media-container"] {
                 position: relative !important;
@@ -546,7 +603,8 @@
                 object-fit: cover !important;
             }
 
-            /* DISEÑO DEL MENÚ: Cuadrícula horizontal fluida */
+            /* RESTAURACIÓN TOTAL DE DISEÑO EN EL MENÚ DE INICIO EN PC */
+            /* Revive la rejilla nativa Grid de 6 columnas horizontales perfectas */
             #slide-inicio.active {
                 display: grid !important;
                 grid-template-rows: auto 1fr !important;
@@ -555,7 +613,7 @@
                 padding: 60px 40px 40px 40px !important;
             }
 
-            /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC */
+            /* Ajusta los 6 bloques de las eras para que recuperen su forma premium rectangular */
             #slide-inicio.active .grid {
                 display: grid !important;
                 grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
@@ -569,6 +627,7 @@
                 margin-bottom: auto !important;
             }
 
+            /* Fuerza la altura exacta y alineación centrada de los 6 botones del inicio */
             #slide-inicio.active .grid button {
                 height: 140px !important;
                 display: flex !important;
@@ -577,49 +636,9 @@
                 align-items: center !important;
                 box-sizing: border-box !important;
             }
-
-            /* REPARACIÓN MAESTRA: Fuerza una altura física real y activa el desplazamiento en Android */
-            #timeline-scroll-era1,
-            #timeline-scroll-era2,
-            #timeline-scroll-era3,
-            #timeline-scroll-era4,
-            #timeline-scroll-era5,
-            #timeline-scroll-era6 {
-                display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                height: 60px !important;
-                /* Base firme para que no colapse a 0px */
-                min-height: 60px !important;
-                overflow-x: auto !important;
-                /* Activa el scroll táctil lateral por la fuerza */
-                overflow-y: hidden !important;
-                -webkit-overflow-scrolling: touch !important;
-                /* Suaviza el arrastre con el dedo en Android */
-                width: 100% !important;
-                gap: 8px !important;
-                padding-bottom: 4px !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-
-            /* Impide de forma estricta que Android encoja o aplaste los botones al deslizar */
-            #timeline-scroll-era1 button,
-            #timeline-scroll-era2 button,
-            #timeline-scroll-era3 button,
-            #timeline-scroll-era4 button,
-            #timeline-scroll-era5 button,
-            #timeline-scroll-era6 button {
-                flex: 0 0 auto !important;
-                width: auto !important;
-                min-width: 105px !important;
-                height: 100% !important;
-                white-space: normal !important;
-                word-break: break-word !important;
-                text-align: center !important;
-            }
-
         }
+
+        /* << CIERRE PERFECTO Y ÚNICO DEL MEDIA DE ESCRITORIO */
     </style>
 </head>
 
@@ -1081,7 +1100,7 @@
                 { year: "100 d.C.", title: "Muerte del Apóstol Juan", desc: "Alrededor del año 100 d.C., tras ser liberado de su exilio, el apóstol Juan fallece por causas naturales en la ciudad de Éfeso, donde pastoreaba activamente. Su muerte marca el cierre definitivo de la Era Apostólica, concluyendo el periodo de revelación directa de los testigos oculares de Jesús y abriendo paso a una nueva generación de líderes conocidos como los Padres de la Iglesia.", "image": "imgapostolica/mjuan.jpeg" }
             ],
             era2: [
-                { year: "107 d.C.", title: "Martirio de Ignacio de Antioquía", desc: "Arrestado y enviado a Roma, Ignacio fue devorado por las fieras en el Anfiteatro Flavio. Camino al martirio escribió siete cartas fundamentales que delinean la eclesiología primitiva, la firme resistencia al error doctrinal y acuñó por primera vez de forma registrada el término 'Iglesia Católica' para referirse a la universalidad de los fieles.", "image": "imgperseguida/ignatius.jpeg" }, 
+                { year: "107 d.C.", title: "Martirio de Ignacio de Antioquía", desc: "Arrestado y enviado a Roma, Ignacio fue devorado por las fieras en el Anfiteatro Flavio. Camino al martirio escribió siete cartas fundamentales que delinean la eclesiología primitiva, la firme resistencia al error doctrinal y acuñó por primera vez de forma registrada el término 'Iglesia Católica' para referirse a la universalidad de los fieles.", "image": "imgperseguida/ignatius.jpeg" },
                 { year: "112 d.C.", title: "Carta de Plinio el Joven y Edicto de Trajano", desc: "El gobernador de Bitinia, Plinio, escribe al emperador Trajano solicitando instrucciones sobre cómo juzgar a los cristianos. La respuesta de Trajano estableció una política imperial moderada pero firme: no debían ser buscados activamente por el estado, pero si eran denunciados legalmente y se negaban a adorar a los dioses del imperio, debían ser ejecutados.", "image": "imgperseguida/plinio.jpeg" },
                 { year: "135 d.C.", title: "Aristides de Atenas escribe su 'Apología'", desc: "El filósofo cristiano Aristides presenta al emperador Adriano la primera defensa formal del cristianismo conservada en la historia. En su escrito argumenta que los cristianos son los únicos que poseen una concepción verdadera de Dios, distinguiéndose tanto de los paganos idólatras como de los judíos incrédulos. Esta apología sentó las bases del género literario de defensa intelectual de la fe ante las autoridades romanas.", image: "imgperseguida/aristides.jpeg" },
                 { year: "135 d.C.", title: "Revuelta de Bar Kokhba y expulsión de los cristianos de Jerusalén", desc: "Tras la fallida rebelión judía liderada por Simón Bar Kokhba, el emperador Adriano arrasa Jerusalén, construye sobre sus ruinas una ciudad pagana llamada Aelia Capitolina y prohíbe la entrada a judíos y cristianos. Los cristianos de origen judío son expulsados por primera vez de la ciudad santa, rompiéndose definitivamente el vínculo institucional entre el cristianismo y el judaísmo rabínico.", image: "imgperseguida/bar-kokhba.jpeg" },
