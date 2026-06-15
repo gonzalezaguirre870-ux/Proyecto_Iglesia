@@ -498,19 +498,28 @@
                 /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
             }
 
-            /* SOLUCIÓN SCROLL HASTA ABAJO: Separa drásticamente la cronología de la lectura */
+            /* SOLUCIÓN SCROLL INTEGRAL PC: Selector ultra-fuerte por ID que obliga a la barra a bajar al suelo */
+            #timeline-scroll-era1,
+            #timeline-scroll-era2,
+            #timeline-scroll-era3,
+            #timeline-scroll-era4,
+            #timeline-scroll-era5,
+            #timeline-scroll-era6,
             .flex.gap-2.overflow-x-auto,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
-                height: 115px !important; 
-                max-height: 115px !important;
-                margin-top: 24px !important; 
-                overflow-x: auto !important; 
-                overflow-y: hidden !important; 
+                height: 120px !important;
+                /* Incrementado a 120px para garantizar un respiro perfecto */
+                max-height: 120px !important;
+                margin-top: 24px !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
                 width: 100% !important;
-                padding-bottom: 20px !important; 
-                align-items: flex-start !important; 
+                padding-bottom: 24px !important;
+                /* ¡AQUÍ ESTÁ! Colchón de aire masivo que avienta el scroll al piso absoluto */
+                align-items: flex-start !important;
+                /* Mantiene las tarjetas beige pegadas al techo */
                 box-sizing: border-box !important;
             }
 
