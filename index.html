@@ -134,35 +134,29 @@
            ======================================================= */
         @media (max-width: 768px) {
 
-            /* AJUSTE DE DIAPOSITIVAS INTERNES: Permite scroll si el texto es largo */
+            /* Ajuste estructural de las diapositivas de contenido interno en vertical */
             .slide.active {
-                padding-top: 96px !important;
-                padding-bottom: 24px !important;
-                height: 100vh !important;
+                display: flex !important;
+                flex-direction: column !important;
                 overflow-y: auto !important;
+                padding: 96px 16px 16px 16px !important;
+                justify-content: flex-start !important;
+                height: 100vh !important;
             }
 
-            /* PORTADAS DE LAS ERAS: Evita que el texto se comprima al centro o se deforme */
+            /* SOLUCIÓN AL BOTÓN CORTADO: Da flexibilidad a las portadas si el texto es muy largo */
             .slide[id$="-portada"].active {
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-between !important;
-                align-items: stretch !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
                 height: 100vh !important;
-                padding: 100px 24px 40px 24px !important;
+                padding-top: 80px !important;
+                padding-bottom: 24px !important;
                 overflow-y: auto !important;
             }
 
-            /* Restablece la caja de texto interna de las portadas */
-            .slide[id$="-portada"] .max-w-2xl {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: auto 0 !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-
-            /* Libera el bloque de texto en los eventos para que no se encime */
+            /* Libera el bloque de texto con ancho completo para que no se corte en vertical */
             .texto-evento,
             .slide>div:first-of-type {
                 height: auto !important;
@@ -173,7 +167,7 @@
                 flex: none !important;
             }
 
-            /* Títulos equilibrados en pantallas táctiles */
+            /* Redimensiona el título de forma equilibrada en móviles */
             .slide h2,
             .slide h1 {
                 font-size: 1.8rem !important;
@@ -183,7 +177,7 @@
                 text-align: center !important;
             }
 
-            /* Párrafos legibles en celulares */
+            /* Párrafo fluido con lectura anatómica a la izquierda para los eventos comunes */
             .slide p {
                 font-size: 1rem !important;
                 line-height: 1.5 !important;
@@ -191,60 +185,127 @@
                 display: block !important;
             }
 
-            /* CORRECCIÓN DE CRONOLOGÍA CONGELADA Y LÍNEA ROJA MULTIMEDIA */
-            /* Apuntamos de forma estricta por el ID del contenedor de la imagen para que NO tape ni congele la barra beige */
-            [id$="-media-container"] {
+            /* SOLUCIÓN LÍNEA ROJA: Contenedor multimedia sube por ID estricto para NO congelar la cronología */
+            #e1-media-container,
+            #e2-media-container,
+            #e3-media-container,
+            #e4-media-container,
+            #e5-media-container,
+            #e6-media-container {
                 position: static !important;
                 display: flex !important;
+                flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
                 width: 100% !important;
                 height: auto !important;
-                max-height: 30vh !important;
+                min-height: 140px !important;
+                max-height: 25vh !important;
                 margin-top: 12px !important;
                 margin-bottom: 8px !important;
                 overflow: hidden !important;
             }
 
-            /* REPARACIÓN DEL DESPLAZAMIENTO HORIZONTAL DE LA CRONOLOGÍA BEIGE */
-            [id$="-media-container"]~div,
-            [id^="timeline-scroll-"] {
-                display: flex !important;
-                overflow-x: auto !important;
-                /* Devuelve el giro y deslizamiento horizontal */
-                -webkit-overflow-scrolling: touch !important;
-                width: 100% !important;
-            }
-
-            /* IMAGEN RESPONSIVA COMPLETA */
+            /* Imagen interna: Cero distorsión, mantiene proporción real */
             .slide img {
+                position: static !important;
+                display: block !important;
                 width: auto !important;
                 max-width: 100% !important;
                 height: auto !important;
-                max-height: 30vh !important;
+                max-height: 25vh !important;
                 object-fit: contain !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 border-radius: 12px !important;
             }
 
-            /* Reubicación del botón de pantalla completa en móviles */
+            /* Asegura que el bloque interno del icono se mantenga estrictamente dentro de su caja */
+            [id$="-media-container"]>div {
+                position: relative !important;
+                inset: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            /* SOLUCIÓN AL DESPLAZAMIENTO HORIZONTAL CONGELADO (ERAS 2 A LA 6) */
+            /* Inyecta un espacio físico garantizado de 65px de alto y desbloquea el touch en Android */
+            #timeline-scroll-era1,
+            #timeline-scroll-era2,
+            #timeline-scroll-era3,
+            #timeline-scroll-era4,
+            #timeline-scroll-era5,
+            #timeline-scroll-era6 {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                height: 65px !important;
+                min-height: 65px !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch !important;
+                width: 100% !important;
+                gap: 8px !important;
+                padding-bottom: 4px !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            /* Prohíbe que el navegador del teléfono aplaste o encoja los botones de las eras ocultas */
+            #timeline-scroll-era1 button,
+            #timeline-scroll-era2 button,
+            #timeline-scroll-era3 button,
+            #timeline-scroll-era4 button,
+            #timeline-scroll-era5 button,
+            #timeline-scroll-era6 button {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                min-width: 115px !important;
+                height: 100% !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                text-align: center !important;
+                display: inline-block !important;
+            }
+
+            /* Reubicación del botón de pantalla completa en celulares */
             .btn-pantalla-completa {
                 top: 16px !important;
                 right: 16px !important;
             }
 
-            /* REPARACIÓN DEL MENÚ PRINCIPAL: Respetamos la rejilla nativa grid de Tailwind CSS */
+            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones */
             #slide-inicio.active {
                 display: grid !important;
-                /* Cambiado de flex a grid para revivir la cuadricula */
-                align-content: space-between !important;
-                padding: 100px 20px 40px 20px !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 12px !important;
+                padding: 100px 16px 40px 16px !important;
                 height: 100vh !important;
+                align-content: center !important;
             }
 
-            /* ARREGLO MAESTRO PARA EL BOTÓN DE INICIAR ERA EN ANDROID (48PX COMPLETO) */
+            /* Compacta el bloque de texto en las portadas móviles para que el botón suba */
+            .slide[id$="-portada"] .texto-evento,
+            .slide[id$="-portada"] div:first-of-type {
+                padding-top: 8px !important;
+                margin-bottom: 8px !important;
+            }
+
+            /* Reduce ligeramente la descripción en la portada del celular */
+            .slide[id$="-portada"] p {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 16px !important;
+                text-align: center !important;
+            }
+
+            /* DISEÑO DEL BOTÓN INICIAR ERA (MÓVIL ESTÁNDAR 48PX COMPLETO) */
             .slide[id$="-portada"] button[onclick^="goToSlide"] {
+                position: static !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
@@ -252,26 +313,26 @@
                 min-height: 48px !important;
                 line-height: 1 !important;
                 margin-top: 24px !important;
-                margin-bottom: 0 !important;
+                margin-bottom: 16px !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 width: max-content !important;
-                max-width: 100% !important;
+                max-width: 95% !important;
                 box-sizing: border-box !important;
             }
 
-            /* CONTADOR INFERIOR DE EVENTOS */
+            /* TEXTO INFERIOR COMPACTO ("16 Eventos...") */
             .slide[id$="-portada"] span,
             .slide[id$="-portada"] .text-xs {
                 position: static !important;
                 display: block !important;
-                margin-top: 16px !important;
+                margin-top: 8px !important;
                 font-size: 0.75rem !important;
                 text-align: center !important;
                 opacity: 0.8 !important;
             }
 
-            /* CONTROLES SUPERIORES: Mueve las flechas a la esquina derecha limpiamente */
+            /* SOLUCIÓN LÍNEA VERDE: Empuja las flechas de navegación y el contador a la esquina derecha */
             #nav-superior>div:last-of-type {
                 margin-left: auto !important;
                 padding-right: 8px !important;
