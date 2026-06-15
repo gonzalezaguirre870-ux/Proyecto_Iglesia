@@ -233,7 +233,6 @@
             }
 
             /* SOLUCIÓN AL DESPLAZAMIENTO HORIZONTAL CONGELADO (ERAS 2 A LA 6) */
-            /* Inyecta un espacio físico garantizado de 65px de alto y desbloquea el touch en Android */
             #timeline-scroll-era1,
             #timeline-scroll-era2,
             #timeline-scroll-era3,
@@ -278,14 +277,38 @@
                 right: 16px !important;
             }
 
-            /* Evita que el inicio se colapse en celulares cortos rescatando los 6 botones */
+            /* SOLUCIÓN AL MENÚ AMONTONADO: Texto amplio arriba y tarjetas verticales en parejas abajo */
             #slide-inicio.active {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                padding: 96px 16px 40px 16px !important;
+                height: 100vh !important;
+                overflow-y: auto !important;
+            }
+
+            /* Quita la opresión lateral para que el párrafo de bienvenida use todo el ancho del celular */
+            #slide-inicio.active .text-center,
+            #slide-inicio.active>div:first-of-type {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-top: 0 !important;
+                margin-bottom: 24px !important;
+                display: block !important;
+                text-align: center !important;
+            }
+
+            /* Distribuye las 6 tarjetas limpiamente en una cuadrícula inferior de 2 columnas */
+            #slide-inicio.active .grid {
                 display: grid !important;
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
                 gap: 12px !important;
-                padding: 100px 16px 40px 16px !important;
-                height: 100vh !important;
-                align-content: center !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                margin-bottom: 16px !important;
             }
 
             /* Compacta el bloque de texto en las portadas móviles para que el botón suba */
