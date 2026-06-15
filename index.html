@@ -453,16 +453,23 @@
                 border-radius: 0px !important;
             }
 
-            /* CENTRADO DE BIENVENIDA EN PC: Alineación perfecta de títulos */
-            #slide-inicio.active .text-center {
+            /* SOLUCIÓN AL CENTRADO DEL TEXTO SUPERIOR DEL INICIO EN PC */
+            /* Une y fuerza el centrado absoluto del h1, subtítulos y la línea amarilla */
+            #slide-inicio.active .text-center,
+            #slide-inicio h1,
+            .slide h1 {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 text-align: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
 
-            /* SOLUCIÓN AL TAMAÑO DE FUENTES EN MONITORES */
+            /* SOLUCIÓN TEXTO MUCHO MÁS GRANDE EN PC */
             #e1-title,
             #e2-title,
             #e3-title,
@@ -470,7 +477,8 @@
             #e5-title,
             #e6-title,
             .slide h2 {
-                font-size: 3.5rem !important;
+                font-size: 4rem !important;
+                /* Títulos gigantes y majestuosos en computadoras */
                 line-height: 1.1 !important;
                 margin-bottom: 24px !important;
             }
@@ -482,77 +490,41 @@
             #e5-desc,
             #e6-desc,
             .slide p {
-                font-size: 1.55rem !important;
-                line-height: 1.7 !important;
+                font-size: 1.75rem !important;
+                /* Historias ultra legibles en monitores de escritorio */
+                line-height: 1.75 !important;
                 text-align: justify !important;
-                margin-bottom: 40px !important;
+                margin-bottom: 64px !important;
+                /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
             }
 
-            /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
-            /* Evita que el contenedor gris/translúcido de fondo aplaste los elementos */
-            .bg-amber-950\/5,
-            .bg-red-950\/40,
-            .bg-blue-950\/40,
-            .bg-slate-950\/5,
-            .bg-blue-950\/5,
-            .slide div[class*="bg-"] {
-                height: auto !important;
-                min-height: 180px !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                padding: 16px !important;
-                box-sizing: border-box !important;
-            }
-
-            /* SOLUCIÓN SCROLL INTEGRAL PC: Altura fija que manda la barra al ras del piso absoluto */
-            #timeline-scroll-era1,
-            #timeline-scroll-era2,
-            #timeline-scroll-era3,
-            #timeline-scroll-era4,
-            #timeline-scroll-era5,
-            #timeline-scroll-era6,
+            /* SOLUCIÓN SCROLL HASTA ABAJO: Separa drásticamente la cronología de la lectura */
             .flex.gap-2.overflow-x-auto,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
-                height: 120px !important;
-                max-height: 120px !important;
-                margin-top: auto !important;
+                height: 115px !important;
+                max-height: 114px !important;
+                margin-top: 24px !important;
+                /* Mayor separación física desde arriba */
                 overflow-x: auto !important;
-                overflow-y: hidden !important;
+                /* Asegura el desplazamiento hacia los lados en PC */
                 width: 100% !important;
-                padding-bottom: 24px !important;
-                /* Colchón que avienta la barra gris al suelo absoluto */
-                align-items: flex-start !important;
-                box-sizing: border-box !important;
             }
 
-            /* Botones de la cronología interna horizontal en la computadora */
-            [id^="timeline-scroll-era"] button,
-            .btn-era1,
-            .btn-era2,
-            .btn-era3,
-            .btn-era4,
-            .btn-era5,
-            .btn-era6 {
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
+            /* Mantiene estables las tarjetas beige de los eventos en horizontal */
+            [id^="timeline-scroll-"] button {
+                display: inline-block !important;
                 width: auto !important;
-                min-width: 180px !important;
-                height: 70px !important;
-                padding: 8px 16px !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 12px 24px !important;
                 background-color: rgba(255, 255, 255, 0.4) !important;
                 color: #1e293b !important;
                 flex-shrink: 0 !important;
-                border-radius: 8px !important;
-                text-align: center !important;
-                box-sizing: border-box !important;
             }
 
-            /* Contenedor multimedia de ilustraciones a la derecha */
+            /* Contenedor multimedia e imágenes en PC */
             .slide div:nth-of-type(2),
             [id$="-media-container"] {
                 position: relative !important;
@@ -574,8 +546,7 @@
                 object-fit: cover !important;
             }
 
-            /* RESTAURACIÓN TOTAL DE DISEÑO EN EL MENÚ DE INICIO EN PC */
-            /* Revive la rejilla nativa Grid de 6 columnas horizontales perfectas */
+            /* DISEÑO DEL MENÚ: Cuadrícula horizontal fluida */
             #slide-inicio.active {
                 display: grid !important;
                 grid-template-rows: auto 1fr !important;
@@ -584,7 +555,7 @@
                 padding: 60px 40px 40px 40px !important;
             }
 
-            /* Ajusta los 6 bloques de las eras para que recuperen su forma premium rectangular */
+            /* MEJORA ESTÉTICA DE LOS 6 BOTONES EN PC */
             #slide-inicio.active .grid {
                 display: grid !important;
                 grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
@@ -598,7 +569,6 @@
                 margin-bottom: auto !important;
             }
 
-            /* Fuerza la altura exacta y alineación centrada de los 6 botones del inicio */
             #slide-inicio.active .grid button {
                 height: 140px !important;
                 display: flex !important;
@@ -607,9 +577,49 @@
                 align-items: center !important;
                 box-sizing: border-box !important;
             }
-        }
 
-        /* << CIERRE PERFECTO Y ÚNICO DEL@MEDIA DE ESCRITORIO */
+            /* REPARACIÓN MAESTRA: Fuerza una altura física real y activa el desplazamiento en Android */
+            #timeline-scroll-era1,
+            #timeline-scroll-era2,
+            #timeline-scroll-era3,
+            #timeline-scroll-era4,
+            #timeline-scroll-era5,
+            #timeline-scroll-era6 {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                height: 60px !important;
+                /* Base firme para que no colapse a 0px */
+                min-height: 60px !important;
+                overflow-x: auto !important;
+                /* Activa el scroll táctil lateral por la fuerza */
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch !important;
+                /* Suaviza el arrastre con el dedo en Android */
+                width: 100% !important;
+                gap: 8px !important;
+                padding-bottom: 4px !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            /* Impide de forma estricta que Android encoja o aplaste los botones al deslizar */
+            #timeline-scroll-era1 button,
+            #timeline-scroll-era2 button,
+            #timeline-scroll-era3 button,
+            #timeline-scroll-era4 button,
+            #timeline-scroll-era5 button,
+            #timeline-scroll-era6 button {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                min-width: 105px !important;
+                height: 100% !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                text-align: center !important;
+            }
+
+        }
     </style>
 </head>
 
