@@ -1201,13 +1201,7 @@
 
             updateNavHighlights();
             updateIndicators();
-
-            if (slideId.startsWith('slide-e')) {
-                if (typeof renderTimelineNavigation === 'function') {
-                    renderTimelineNavigation();
-                }
-            }
-        } // Cierra de forma correcta la función goToSlide
+        }
 
         function updateNavHighlights() {
             document.querySelectorAll('.nav-era-btn').forEach(b => {
@@ -1244,6 +1238,7 @@
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
         });
+
 
         // =======================================================
         // 4. CARGA DINÁMICA DE EVENTOS (NUEVO RENDER DE MEDIOS)
