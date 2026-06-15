@@ -498,7 +498,25 @@
                 /* ¡MÁS ESPACIO! Colchón gigante para empujar el scroll hacia abajo */
             }
 
-            /* SOLUCIÓN SCROLL INTEGRAL PC: Selector ultra-fuerte por ID que obliga a la barra a bajar al suelo */
+            /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
+            /* Abre el espacio vertical de la caja de fondo para que los elementos respiren */
+            .bg-amber-950\/5,
+            .bg-red-950\/40,
+            .bg-blue-950\/40,
+            .bg-slate-950\/5,
+            .bg-blue-950\/5,
+            .slide div[class*="bg-"] {
+                height: auto !important;
+                min-height: 180px !important;
+                /* Le da suficiente altura de fondo a la caja de la cronología */
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                padding: 16px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* SOLUCIÓN SCROLL INTEGRAL PC: Separa la barra de los botones y la manda al ras inferior */
             #timeline-scroll-era1,
             #timeline-scroll-era2,
             #timeline-scroll-era3,
@@ -510,18 +528,19 @@
                 display: flex !important;
                 flex-direction: row !important;
                 height: 120px !important;
-                /* Incrementado a 120px para garantizar un respiro perfecto */
+                /* Altura estricta para la fila de botones más el scroll */
                 max-height: 120px !important;
-                margin-top: 24px !important;
+                margin-top: auto !important;
+                /* Empuja el scroll hacia la base de la caja grande */
                 overflow-x: auto !important;
                 overflow-y: hidden !important;
                 width: 100% !important;
                 padding-bottom: 24px !important;
-                /* ¡AQUÍ ESTÁ! Colchón de aire masivo que avienta el scroll al piso absoluto */
+                /* Colchón masivo que avienta la barra gris al suelo absoluto */
                 align-items: flex-start !important;
-                /* Mantiene las tarjetas beige pegadas al techo */
                 box-sizing: border-box !important;
             }
+
 
             /* Mantiene estables las tarjetas beige de los eventos en horizontal */
             [id^="timeline-scroll-"] button {
