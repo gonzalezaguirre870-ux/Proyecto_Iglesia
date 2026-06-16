@@ -442,7 +442,7 @@
         }
 
                 /* =======================================================
-           CORRECCIÓN DE EMERGENCY: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
+           CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
             /* FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
@@ -451,33 +451,46 @@
                 width: 100% !important;
                 border-radius: 0px !important; 
                 position: relative !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
+            }
+
+            /* CONTROL RIGIDO MAESTRO EN PC: Obliga a cada slide a medir exactamente lo mismo */
+            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) {
+                display: grid !important;
+                grid-template-columns: 66.666667% 33.333333% !important; /* Dos columnas fijas independientes */
+                grid-template-rows: 100% !important;
+                height: calc(100vh - 120px) !important; /* Descuenta el menú superior de la app */
+                max-height: calc(100vh - 120px) !important;
+                position: relative !important;
+                box-sizing: border-box !important;
             }
 
             /* ESTRUCTURA DE EVENTOS EN PC: Distribución vertical controlada de la columna izquierda */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: flex-start !important; 
+                justify-content: flex-start !important; /* Alineación limpia desde el techo */
                 height: 100% !important;
-                width: 66.666667% !important;
+                width: 100% !important; /* Ocupa el 100% de su rejilla izquierda asignada */
                 padding-right: 40px !important;
                 box-sizing: border-box !important;
             }
 
-            /* AREA DEL PÁRRAFO: Rompe el imán limitando estrictamente el espacio del texto */
+            /* AREA DEL PÁRRAFO COMPACTA: El texto mide siempre 45vh en monitores y laptops */
+            /* Esto destruye de raíz el imán, aislando por completo la lectura de la cronología de abajo */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) p {
                 height: 45vh !important; 
                 max-height: 45vh !important;
-                overflow-y: auto !important; 
-                margin-bottom: 32px !important; 
+                overflow-y: auto !important; /* Si la historia es muy larga, sale scroll vertical en el párrafo */
+                margin-bottom: 0 !important; 
                 font-size: 1.55rem !important; 
                 line-height: 1.7 !important;
                 text-align: justify !important;
             }
 
             /* SOLUCIÓN AL TAMAÑO DE FUENTES Y TÍTULOS LARGOS EN MONITORES */
-            /* Se añade la propiedad estándar line-clamp por compatibilidad y limpieza de advertencias */
             #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
             .slide h2 {
                 font-size: clamp(2rem, 2.6vw, 3.2rem) !important; 
@@ -487,35 +500,27 @@
                 overflow: hidden !important; 
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important; 
-                line-clamp: 2 !important; /* Propiedad estándar que remueve la advertencia de tu editor */
+                line-clamp: 2 !important; 
                 -webkit-box-orient: vertical !important;
             }
 
-            /* CENTRADO DE BIENVENIDA EN PC: Alineación perfecta de títulos */
-            #slide-inicio.active .text-center {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                text-align: center !important;
-            }
-
             /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
+            /* Plantamos la caja beige en una separación inamovible de 32px respecto al bloque fijo de lectura */
             #timeline-scroll-era1, #timeline-scroll-era2, #timeline-scroll-era3,
             #timeline-scroll-era4, #timeline-scroll-era5, #timeline-scroll-era6 {
-                margin-top: 0 !important; 
+                margin-top: 32px !important; 
             }
 
-            /* SOLUCIÓN SCROLL INTEGRAL PC: Altura perfecta que manda la barra al ras del piso absoluto */
+            /* SOLUCIÓN SCROLL COMPACTO PC: Misma medida estricta e inmóvil para las 6 eras */
             .flex.gap-2.overflow-x-auto,
             [id^="timeline-scroll-"] {
                 display: flex !important;
                 flex-direction: row !important;
-                height: 125px !important; 
-                max-height: 125px !important;
+                height: 94px !important; /* Medida horizontal reducida para clavar la barra a los botones */
+                max-height: 94px !important;
                 width: 100% !important;
-                padding-bottom: 24px !important; 
-                align-items: flex-start !important; 
+                padding-bottom: 12px !important; /* Colchón preciso que asienta el scroll al ras inferior */
+                align-items: stretch !important; /* Fuerza a los botones a rellenar la altura de forma uniforme */
                 box-sizing: border-box !important;
                 overflow-x: auto !important; 
                 overflow-y: hidden !important; 
@@ -529,7 +534,7 @@
                 justify-content: center !important;
                 align-items: center !important;
                 width: auto !important;
-                min-width: 180px !important; 
+                min-width: 180px !important; /* Ancho extendido premium para que el hito respire */
                 height: 70px !important; 
                 padding: 8px 16px !important;
                 background-color: rgba(255, 255, 255, 0.4) !important; 
@@ -540,16 +545,17 @@
                 box-sizing: border-box !important;
             }
 
-            /* Contenedor multimedia de de ilustraciones a la derecha */
+            /* Contenedor multimedia de ilustraciones a la derecha */
+            /* Mide siempre el 100% de la columna de la derecha, restando el espacio para que el contador entre abajo */
             .slide div:nth-of-type(2), [id$="-media-container"] {
                 position: relative !important;
                 display: block !important;
                 width: 100% !important;
-                height: 100% !important;
-                max-height: none !important;
+                height: calc(100% - 64px) !important; 
+                max-height: calc(100vh - 200px) !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
-                overflow: visible !important; 
+                overflow: hidden !important;
             }
 
             .slide img {
@@ -561,32 +567,38 @@
                 object-fit: cover !important;
             }
 
-            /* SOLUCIÓN AL CONTADOR DE DIAPOSITIVAS EN COMPUTADORAS (LAS 6 ERAS DEFINITIVO) */
-            .slide div.bg-amber-950,
-            .slide div[class*="bg-amber-950"],
-            .slide .bg-amber-950,
-            .slide .text-center.text-xs.font-semibold,
-            .slide div:nth-of-type(2) + div,
-            [id$="-media-container"] + div {
-                position: absolute !important; 
-                bottom: 24px !important; 
-                right: 24px !important; 
-                width: auto !important;
-                max-width: 250px !important;
-                height: auto !important;
-                min-height: 0 !important;
-                padding: 10px 18px !important; 
-                z-index: 99 !important; 
-                background-color: rgba(69, 26, 3, 0.95) !important; 
-                color: #fef3c7 !important; 
-                font-size: 0.85rem !important;
-                font-weight: 700 !important;
-                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important; 
-                border-radius: 8px !important; 
+            /* RESTAURACIÓN DE LA CAJA DE PROGRESO DEBAJO DE LA IMAGEN CON SU COLOR ORIGINAL */
+            .slide div.text-center.text-xs.font-semibold,
+            .slide div[class*="text-center"][class*="font-semibold"],
+            #slide-e1 span[id$="-progress-num"] ~ div,
+            #slide-e2 span[id$="-progress-num"] ~ div,
+            #slide-e3 span[id$="-progress-num"] ~ div,
+            #slide-e4 span[id$="-progress-num"] ~ div,
+            #slide-e5 span[id$="-progress-num"] ~ div,
+            #slide-e6 span[id$="-progress-num"] ~ div {
+                position: static !important; /* Se acopla de forma estable abajo de la foto o icono */
+                width: 100% !important; 
+                height: 48px !important; 
+                min-height: 48px !important;
+                margin-top: 16px !important; 
+                padding: 0 24px !important; 
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 box-sizing: border-box !important;
+                border-radius: 8px !important; 
+                font-size: 0.9rem !important;
+                font-weight: 700 !important;
+                z-index: 10 !important;
+            }
+
+            /* CENTRADO DE BIENVENIDA EN PC: Alineación perfecta de títulos */
+            #slide-inicio.active .text-center {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
             }
 
             /* RESTAURACIÓN TOTAL DE DISEÑO EN EL MENÚ DE INICIO EN PC */
@@ -620,7 +632,7 @@
                 box-sizing: border-box !important;
             }
         }
-
+        
     </style>
 </head>
 
@@ -1365,13 +1377,6 @@
                 } else {
                     const centerWrap = document.createElement("div");
                     centerWrap.className = "absolute inset-0 flex flex-col items-center justify-center p-4 text-center";
-
-                    if (eraKey === 'era1') centerWrap.classList.add('text-amber-800');
-                    if (eraKey === 'era2') centerWrap.classList.add('text-red-500');
-                    if (eraKey === 'era3') centerWrap.classList.add('text-yellow-800');
-                    if (eraKey === 'era4') centerWrap.classList.add('text-blue-400');
-                    if (eraKey === 'era5') centerWrap.classList.add('text-slate-700');
-                    if (eraKey === 'era6') centerWrap.classList.add('text-blue-800');
 
                     const icon = document.createElement("i");
                     icon.className = `fa-solid ${event.icon || 'fa-fire'} text-5xl md:text-7xl mb-2 md:mb-4`;
