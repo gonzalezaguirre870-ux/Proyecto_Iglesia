@@ -593,6 +593,19 @@
                 align-items: center !important;
                 box-sizing: border-box !important;
             }
+            
+            /* SOLUCIÓN CONTADOR OCULTO: Trae al frente la caja de Diapositiva X de X sobre la imagen en PC */
+            .slide div:nth-of-type(2) div[class*="bg-amber-950"],
+            [id$="-media-container"] ~ div {
+                position: absolute !important;
+                bottom: 24px !important; /* Lo acomoda de forma elegante en la base derecha */
+                right: 24px !important; /* Lo alinea con el margen de la ilustración */
+                z-index: 30 !important; /* Lo levanta por encima de la foto absoluta para que nunca se tape */
+                width: max-content !important;
+                background-color: rgba(69, 26, 3, 0.9) !important; /* Mantiene su color marrón con un toque premium translúcido */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            }
+
         }
     
     </style>
