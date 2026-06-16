@@ -442,7 +442,7 @@
         }
 
                 /* =======================================================
-           CORRECCIÓN DE EMERGENCIA: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
+           CORRECCIÓN DE EMERGENCY: ANULACIÓN DE ESTILOS EN PC (DEFINITIVO)
            ======================================================= */
         @media (min-width: 769px) {
             /* FRANJAS AZULES: Expande la presentación de borde a borde en monitores */
@@ -453,8 +453,7 @@
                 position: relative !important;
             }
 
-            /* RESTRUCTURACIÓN DE LA COLUMNA IZQUIERDA EN PC */
-            /* Mantiene la distribución vertical ordenada sin que el texto altere la cronología */
+            /* ESTRUCTURA DE EVENTOS EN PC: Distribución vertical controlada de la columna izquierda */
             .slide.active:not([id$="-inicio"]):not([id$="-portada"]) > div:first-of-type {
                 display: flex !important;
                 flex-direction: column !important;
@@ -465,8 +464,20 @@
                 box-sizing: border-box !important;
             }
 
+            /* AREA DEL PÁRRAFO: Rompe el imán limitando estrictamente el espacio del texto */
+            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
+            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) p {
+                height: 45vh !important; 
+                max-height: 45vh !important;
+                overflow-y: auto !important; 
+                margin-bottom: 32px !important; 
+                font-size: 1.55rem !important; 
+                line-height: 1.7 !important;
+                text-align: justify !important;
+            }
+
             /* SOLUCIÓN AL TAMAÑO DE FUENTES Y TÍTULOS LARGOS EN MONITORES */
-            /* Evita que los encabezados de tres líneas empujen la cronología hacia abajo en laptops */
+            /* Se añade la propiedad estándar line-clamp por compatibilidad y limpieza de advertencias */
             #e1-title, #e2-title, #e3-title, #e4-title, #e5-title, #e6-title,
             .slide h2 {
                 font-size: clamp(2rem, 2.6vw, 3.2rem) !important; 
@@ -476,20 +487,8 @@
                 overflow: hidden !important; 
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important; 
+                line-clamp: 2 !important; /* Propiedad estándar que remueve la advertencia de tu editor */
                 -webkit-box-orient: vertical !important;
-            }
-
-            /* REAJUSTE DE ALTURA DEL PÁRRAFO COMPACTO EN PC */
-            /* Al recortar el título arriba, abrimos más espacio libre en medio para el texto largo */
-            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) .texto-evento,
-            .slide.active:not([id$="-inicio"]):not([id$="-portada"]) p {
-                height: 45vh !important;
-                max-height: 45vh !important;
-                overflow-y: auto !important; 
-                margin-bottom: 32px !important;
-                font-size: 1.55rem !important; 
-                line-height: 1.65 !important;
-                text-align: justify !important;
             }
 
             /* CENTRADO DE BIENVENIDA EN PC: Alineación perfecta de títulos */
@@ -502,7 +501,6 @@
             }
 
             /* REPARACIÓN DEL CONTENEDOR GENERAL DE LA CRONOLOGÍA EN PC */
-            /* SOLUCIÓN DE IMÁN: Al medir el texto exactamente 45vh, esta caja se queda quieta en su sitio siempre */
             #timeline-scroll-era1, #timeline-scroll-era2, #timeline-scroll-era3,
             #timeline-scroll-era4, #timeline-scroll-era5, #timeline-scroll-era6 {
                 margin-top: 0 !important; 
@@ -551,7 +549,7 @@
                 max-height: none !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
-                overflow: hidden !important;
+                overflow: visible !important; 
             }
 
             .slide img {
@@ -561,6 +559,34 @@
                 height: 100% !important;
                 max-height: none !important;
                 object-fit: cover !important;
+            }
+
+            /* SOLUCIÓN AL CONTADOR DE DIAPOSITIVAS EN COMPUTADORAS (LAS 6 ERAS DEFINITIVO) */
+            .slide div.bg-amber-950,
+            .slide div[class*="bg-amber-950"],
+            .slide .bg-amber-950,
+            .slide .text-center.text-xs.font-semibold,
+            .slide div:nth-of-type(2) + div,
+            [id$="-media-container"] + div {
+                position: absolute !important; 
+                bottom: 24px !important; 
+                right: 24px !important; 
+                width: auto !important;
+                max-width: 250px !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 10px 18px !important; 
+                z-index: 99 !important; 
+                background-color: rgba(69, 26, 3, 0.95) !important; 
+                color: #fef3c7 !important; 
+                font-size: 0.85rem !important;
+                font-weight: 700 !important;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important; 
+                border-radius: 8px !important; 
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
             }
 
             /* RESTAURACIÓN TOTAL DE DISEÑO EN EL MENÚ DE INICIO EN PC */
@@ -593,34 +619,8 @@
                 align-items: center !important;
                 box-sizing: border-box !important;
             }
-            
-                        /* SOLUCIÓN AL CONTADOR DE DIAPOSITIVAS EN COMPUTADORAS (LAS 6 ERAS) */
-            /* Apuntamos directamente a los contenedores padres de tus números de progreso por su ID real */
-            #era1-progress-num, #era2-progress-num, #era3-progress-num,
-            #era4-progress-num, #era5-progress-num, #era6-progress-num,
-            div:has(> [id$="-progress-num"]),
-            .slide div[class*="bg-amber-950"] {
-                position: absolute !important; /* Lo saca del flujo elástico y lo vuelve tarjeta flotante */
-                bottom: 24px !important; /* Clavado exactamente a 24px del piso de la sección multimedia derecha */
-                right: 24px !important; /* Clavado exactamente a 24px del borde derecho de la multimedia */
-                width: max-content !important; /* El ancho se ajusta de forma exacta al texto para que no se estire */
-                height: auto !important; /* Elimina cualquier persiana vertical o recorte moche */
-                min-height: 0 !important;
-                padding: 10px 16px !important; /* Cojín de aire cómodo para que el texto respire y no se corte */
-                z-index: 90 !important; /* Lo levanta por encima de la foto o el icono azul para que sea 100% visible */
-                background-color: rgba(69, 26, 3, 0.95) !important; /* Forzamos tu color marrón chocolate premium translúcido en las 6 eras */
-                color: #fef3c7 !important; /* Color ámbar claro text-amber-100 para máxima lectura */
-                font-size: 0.85rem !important;
-                font-weight: 600 !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important; /* Sombra suave para darle relieve sobre la foto o fondo */
-                border-radius: 8px !important; /* Bordes suavemente redondeados idénticos a los botones beige */
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-
         }
-    
+
     </style>
 </head>
 
