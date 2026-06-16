@@ -594,16 +594,26 @@
                 box-sizing: border-box !important;
             }
             
-            /* SOLUCIÓN CONTADOR OCULTO: Trae al frente la caja de Diapositiva X de X sobre la imagen en PC */
-            .slide div:nth-of-type(2) div[class*="bg-amber-950"],
-            [id$="-media-container"] ~ div {
-                position: absolute !important;
-                bottom: 24px !important; /* Lo acomoda de forma elegante en la base derecha */
-                right: 24px !important; /* Lo alinea con el margen de la ilustración */
-                z-index: 30 !important; /* Lo levanta por encima de la foto absoluta para que nunca se tape */
-                width: max-content !important;
-                background-color: rgba(69, 26, 3, 0.9) !important; /* Mantiene su color marrón con un toque premium translúcido */
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            /* SOLUCIÓN AL CONTADOR MARRÓN DE DIAPOSITIVAS EN COMPUTADORAS */
+            /* Apuntamos de forma estricta por el ID dinámico de cada era para que actúe igual en las 6 etapas */
+            #slide-e1 span[id$="-progress-num"], #slide-e2 span[id$="-progress-num"], 
+            #slide-e3 span[id$="-progress-num"], #slide-e4 span[id$="-progress-num"], 
+            #slide-e5 span[id$="-progress-num"], #slide-e6 span[id$="-progress-num"],
+            .slide span[id*="-progress-num"],
+            .slide div.bg-amber-950, 
+            .slide div[class*="bg-amber-950"] {
+                position: absolute !important; /* Lo saca del fondo aplastado y lo vuelve una tarjeta flotante */
+                bottom: 24px !important; /* Separación fija y perfecta desde el borde inferior de la imagen */
+                right: 24px !important; /* Alineación limpia pegada al borde derecho de la imagen */
+                width: max-content !important; /* Ajusta el ancho de la caja al tamaño exacto del texto para que no se estire */
+                height: auto !important; /* Elimina cualquier estiramiento vertical tipo persiana */
+                min-height: 0 !important;
+                padding: 10px 16px !important; /* Cojín interno cómodo para que el texto respire y no se corte */
+                z-index: 40 !important; /* Lo levanta por encima de la ilustración absoluta para que sea 100% visible */
+                background-color: rgba(69, 26, 3, 0.95) !important; /* Marrón premium traslúcido elegante */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important; /* Sombra suave para darle relieve sobre la foto */
+                border-radius: 8px !important; /* Bordes suavemente redondeados idénticos a los botones beige */
+                display: block !important;
             }
 
         }
