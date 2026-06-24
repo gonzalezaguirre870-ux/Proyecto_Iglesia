@@ -1099,6 +1099,66 @@
             </div>
         </div>
 
+        <!-- BOTÓN FLOTANTE DE CRÉDITOS (Fijo de forma segura arriba a la izquierda en la portada) -->
+        <div class="fixed top-4 left-4 z-50">
+            <button onclick="document.getElementById('modal-creditos').classList.remove('hidden')"
+                class="px-3 py-2 text-[10px] md:text-xs font-bold tracking-wider rounded-lg transition bg-amber-950/60 text-amber-200 border border-amber-800/40 hover:bg-amber-900/80 font-cinzel shadow-lg flex items-center gap-2">
+                <i class="fa-solid fa-feather-pointed"></i> <span class="hidden md:inline">CRÉDITOS</span>
+            </button>
+        </div>
+
+        <!-- VENTANA MODAL EMERGENTE (Oculta nativamente con la clase 'hidden') -->
+        <div id="modal-creditos"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+            <div
+                class="w-full max-w-lg p-6 md:p-8 bg-amber-950 text-amber-100 rounded-2xl shadow-2xl border border-amber-800/40 animate-fade-in">
+
+                <!-- Encabezado -->
+                <div class="text-center border-b border-amber-800/40 pb-4 mb-6">
+                    <h3 class="font-cinzel text-xl md:text-2xl font-bold tracking-wide text-amber-400">CRÉDITOS DEL
+                        PROYECTO</h3>
+                    <p class="text-[10px] md:text-xs text-amber-300/60 mt-1 uppercase font-semibold">Historia de la
+                        Iglesia Interactiva</p>
+                </div>
+
+                <!-- Contenido Informativo (Estructura de espacios corregida) -->
+                <div class="space-y-4 text-sm">
+
+                    <!-- APARTADO EXCLUSIVO PARA TU PAPÁ (Ahora con espacio controlado) -->
+                    <div class="bg-amber-900/20 p-3 rounded-lg border border-amber-800/20">
+                        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Asesoría y
+                            Verificación Histórica:</p>
+                        <p class="font-semibold text-slate-200 text-base">[Nombre Completo de tu Papá]</p>
+                        <p class="text-xs text-amber-100/70 mt-1">Revisión cronológica, validación de datos teológicos y
+                            control de calidad de eventos.</p>
+                    </div>
+
+                    <!-- UNIFICACIÓN DE TU TRABAJO (Investigación + Desarrollo Tecnológico) -->
+                    <div class="bg-amber-900/20 p-3 rounded-lg border border-amber-800/20">
+                        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Investigación, Diseño
+                            y Desarrollo Web:</p>
+                        <p class="font-semibold text-slate-200 text-base">[Tu Nombre Completo]</p>
+                        <p class="text-xs text-amber-100/70 mt-1">Recopilación de los 182 hitos históricos, arquitectura
+                            de software responsiva y optimización multiplataforma.</p>
+                    </div>
+
+                    <!-- Derechos de Autor -->
+                    <div class="text-center text-xs text-amber-200/50 pt-1 font-mono">
+                        &copy; 2026 Todos los derechos reservados. Prohibida la reproducción sin autorización.
+                    </div>
+                </div>
+
+                <!-- Botón para cerrar la ventana -->
+                <div class="mt-6 text-center">
+                    <button onclick="document.getElementById('modal-creditos').classList.add('hidden')"
+                        class="w-full md:w-auto px-6 py-2 text-xs font-bold bg-amber-800 text-amber-950 rounded-lg transition hover:bg-amber-400 font-cinzel">
+                        ENTENDIDO / CERRAR
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <script>
