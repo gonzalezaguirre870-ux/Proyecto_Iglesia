@@ -1099,8 +1099,8 @@
             </div>
         </div>
 
-        <!-- BOTÓN FLOTANTE DE CRÉDITOS (Fijo de forma segura arriba a la izquierda en la portada) -->
-        <div class="fixed top-4 left-4 z-50">
+        <!-- BOTÓN FLOTANTE DE CRÉDITOS (Controlado por JavaScript con la clase hidden inicial) -->
+        <div id="btn-creditos-flotante" class="hidden fixed top-4 left-4 z-50">
             <button onclick="document.getElementById('modal-creditos').classList.remove('hidden')"
                 class="px-3 py-2 text-[10px] md:text-xs font-bold tracking-wider rounded-lg transition bg-amber-950/60 text-amber-200 border border-amber-800/40 hover:bg-amber-900/80 font-cinzel shadow-lg flex items-center gap-2">
                 <i class="fa-solid fa-feather-pointed"></i> <span class="hidden md:inline">CRÉDITOS</span>
@@ -1124,7 +1124,7 @@
                 <!-- Contenido Informativo (Estructura de espacios corregida) -->
                 <div class="space-y-4 text-sm">
 
-                    <!-- APARTADO EXCLUSIVO PARA TU PAPÁ (Ahora con espacio controlado) -->
+                    <!-- APARTADO EXCLUSIVO PARA TU PAPÁ -->
                     <div class="bg-amber-900/20 p-3 rounded-lg border border-amber-800/20">
                         <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Asesoría y
                             Verificación Histórica:</p>
@@ -1138,14 +1138,19 @@
                         <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Investigación, Diseño
                             y Desarrollo Web:</p>
                         <p class="font-semibold text-slate-200 text-base">Jonathan Aguirre</p>
-                        <p class="text-xs text-amber-100/70 mt-1">Recopilación de los 182 hitos históricos, arquitectura
+                        <p class="text-xs text-amber-100/70 mt-1">Recopilación de los 217 hitos históricos, arquitectura
                             de software responsiva y optimización multiplataforma.</p>
                     </div>
 
-                    <!-- Derechos de Autor -->
-                    <div class="text-center text-xs text-amber-200/50 pt-1 font-mono">
-                        &copy; 2026 Todos los derechos reservados. Prohibida la reproducción sin autorización.
+                    <!-- Texto Legal Optimizado y Profesional -->
+                    <div
+                        class="text-center text-[11px] md:text-xs text-amber-200/40 pt-2 border-t border-amber-800/20 font-mono tracking-wide">
+                        &copy; 2026 Historia de la Iglesia Interactiva. Todos los derechos reservados.<br
+                            class="hidden md:inline">
+                        Queda estrictamente prohibida la reproducción, distribución o copia total o parcial de esta obra
+                        cronológica sin la autorización expresa de los autores.
                     </div>
+
                 </div>
 
                 <!-- Botón para cerrar la ventana -->
@@ -1435,7 +1440,22 @@
 
             updateNavHighlights();
             updateIndicators();
-        }
+
+            // ... (Todo el código interno actual de tu función goToSlide se queda exactamente igual) ...
+            updateNavHighlights();
+            updateIndicators();
+
+            // ORDEN CLAVE: Muestra el botón en el inicio y lo apaga en todas las eras
+            const btnCreditos = document.getElementById('btn-creditos-flotante');
+            if (btnCreditos) {
+                if (slideId === 'slide-inicio') {
+                    btnCreditos.classList.remove('hidden'); // Lo enciende en la portada
+                } else {
+                    btnCreditos.classList.add('hidden');    // Lo esconde en las 6 eras
+                }
+            }
+        } // << Esta es la llave de cierre original de tu función goToSlide
+
 
         function updateNavHighlights() {
             document.querySelectorAll('.nav-era-btn').forEach(b => {
@@ -1602,11 +1622,15 @@
         document.addEventListener("MSFullscreenChange", actualizaControlesPantallaCompleta);
 
         // =======================================================
-        // 6. INICIALIZADOR DE LA APP WEB
+        // 6. INICIALIZADOR DE LA APP WEB (CONTRALOR DE CRÉDITOS)
         // =======================================================
         window.onload = function () {
             if (typeof eventsData !== 'undefined') window.eventsData = eventsData;
+
+            // 1. Dibuja las barras de eventos beige al cargar la página
             renderTimelineNavigation();
+
+            // 2. Ejecuta la carga nativa del primer hito histórico de cada era
             loadEvent('era1', 0);
             loadEvent('era2', 0);
             loadEvent('era3', 0);
@@ -1614,8 +1638,41 @@
             loadEvent('era5', 0);
             loadEvent('era6', 0);
 
-            // COMPLEMENTO OBLIGATORIO: Fuerza al script a comprobar en qué slide está (slide-inicio)
-            // al cargar la web para quitarle la clase 'hidden' y mostrar el botón de inmediato.
+            // 3. Temporizador controlado multiplataforma
+            setTimeout(function () {
+                // Forzar Scroll Horizontal Nativo en móviles Android
+                if (window.innerWidth <= 768) {
+                    for (let i = 1; i <= 6; i++) {
+                        const container = document.getElementById(`timeline-scroll-era${i}`);
+                        if (container) {
+                            container.style.display = 'flex';
+                            container.style.flexDirection = 'row';
+                            container.style.flexWrap = 'nowrap';
+                            container.style.overflowX = 'auto';
+                            container.style.overflowY = 'hidden';
+                            container.style.WebkitOverflowScrolling = 'touch';
+                            container.style.gap = '8px';
+                            container.style.paddingBottom = '8px';
+
+                            const buttons = container.querySelectorAll('button');
+                            buttons.forEach(btn => {
+                                btn.style.flex = '0 0 auto';
+                                btn.style.minWidth = '100px';
+                                btn.style.whiteSpace = 'normal';
+                                btn.style.wordBreak = 'break-word';
+                            });
+                        }
+                    }
+                }
+
+                // SOLUCIÓN AL ARRANQUE: Enciende el botón de créditos de forma segura tras renderizar el DOM
+                const btnCreditosInit = document.getElementById('btn-creditos-flotante');
+                if (btnCreditosInit && currentSlideId === 'slide-inicio') {
+                    btnCreditosInit.classList.remove('hidden');
+                }
+            }, 200); // Pequeño retraso de sincronización de 200ms
+
+            // 4. Muestra el botón de pantalla completa en la portada inicial
             actualizaControlesPantallaCompleta();
         };
 
